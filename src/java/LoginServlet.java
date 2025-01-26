@@ -4,18 +4,22 @@
  */
 
 
+import dao.UserDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.User;
 
 /**
  *
  * @author DAT
  */
 public class LoginServlet extends HttpServlet {
+    
+    UserDao ud = new UserDao();
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -71,12 +75,10 @@ public class LoginServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         
         if(!user.isEmpty() && !password.isEmpty()) {
-            
-            
-            if(user.equals("1") && password.equals("1")) {
+            User currentUser = ud.findUserByEmailAndPassword(password, user);
+            if(currentUser != null){
                 out.println("<body>");
-                out.println("<h1> Username: 1</h1>");
-                out.println("<h1> Password: 1</h1>");
+                out.println("<h1> info:"+ currentUser.toString() +"</h1>");
                 out.println("</body>");
             }
             else{

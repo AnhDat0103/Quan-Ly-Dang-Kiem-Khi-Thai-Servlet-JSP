@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface Dao<T> {
      
-    public void save(T t);
+    public int save(T t);
     
     public List<T> findAll();
     
