@@ -3,23 +3,20 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
+package controller;
 
-import dao.UserDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.User;
 
 /**
  *
  * @author DAT
  */
-public class LoginServlet extends HttpServlet {
-    
-    UserDao ud = new UserDao();
+public class RegisterServlet extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -36,10 +33,10 @@ public class LoginServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginServlet</title>");  
+            out.println("<title>Servlet RegisterServlet</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoginServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet RegisterServlet at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -56,7 +53,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        request.getRequestDispatcher("dashboard/auth/login.html").forward(request, response);
+        request.getRequestDispatcher("dashboard/auth/register.jsp").forward(request, response);
     } 
 
     /** 
@@ -69,24 +66,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String user = request.getParameter("username") != null ? request.getParameter("username") : "";
-        String password = request.getParameter("pass") != null ? request.getParameter("pass") : "";
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        
-        if(!user.isEmpty() && !password.isEmpty()) {
-            User currentUser = ud.findUserByEmailAndPassword(password, user);
-            if(currentUser != null){
-                out.println("<body>");
-                out.println("<h1> info:"+ currentUser.toString() +"</h1>");
-                out.println("</body>");
-            }
-            else{
-                out.println("<body>");
-                out.println("<h1> Not Found!!!</h1>");
-                out.println("</body>");
-            }    
-        }
+        processRequest(request, response);
     }
 
     /** 

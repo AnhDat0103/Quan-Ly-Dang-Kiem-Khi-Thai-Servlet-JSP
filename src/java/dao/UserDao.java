@@ -55,12 +55,13 @@ public class UserDao implements Dao<User> {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
-    public User findUserByEmailAndPassword(String password, String email) {
-        String sql = "SELECT * FROM Users WHERE Email = ? AND Password = ?";
+    public User findUserByEmailAndPasswordAndRole(String email, String password, String role) {
+        String sql = "SELECT * FROM Users WHERE Email = ? AND Password = ? And Role = ?";
         try {
             PreparedStatement ps = connect.prepareStatement(sql);
             ps.setString(1, email);
             ps.setString(2, Configuration.hashPasswordByMD5(password));
+            ps.setString(3, role);
             ResultSet rs = ps.executeQuery();
             if(rs.next()) {
                 User user = new User(rs.getInt("UserID"), 
@@ -76,6 +77,20 @@ public class UserDao implements Dao<User> {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public int existedUserWithEmail(String emailRequest) {
+        String sql = "SELECT * FROM Users WHERE Email = ?";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            ResultSet rs = pt.executeQuery();
+            if(rs.next()) {
+                return 1;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }     
+        return 0;
     }
 
 }
