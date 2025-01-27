@@ -1,4 +1,4 @@
-# NetBeans specific #
+# NetBeans specific 
 nbproject/private/      # Chỉ bỏ qua thư mục private chứa cấu hình cá nhân
 nbbuild/                # Bỏ qua thư mục build tự động
 dist/                   # Bỏ qua thư mục chứa các file deploy (.war, .jar)
@@ -6,7 +6,7 @@ nbdist/
 nbactions.xml           # Bỏ qua file hành động NetBeans tự sinh
 nb-configuration.xml    # Bỏ qua cấu hình cá nhân của NetBeans
 
-# Build files #
+# Build files 
 build/
 test/                   # Bỏ qua thư mục test (nếu không cần test files)
 *.class                 # Bỏ qua file .class biên dịch
@@ -14,16 +14,24 @@ test/                   # Bỏ qua thư mục test (nếu không cần test file
 *.war                   # Bỏ qua file package .war
 *.ear                   # Bỏ qua file package .ear
 
-# IDE files #
+# IDE files
 .idea/                  # Bỏ qua folder IntelliJ IDEA
 *.iml                   # Bỏ qua file cấu hình module IntelliJ IDEA
 .project                # Bỏ qua file cấu hình Eclipse
 .classpath              # Bỏ qua file classpath Eclipse
 .settings/              # Bỏ qua folder Eclipse settings
 
-# Configuration files #
+# Configuration files
 *.properties            # Bỏ qua file config (tùy chọn)
 *.xml                   # Bỏ qua các file xml không cần thiết (trừ `project.xml` và `build-impl.xml`)
 
-# DBContext file #
-src/java/dao/DBContext.java  # Nếu bạn muốn bỏ qua file này vì chứa thông tin nhạy cảm (username, password DB)
+nbproject/private/private.properties
+nbproject/private/private.xml
+nbproject/private/retriever/catalog.xml
+nbproject/private/retriever/jakarta.ee/xml/ns/jakartaee/jakartaee_10.xsd
+nbproject/private/retriever/jakarta.ee/xml/ns/jakartaee/jakartaee_web_services_client_2_0.xsd
+nbproject/private/retriever/jakarta.ee/xml/ns/jakartaee/jsp_3_1.xsd
+nbproject/private/retriever/jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd
+nbproject/private/retriever/jakarta.ee/xml/ns/jakartaee/web-common_6_0.xsd
+nbproject/private/retriever/www.w3.org/2001/xml.xsd
+src/java/dao/DBContext.java
