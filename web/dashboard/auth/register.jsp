@@ -4,6 +4,7 @@
     Author     : DAT
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="vi">
@@ -46,7 +47,7 @@
         }
 
         .social-login p {
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.5rem;  
             font-size: 0.9rem;
         }
 
@@ -74,27 +75,46 @@
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="fullName" class="form-label">Họ và tên</label>
-                                    <input type="text" class="form-control" id="fullName" name="fullName" required>
+                                    <input type="text" class="form-control ${not empty emptyName ? 'is-invalid' : ''}" id="fullName" name="fullName" value="${requestScope.rf.fullName}">
+                                    <div class="invalid-feedback">
+                                        <c:out value="${emptyName}" />
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="phone" class="form-label">Số điện thoại</label>
-                                    <input type="tel" class="form-control" id="phone" name="phone" required>
+                                    <input type="tel" class="form-control ${not empty emptyPhone ? 'is-invalid' : ''} ${not empty phoneFormatError ? 'is-invalid' : ''}" id="phone" name="phone" value="${requestScope.rf.phone}">
+                                    <div class="invalid-feedback">
+                                        <c:out value="${emptyPhone}" />
+                                        <c:out value="${phoneFormatError}" />
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" name="email" required>
+                                <input type="email" class="form-control ${not empty emptyEmail ? 'is-invalid' : ''} ${not empty emailFormatError ? 'is-invalid' : ''} ${not empty existedEmail ? 'is-invalid' : ''}" id="email" name="email" value="${requestScope.rf.email}">
+                                <div class="invalid-feedback">
+                                        <c:out value="${existedEmail}" />
+                                        <c:out value="${emptyEmail}" />
+                                        <c:out value="${emailFormatError}" />
+                                    </div>
                             </div>
 
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="password" class="form-label">Mật khẩu</label>
-                                    <input type="password" class="form-control" id="password" name="password" required>
+                                    <input type="password" class="form-control ${not empty emptyPass ? 'is-invalid' : ''}" id="password" name="password">
+                                    <div class="invalid-feedback">
+                                        <c:out value="${emptyPass}" />
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="confirmPassword" class="form-label">Xác nhận mật khẩu</label>
-                                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                                    <input type="password" class="form-control ${not empty emptyConfirPass ? 'is-invalid' : ''} ${not empty confirmPassError ? 'is-invalid' : ''}" id="confirmPassword" name="confirmPassword">
+                                    <div class="invalid-feedback">
+                                        <c:out value="${emptyConfirPass}" />
+                                        <c:out value="${confirmPassError}" />
+                                    </div>
                                 </div>
                             </div>
 
@@ -111,7 +131,10 @@
 
                             <div class="mb-4">
                                 <label for="address" class="form-label">Địa chỉ</label>
-                                <textarea class="form-control" id="address" name="address" rows="2" required></textarea>
+                                <textarea class="form-control ${not empty emptyAddress ? 'is-invalid' : ''}" id="address" name="address" rows="2">${requestScope.rf.address}</textarea>
+                                <div class="invalid-feedback">
+                                    <c:out value="${emptyAddress}" />
+                                </div>
                             </div>
 
                             <button type="submit" class="btn btn-primary w-100 mb-3">Đăng ký</button>

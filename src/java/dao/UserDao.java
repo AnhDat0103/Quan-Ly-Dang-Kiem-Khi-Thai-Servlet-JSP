@@ -26,8 +26,8 @@ public class UserDao implements Dao<User> {
         String sql = "INSERT INTO Users(FullName, Email, Password, Role, Phone, Address) VALUES(?,?,?,?,?,?)";
         try {
             PreparedStatement ps = connect.prepareStatement(sql);
-            ps.setInt(1, t.getUserId());
-            ps.setString(2, t.getFullName());
+            ps.setString(1, t.getFullName());
+            ps.setString(2, t.getEmail());
             ps.setString(3, Configuration.hashPasswordByMD5(t.getPassword()));
             ps.setString(4, t.getRole().toString());
             ps.setString(5, t.getPhone());
