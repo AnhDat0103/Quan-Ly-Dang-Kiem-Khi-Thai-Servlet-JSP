@@ -16,6 +16,14 @@
         <servlet-name>GetStationHomePage</servlet-name>
         <servlet-class>controller.station.GetStationHomePage</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetAppointmentPage</servlet-name>
+        <servlet-class>controller.station.GetAppointmentPage</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetReportPage</servlet-name>
+        <servlet-class>controller.station.GetReportPage</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/dang-nhap</url-pattern>
@@ -31,5 +39,13 @@
     <servlet-mapping>
         <servlet-name>GetStationHomePage</servlet-name>
         <url-pattern>/trung-tam-dang-kiem</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetAppointmentPage</servlet-name>
+        <url-pattern>/quan-ly-lich-hen</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetReportPage</servlet-name>
+        <url-pattern>/bao-cao-kiem-dinh</url-pattern>
     </servlet-mapping>
 </web-app>

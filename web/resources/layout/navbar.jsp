@@ -7,23 +7,23 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
     <nav class="navbar navbar-expand-lg navbar-dark bg-success">
         <div class="container">
-            <a class="navbar-brand" href="#">Trung tâm Đăng kiểm</a>
+            <a class="navbar-brand" href="trung-tam-dang-kiem">Trung tâm Đăng kiểm</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Trang chủ</a>
+                        <a class="nav-link active" href="trung-tam-dang-kiem">Trang chủ</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Thông tin</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="appointments.jsp">Lịch hẹn</a>
+                        <a class="nav-link" href="quan-ly-lich-hen">Lịch hẹn</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="reports.jsp">Báo cáo</a>
+                        <a class="nav-link" href="bao-cao-kiem-dinh">Báo cáo</a>
                     </li>
                 </ul>
                 <!-- Thêm phần Profile và Đăng xuất -->
@@ -35,7 +35,7 @@
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="profile.jsp">Hồ sơ cá nhân</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="logout">Đăng xuất</a></li>
+                            <li><a class="dropdown-item" href="dang-xuat">Đăng xuất</a></li>
                         </ul>
                     </li>
                 </ul>

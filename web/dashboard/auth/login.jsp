@@ -26,7 +26,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="text-center mb-4">Đăng nhập hệ thống</h4>
-                            <div style="color:blue"; >${requestScope.logoutSuccessMessage}</div>
+                            <div style="color:green; text-align: center"; >${requestScope.logoutSuccessMessage}</div>
                             <form action="dang-nhap" method="POST">
                                 <div class="mb-4">
                                     <label for="email" class="form-label">Email</label>
