@@ -139,12 +139,12 @@
 
                             <button type="submit" class="btn btn-primary w-100 mb-3">Đăng ký</button>
                             
-                            <div class="social-login text-center">
+<!--                            <div class="social-login text-center">
                                 <p class="mb-4">_____Hoặc_____</p>
                                 <a href="/oauth2/authorization/google" class="btn btn-outline-danger w-100">
                                     <i class="fab fa-google me-2"></i>Google
                                 </a>
-                            </div>
+                            </div>-->
                         </form>
                         <div class="mt-3 text-center">
                             <p>Đã có tài khoản? <a href="dang-nhap">Đăng nhập</a></p>
