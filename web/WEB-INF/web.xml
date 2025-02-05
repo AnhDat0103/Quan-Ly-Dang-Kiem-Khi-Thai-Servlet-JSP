@@ -16,6 +16,10 @@
         <servlet-name>GetStationHomePage</servlet-name>
         <servlet-class>controller.station.GetStationHomePage</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetOwnerHomePage</servlet-name>
+        <servlet-class>controller.ownerController.GetOwnerHomePage</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
         <url-pattern>/dang-nhap</url-pattern>
@@ -31,5 +35,9 @@
     <servlet-mapping>
         <servlet-name>GetStationHomePage</servlet-name>
         <url-pattern>/trung-tam-dang-kiem</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetOwnerHomePage</servlet-name>
+        <url-pattern>/chu-phuong-tien</url-pattern>
     </servlet-mapping>
 </web-app>

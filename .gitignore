@@ -35,3 +35,4 @@ nbproject/private/retriever/jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd
 nbproject/private/retriever/jakarta.ee/xml/ns/jakartaee/web-common_6_0.xsd
 nbproject/private/retriever/www.w3.org/2001/xml.xsd
 src/java/dao/DBContext.java
+/nbproject/private/
