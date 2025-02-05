@@ -30,7 +30,7 @@
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
-                            <i class="bi bi-person-circle"></i> Tài khoản
+                            <i class="bi bi-person-circle"></i> ${currentUser.fullName}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="profile.jsp">Hồ sơ cá nhân</a></li>

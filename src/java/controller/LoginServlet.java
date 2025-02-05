@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.User;
+import model.enums.RoleEnums;
 
 /**
  *
@@ -83,7 +84,12 @@ public class LoginServlet extends HttpServlet {
             User currentUser = ud.findUserByEmailAndPasswordAndRole(email, password, role);
             if (currentUser != null) {
                 session.setAttribute("currentUser", currentUser);
-                request.getRequestDispatcher("index.html").forward(request, response);
+                if(currentUser.getRole().equals(RoleEnums.Station)) {
+                      response.sendRedirect("trung-tam-dang-kiem");
+                }
+                if(currentUser.getRole().equals(RoleEnums.Police)){
+                    request.getRequestDispatcher("index.html").forward(request, response);
+                }
             } else {
                 request.setAttribute("notFound", "Tài khoản hoặc mật khẩu không chính xác.");
                 request.getRequestDispatcher("dashboard/auth/login.jsp").forward(request, response);
