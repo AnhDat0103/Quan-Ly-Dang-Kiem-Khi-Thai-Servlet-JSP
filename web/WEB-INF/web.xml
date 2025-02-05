@@ -19,6 +19,8 @@
     <servlet>
         <servlet-name>GetOwnerHomePage</servlet-name>
         <servlet-class>controller.ownerController.GetOwnerHomePage</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>GetAppointmentPage</servlet-name>
         <servlet-class>controller.station.GetAppointmentPage</servlet-class>
     </servlet>
@@ -45,6 +47,8 @@
     <servlet-mapping>
         <servlet-name>GetOwnerHomePage</servlet-name>
         <url-pattern>/chu-phuong-tien</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>GetAppointmentPage</servlet-name>
         <url-pattern>/quan-ly-lich-hen</url-pattern>
     </servlet-mapping>

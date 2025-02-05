@@ -87,6 +87,9 @@ public class LoginServlet extends HttpServlet {
                 if(currentUser.getRole().equals(RoleEnums.Station)) {
                       response.sendRedirect("trung-tam-dang-kiem");
                 }
+                if(currentUser.getRole().equals(RoleEnums.Owner)) {
+                      response.sendRedirect("chu-phuong-tien");
+                }
             } else {
                 request.setAttribute("notFound", "Tài khoản hoặc mật khẩu không chính xác.");
                 request.getRequestDispatcher("dashboard/auth/login.jsp").forward(request, response);
