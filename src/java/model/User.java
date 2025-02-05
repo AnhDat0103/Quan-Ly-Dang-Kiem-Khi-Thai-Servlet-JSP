@@ -18,11 +18,12 @@ public class User {
     private RoleEnums role;
     private String phone;
     private String address;
+    private InspectionStation inspectionStation;
 
     public User() {
     }
 
-    public User(int userId, String fullName, String email, String password, RoleEnums role, String phone, String address) {
+    public User(int userId, String fullName, String email, String password, RoleEnums role, String phone, String address, InspectionStation inspectionStation) {
         this.userId = userId;
         this.fullName = fullName;
         this.email = email;
@@ -30,6 +31,7 @@ public class User {
         this.role = role;
         this.phone = phone;
         this.address = address;
+        this.inspectionStation = inspectionStation;
     }
 
     public int getUserId() {
@@ -87,6 +89,16 @@ public class User {
     public void setAddress(String address) {
         this.address = address;
     }
+
+    public InspectionStation getInspectionStation() {
+        return inspectionStation;
+    }
+
+    public void setInspectionStation(InspectionStation inspectionStation) {
+        this.inspectionStation = inspectionStation;
+    }
+    
+    
 
     @Override
     public String toString() {
