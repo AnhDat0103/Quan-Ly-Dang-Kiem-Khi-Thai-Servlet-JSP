@@ -4,6 +4,9 @@
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>controller.LoginServlet</servlet-class>
     </servlet>
+    <welcome-file-list>
+        <welcome-file>dashboard/auth/login.jsp</welcome-file>
+    </welcome-file-list>
     <servlet>
         <servlet-name>RegisterServlet</servlet-name>
         <servlet-class>controller.RegisterServlet</servlet-class>
