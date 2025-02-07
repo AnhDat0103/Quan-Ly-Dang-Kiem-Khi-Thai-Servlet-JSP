@@ -4,6 +4,10 @@
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>controller.LoginServlet</servlet-class>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>GetProfilePage</servlet-name>
+        <url-pattern>/thong-tin-ca-nhan</url-pattern>
+    </servlet-mapping>
     <welcome-file-list>
         <welcome-file>dashboard/auth/login.jsp</welcome-file>
     </welcome-file-list>
@@ -26,6 +30,10 @@
     <servlet>
         <servlet-name>GetReportPage</servlet-name>
         <servlet-class>controller.station.GetReportPage</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetProfilePage</servlet-name>
+        <servlet-class>controller.station.GetProfilePage</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
