@@ -1,27 +1,21 @@
-package controller;
-
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-import dao.UserDao;
+package controller.ownerController;
+
 import java.io.IOException;
 import java.io.PrintWriter;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import model.User;
-import model.enums.RoleEnums;
+import jakarta .servlet.ServletException;
+import jakarta .servlet.http.HttpServlet;
+import jakarta .servlet.http.HttpServletRequest;
+import jakarta .servlet.http.HttpServletResponse;
 
 /**
  *
- * @author DAT
+ * @author Lenovo
  */
-public class LoginServlet extends HttpServlet {
-
-    UserDao ud = new UserDao();
+public class GetOwnerHomePage extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,10 +34,10 @@ public class LoginServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginServlet</title>");
+            out.println("<title>Servlet GetOwnerHomePage</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoginServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet GetOwnerHomePage at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -61,7 +55,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("dashboard/auth/login.jsp").forward(request, response);
+        request.getRequestDispatcher("resources/owner/ownerHomePage.jsp").forward(request, response);
     }
 
     /**
@@ -75,31 +69,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        String email = request.getParameter("email") != null ? request.getParameter("email") : "";
-        String password = request.getParameter("password") != null ? request.getParameter("password") : "";
-        String role = request.getParameter("role") != null ? request.getParameter("role") : "";
-        HttpSession session = request.getSession();
-        if (!email.isEmpty() && !password.isEmpty() && !role.isEmpty()) {
-            User currentUser = ud.findUserByEmailAndPasswordAndRole(email, password, role);
-            if (currentUser != null) {
-                session.setAttribute("currentUser", currentUser);
-                if(currentUser.getRole().equals(RoleEnums.Station)) {
-                      response.sendRedirect("trung-tam-dang-kiem");
-                }
-            } else {
-                request.setAttribute("notFound", "Tài khoản hoặc mật khẩu không chính xác.");
-                request.getRequestDispatcher("dashboard/auth/login.jsp").forward(request, response);
-            }
-        } else {
-            if (email.isEmpty()) {
-                request.setAttribute("emptyEmail", "Email không thể để trống.");
-            }
-            if (password.isEmpty()) {
-                request.setAttribute("emptyPassword", "Mật khẩu không thể để trống.");
-            }
-            request.getRequestDispatcher("dashboard/auth/login.jsp").forward(request, response);
-        }
+        processRequest(request, response);
     }
 
     /**

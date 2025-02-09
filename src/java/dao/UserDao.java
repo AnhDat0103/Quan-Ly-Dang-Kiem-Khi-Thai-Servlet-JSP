@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Connection;
 import java.sql.SQLException;
+import model.InspectionStation;
 import model.enums.RoleEnums;
 
 /**
@@ -20,6 +21,7 @@ import model.enums.RoleEnums;
 public class UserDao implements Dao<User> {
     
     Connection connect = DBContext.getInstance().getConnection();
+    StationDao sd = new StationDao();
 
     @Override
     public int save(User t) {
@@ -64,13 +66,15 @@ public class UserDao implements Dao<User> {
             ps.setString(3, role);
             ResultSet rs = ps.executeQuery();
             if(rs.next()) {
+                InspectionStation is = sd.findStationById(rs.getInt("StationID")) != null ? sd.findStationById(rs.getInt("StationID")) : new InspectionStation();
                 User user = new User(rs.getInt("UserID"), 
                         rs.getString("FullName"), 
                         rs.getString("Email"), 
                         rs.getString("Password"), 
                         RoleEnums.valueOf(rs.getString("Role")), 
                         rs.getString("Phone"), 
-                        rs.getString("Address"));
+                        rs.getString("Address"),
+                        is);
                 return user;
             }
         } catch (SQLException e) {
