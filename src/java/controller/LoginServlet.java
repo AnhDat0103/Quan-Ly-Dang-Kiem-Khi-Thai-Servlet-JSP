@@ -86,6 +86,8 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("currentUser", currentUser);
                 if(currentUser.getRole().equals(RoleEnums.Station)) {
                       response.sendRedirect("trung-tam-dang-kiem");
+                }if(currentUser.getRole().equals(RoleEnums.Inspector)){
+                     response.sendRedirect("nguoi-kiem-dinh");
                 }
             } else {
                 request.setAttribute("notFound", "Tài khoản hoặc mật khẩu không chính xác.");
