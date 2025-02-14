@@ -52,9 +52,9 @@
        String status = request.getParameter("status");
        if ("success".equals(status)) { 
                 %>
-                <div class="alert alert-success">Cập nhật mật khẩu thành công!</div>
+                <div class="alert alert-success">Cập nhật thành công!</div>
                 <% } else if ("error".equals(status)) { %>
-                <div class="alert alert-error">Cập nhật mật khẩu thất bại! Vui lòng kiểm tra lại.</div>
+                <div class="alert alert-error">Cập nhật thất bại! Vui lòng kiểm tra lại.</div>
                 <% } %>
                 <div id="content">
 
@@ -135,7 +135,7 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label class="form-label">Email</label>
-                                                    <input type="email" class="form-control" value="${sessionScope.currentUser.email}"  disabled readonly>
+                                                    <input type="email" class="form-control" value="${sessionScope.currentUser.email}" readonly>
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
@@ -270,7 +270,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Xóa tài khoản</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    
                     </div>
                     <form action="cap-nhat-thong-tin" method="POST">
                         <input type="hidden" name="action" value="delete-account">

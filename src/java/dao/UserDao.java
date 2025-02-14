@@ -49,12 +49,33 @@ public class UserDao implements Dao<User> {
 
     @Override
     public int update(User t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        int result = 0;
+        String sql = "UPDATE Users SET FullName = ?, Phone = ?, Address = ? where UserID = ?";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setString(1, t.getFullName());
+            pt.setString(2, t.getPhone());
+            pt.setString(3, t.getAddress());
+            pt.setInt(4, t.getUserId());
+            result = pt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     @Override
     public int delete(int t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        int result = 0;
+        String sql  = "Delete from Users where UserID = ?";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setInt(1, t);
+            pt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
     
     public User findUserByEmailAndPasswordAndRole(String email, String password, String role) {
@@ -108,10 +129,7 @@ public class UserDao implements Dao<User> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        if(updatedRow > 0) {
-            return updatedRow;
-        }
-        return 0;
+        return updatedRow;
     }
 
 }
