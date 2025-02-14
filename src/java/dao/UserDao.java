@@ -96,5 +96,22 @@ public class UserDao implements Dao<User> {
         }     
         return 0;
     }
+    
+    public int updatePassword(String newPassword, int userId) {
+        int updatedRow = 0;
+        String sql = "UPDATE Users SET Password = ? WHERE UserID = ?";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setString(1, newPassword);
+            pt.setInt(2, userId);
+            updatedRow = pt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if(updatedRow > 0) {
+            return updatedRow;
+        }
+        return 0;
+    }
 
 }
