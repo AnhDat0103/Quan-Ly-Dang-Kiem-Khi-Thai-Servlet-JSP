@@ -5,6 +5,7 @@
 package controller.station;
 
 import config.Configuration;
+import dao.StationDao;
 import dao.UserDao;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,6 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.User;
+import validation.Validate;
 
 /**
  *
@@ -22,6 +24,7 @@ import model.User;
 public class UpdateProfile extends HttpServlet {
 
     UserDao ud = new UserDao();
+    StationDao sd = new StationDao();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -78,29 +81,53 @@ public class UpdateProfile extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
 
         String action = request.getParameter("action");
-        String newFullName = request.getParameter("fullName");
-        String newPhone = request.getParameter("phone");
-        String newAddress = request.getParameter("address");
-        String oldPass = request.getParameter("oldPass");
-        String newPass = request.getParameter("newPass");
-        String confirm = request.getParameter("confirmNewPass");
+        String newFullName = request.getParameter("fullName") != null ? request.getParameter("fullName") : "";
+        String newPhone = request.getParameter("phone") != null ? request.getParameter("phone") : "";
+        String newAddress = request.getParameter("address") != null ? request.getParameter("address") : "";
+        String oldPass = request.getParameter("oldPass") != null ? request.getParameter("oldPass") : "";
+        String newPass = request.getParameter("newPass") != null ? request.getParameter("newPass") : "";
+        String confirm = request.getParameter("confirmNewPass") != null ? request.getParameter("confirmNewPass") : "";
+        String inspecStaion = request.getParameter("inspecStation") != null ? request.getParameter("inspecStation") : "";
         HttpSession session = request.getSession();
         User currentUser = (User) session.getAttribute("currentUser");
-
+        int rs = 0;
         if (action == null) {
-            // cap nhatj thong tin address . ten. so dien thoai
-        } else if (action.equals("change-pass")) {
-            if (checkNewPassAndConfirmNewPass(newPass, confirm) && Configuration.verifyPasswordAfterHashed(oldPass, currentUser.getPassword())) {
-                String hashNewPass = Configuration.hashPasswordByMD5(newPass);
-                int rs = ud.updatePassword(hashNewPass, currentUser.getUserId());
+            if (!newFullName.isEmpty() && !newPhone.isEmpty() && !newAddress.isEmpty() && Validate.checkTele(newPhone)) {
+                currentUser.setFullName(newFullName);
+                currentUser.setAddress(newAddress);
+                currentUser.setPhone(newPhone);
+                rs = ud.update(currentUser);
                 if (rs == 1) {
                     response.sendRedirect("thong-tin-ca-nhan?status=success");
                 }
             } else {
                 response.sendRedirect("thong-tin-ca-nhan?status=error");
             }
+        } else if (action.equals("change-pass")) {
+            if (!oldPass.isEmpty() && !newPass.isEmpty() && !confirm.isEmpty()) {
+                if (checkNewPassAndConfirmNewPass(newPass, confirm) && Configuration.verifyPasswordAfterHashed(oldPass, currentUser.getPassword())) {
+                    String hashNewPass = Configuration.hashPasswordByMD5(newPass);
+                    rs = ud.updatePassword(hashNewPass, currentUser.getUserId());
+                    if (rs == 1) {
+                        response.sendRedirect("thong-tin-ca-nhan?status=success");
+                    }
+                } else {
+                    response.sendRedirect("thong-tin-ca-nhan?status=error");
+                }
+            } else {
+                response.sendRedirect("thong-tin-ca-nhan?status=error");
+            }
+        } else if (action.equals("delete-account")) {
+            ud.delete(currentUser.getUserId());
+            session.removeAttribute("currentUser");
+            response.sendRedirect("dang-nhap");
+        } else if (action.equals("change-location")) {
+            currentUser.setInspectionStation(sd.findStationById(Integer.parseInt(inspecStaion)));
+            rs = ud.updateInspecStationId(Integer.parseInt(inspecStaion), currentUser.getUserId());
+            if (rs == 1) {
+                response.sendRedirect("thong-tin-ca-nhan?status=success");
+            }
         }
-
     }
 
     /**

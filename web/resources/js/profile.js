@@ -25,10 +25,9 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Xử lý sự kiện submit form
-//    profileForm.addEventListener('submit', function (e) {
-//        e.preventDefault();
-//        saveProfile();
-//    });
+    profileForm.addEventListener('submit', function (e) {
+        saveProfile();
+    });
 
     // Xử lý sự kiện thay đổi ảnh đại diện
     changeAvatarBtn.addEventListener('click', function () {
@@ -86,29 +85,29 @@ document.addEventListener('DOMContentLoaded', function () {
 //    }
 
     // Hàm lưu thông tin profile
-//    function saveProfile() {
-//        const formData = new FormData(profileForm);
-//        const profileData = Object.fromEntries(formData);
-//
-//        // TODO: Gọi API để cập nhật thông tin
-//        fetch('cap-nhat-thong-tin', {
-//            method: 'POST',
-//            body: formData
-//        })
-//                .then(response => response.json()) // Đọc phản hồi từ Servlet
-//                .then(data => {
-//                    if (data.success) {
-//                        toggleEditMode(false);
-//                        showAlert('success', 'Cập nhật thông tin thành công!');
-//                    } else {
-//                        showAlert('danger', 'Cập nhật thất bại! Vui lòng thử lại.');
-//                    }
-//                })
-//                .catch(error => {
-//                    console.error('Lỗi khi cập nhật thông tin:', error);
-//                    showAlert('danger', 'Lỗi kết nối máy chủ!');
-//                });
-//    }
+    function saveProfile() {
+        const formData = new FormData(profileForm);
+        const profileData = Object.fromEntries(formData);
+
+        // TODO: Gọi API để cập nhật thông tin
+        fetch('cap-nhat-thong-tin', {
+            method: 'POST',
+            body: formData
+        })
+                .then(response => response.json()) // Đọc phản hồi từ Servlet
+                .then(data => {
+                    if (data.success) {
+                        toggleEditMode(false);
+                        showAlert('success', 'Cập nhật thông tin thành công!');
+                    } else {
+                        showAlert('danger', 'Cập nhật thất bại! Vui lòng thử lại.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Lỗi khi cập nhật thông tin:', error);
+                    showAlert('danger', 'Lỗi kết nối máy chủ!');
+                });
+    }
 
     // Hàm upload avatar
     function uploadAvatar(file) {
