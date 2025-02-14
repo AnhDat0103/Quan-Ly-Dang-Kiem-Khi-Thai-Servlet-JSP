@@ -4,6 +4,7 @@
     Author     : DAT
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="vi">
@@ -61,6 +62,7 @@
                     <!-- Begin Page Content -->
                     <div class="container-fluid" style="padding-left: 118px;
                          padding-right: 124px; margin-top: 24px;">
+
                         <!-- Page Heading -->
                         <h1 class="h3 mb-4 text-gray-800">Thông tin cá nhân</h1>
 
@@ -229,6 +231,35 @@
             </div>
         </div>
 
+        <!-- Modal nhập thông tin khi stationId null -->
+
+        <div class="modal fade" id="stationModal" tabindex="-1" aria-labelledby="stationModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="stationModalLabel">Cập nhật nơi làm việc</h5>
+                    </div>
+                    <form action="cap-nhat-thong-tin" method="POST">
+                        <div class="modal-body">
+                            <input type="hidden" name="action" value="change-location">
+                            <div class="mb-3">
+                                <label class="form-label">Cơ sở làm việc</label>
+                                <select class="form-control" name="inspecStation" required>
+                                    <option value="">-- Chọn cơ sở --</option>
+                                    <c:forEach var="s" items="${requestScope.stations}">
+                                        <option value="${s.stationId}">${s.name}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Lưu</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         <!-- Notification Settings Modal -->
         <!--            <div class="modal fade" id="notificationSettingsModal" tabindex="-1">
                         <div class="modal-dialog">
@@ -270,7 +301,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Xóa tài khoản</h5>
-                    
+
                     </div>
                     <form action="cap-nhat-thong-tin" method="POST">
                         <input type="hidden" name="action" value="delete-account">
@@ -311,6 +342,14 @@
 
         <!-- Scripts -->
         <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                let stationId = "${currentUser.inspectionStation.stationId}";
+                 console.log("Station ID:", stationId);
+                if (!stationId || stationId === "0") {
+                    let stationModal = new bootstrap.Modal(document.getElementById("stationModal"));
+                    stationModal.show();
+                }
+            });
             setTimeout(function () {
                 let alertBox = document.querySelector(".alert");
                 if (alertBox) {

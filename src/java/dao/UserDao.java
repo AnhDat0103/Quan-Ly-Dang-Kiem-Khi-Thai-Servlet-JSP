@@ -132,4 +132,18 @@ public class UserDao implements Dao<User> {
         return updatedRow;
     }
 
+    public int updateInspecStationId(int parseInt, int userId) {
+        int result = 0;
+        String sql  = "update Users set StationID = ? WHERE UserID = ?";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setInt(1, parseInt);
+            pt.setInt(2, userId);
+            result = pt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
 }

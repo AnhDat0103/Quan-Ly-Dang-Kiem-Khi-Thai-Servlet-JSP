@@ -10,6 +10,7 @@ import model.InspectionStation;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -25,7 +26,22 @@ public class StationDao implements Dao<InspectionStation>{
 
     @Override
     public List<InspectionStation> findAll() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        List<InspectionStation> stations = new ArrayList<>();
+        String sql = "select * from InspectionStations";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            ResultSet rs = pt.executeQuery();
+            while(rs.next()) {
+                stations.add(new InspectionStation(rs.getInt("StationID"),
+                        rs.getString("Name"),
+                        rs.getString("Address"),
+                        rs.getString("Phone"),
+                        rs.getString("Email")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return stations;
     }
 
     @Override

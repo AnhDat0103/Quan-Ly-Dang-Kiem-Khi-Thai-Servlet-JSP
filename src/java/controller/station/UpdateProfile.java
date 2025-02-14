@@ -5,6 +5,7 @@
 package controller.station;
 
 import config.Configuration;
+import dao.StationDao;
 import dao.UserDao;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -23,6 +24,7 @@ import validation.Validate;
 public class UpdateProfile extends HttpServlet {
 
     UserDao ud = new UserDao();
+    StationDao sd = new StationDao();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -85,6 +87,7 @@ public class UpdateProfile extends HttpServlet {
         String oldPass = request.getParameter("oldPass") != null ? request.getParameter("oldPass") : "";
         String newPass = request.getParameter("newPass") != null ? request.getParameter("newPass") : "";
         String confirm = request.getParameter("confirmNewPass") != null ? request.getParameter("confirmNewPass") : "";
+        String inspecStaion = request.getParameter("inspecStation") != null ? request.getParameter("inspecStation") : "";
         HttpSession session = request.getSession();
         User currentUser = (User) session.getAttribute("currentUser");
         int rs = 0;
@@ -118,6 +121,12 @@ public class UpdateProfile extends HttpServlet {
             ud.delete(currentUser.getUserId());
             session.removeAttribute("currentUser");
             response.sendRedirect("dang-nhap");
+        } else if (action.equals("change-location")) {
+            currentUser.setInspectionStation(sd.findStationById(Integer.parseInt(inspecStaion)));
+            rs = ud.updateInspecStationId(Integer.parseInt(inspecStaion), currentUser.getUserId());
+            if (rs == 1) {
+                response.sendRedirect("thong-tin-ca-nhan?status=success");
+            }
         }
     }
 
