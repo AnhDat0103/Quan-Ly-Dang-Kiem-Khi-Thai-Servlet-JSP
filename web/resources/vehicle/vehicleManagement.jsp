@@ -21,7 +21,7 @@
                 <!-- Điều hướng -->
                 <nav class="navbar">
                     <ul>
-                        <li><a href="home.jsp">Trang Chủ</a></li>
+                        <li><a href="../owner/ownerHomePage.jsp">Trang Chủ</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropbtn">Quản Lý Phương Tiện</a>
                             <div class="dropdown-content">
@@ -30,8 +30,6 @@
                                 <a href="xoaPT.jsp">Xoá Phương Tiện</a>
                             </div>
                         </li>
-                        <li><a href="dangKyLichKiemTraPT.jsp">Đăng Ký Lịch Kiểm Tra</a></li>
-                        <li><a href="trangThaiPT.jsp">Theo Dõi Trạng Thái Kiểm Tra</a></li>
                     </ul>
                 </nav>
 

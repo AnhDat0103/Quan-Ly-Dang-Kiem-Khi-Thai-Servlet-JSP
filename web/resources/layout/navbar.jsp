@@ -29,7 +29,7 @@
                 <!-- Thêm phần Profile và Đăng xuất -->
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle active" href="resources/images/avatar.png" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
                             <i class="bi bi-person-circle"></i> ${currentUser.fullName}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
