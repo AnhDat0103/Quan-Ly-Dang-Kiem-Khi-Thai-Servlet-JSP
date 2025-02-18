@@ -4,10 +4,10 @@
  */
 package controller.vehicleController;
 
+import dao.UserDao;
 import model.Vehicles;
 import dao.VehicleDao;
 import validation.Validate;
-import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -15,9 +15,11 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.User;
 
 /**
  *
@@ -25,6 +27,8 @@ import java.util.logging.Logger;
  */
 @WebServlet("/dangkyPT")  // <-- URL mapping
 public class dangKyPT extends HttpServlet {
+    
+    UserDao ud = new UserDao();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -89,6 +93,8 @@ public class dangKyPT extends HttpServlet {
         String model = request.getParameter("model");
         String manufactureYeard = request.getParameter("manufactureYear");
         String engineNumber = request.getParameter("engineNumber");
+        HttpSession session = request.getSession();
+        User currentUser =(User) session.getAttribute("currentUser");
 
         String bug = "";
 
@@ -140,8 +146,13 @@ public class dangKyPT extends HttpServlet {
         request.setAttribute("model", model);
         request.setAttribute("manufactureYear", manufactureYeard);
         request.setAttribute("engineNumber", engineNumber);
-
-        Vehicles vh = new Vehicles(ownerID, plateNumber, brand, model, manufactureYear, engineNumber);
+        Vehicles vh = new Vehicles();
+        vh.setOwner(ud.findUserById(ownerID));
+        vh.setBrand(brand);
+        vh.setEngineNumber(engineNumber);
+        vh.setManufactureYear(manufactureYear);
+        vh.setModel(model);
+        vh.setPlateNumber(plateNumber);
         vehicleDao.save(vh);
         request.getRequestDispatcher("/submit/Successfully.jsp").forward(request, response);
 

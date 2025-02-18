@@ -5,15 +5,18 @@
 
 package controller.station;
 
+import dao.InspectionRecordDao;
 import dao.StationDao;
+import dao.VehicleDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.List;
-import model.InspectionStation;
+import jakarta.servlet.http.HttpSession;
+import model.InspectionRecords;
+import model.User;
 
 /**
  *
@@ -21,7 +24,8 @@ import model.InspectionStation;
  */
 public class GetStationHomePage extends HttpServlet {
         StationDao sd = new StationDao();
-   
+        InspectionRecordDao ird = new InspectionRecordDao();
+        VehicleDao vd = new VehicleDao();
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -50,6 +54,11 @@ public class GetStationHomePage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        User currentUser = (User) session.getAttribute("currentUser");
+        request.setAttribute("InspecedtionRecords", ird.getInspecedtationRecords(currentUser.getInspectionStation().getStationId()));
+        request.setAttribute("InspecRecordsSum", ird.getNumberOfInspectionRecordsInCurrentDay());
+        request.setAttribute("InspecedRecordsSum", ird.getNumberOfInspectionRecordsIsInspected());
         request.getRequestDispatcher("resources/station/home.jsp").forward(request, response);
     } 
 

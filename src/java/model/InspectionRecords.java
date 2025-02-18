@@ -11,7 +11,9 @@ import java.util.Date;
  * @author Lenovo
  */
 public class InspectionRecords {
-    private int vehicleID;
+
+    private int recordId;
+    private Vehicles vehicle;
     private int stationID;
     private Integer inspectorID; // Có thể null, nên dùng Integer
     private Date inspectionDate;
@@ -22,11 +24,13 @@ public class InspectionRecords {
     private String comments;
 
     // Constructor không tham số
-    public InspectionRecords() {}
+    public InspectionRecords() {
+    }
 
     // Constructor đầy đủ tham số (không có recordID)
-    public InspectionRecords(int vehicleID, int stationID, Integer inspectorID, Date inspectionDate, Date nextInspectionDate, String result, Double co2Emission, Double hcEmission, String comments) {
-        this.vehicleID = vehicleID;
+    public InspectionRecords(int recordId, Vehicles vehicle, int stationID, Integer inspectorID, Date inspectionDate, Date nextInspectionDate, String result, Double co2Emission, Double hcEmission, String comments) {
+        this.recordId = recordId;
+        this.vehicle = vehicle;
         this.stationID = stationID;
         this.inspectorID = inspectorID;
         this.inspectionDate = inspectionDate;
@@ -37,13 +41,20 @@ public class InspectionRecords {
         this.comments = comments;
     }
 
-    // Getters và Setters
-    public int getVehicleID() {
-        return vehicleID;
+    public int getRecordId() {
+        return recordId;
     }
 
-    public void setVehicleID(int vehicleID) {
-        this.vehicleID = vehicleID;
+    public void setRecordId(int recordId) {
+        this.recordId = recordId;
+    }
+
+    public Vehicles getVehicle() {
+        return vehicle;
+    }
+
+    public void setVehicle(Vehicles vehicle) {
+        this.vehicle = vehicle;
     }
 
     public int getStationID() {
@@ -110,19 +121,4 @@ public class InspectionRecords {
         this.comments = comments;
     }
 
-    // Phương thức hiển thị thông tin
-    @Override
-    public String toString() {
-        return "InspectionRecord{" +
-                "vehicleID=" + vehicleID +
-                ", stationID=" + stationID +
-                ", inspectorID=" + inspectorID +
-                ", inspectionDate=" + inspectionDate +
-                ", nextInspectionDate=" + nextInspectionDate +
-                ", result='" + result + '\'' +
-                ", co2Emission=" + co2Emission +
-                ", hcEmission=" + hcEmission +
-                ", comments='" + comments + '\'' +
-                '}';
-    }
 }

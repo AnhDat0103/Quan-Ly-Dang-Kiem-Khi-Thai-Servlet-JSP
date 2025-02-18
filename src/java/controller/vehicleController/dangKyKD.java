@@ -129,7 +129,7 @@ public class dangKyKD extends HttpServlet {
             java.util.Date today = new java.util.Date();
             SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
             Date date = sd.parse(inspectionDate);  
-            if (today.after(date)) {
+            if (today.compareTo(date) < 0) {
                 request.setAttribute("message", "Ngày đăng kiểm không thể là ngày trong quá khứ!");
                 doGet(request, response);
                 return;
@@ -137,7 +137,7 @@ public class dangKyKD extends HttpServlet {
 
             // Tạo bản ghi kiểm định mới
             InspectionRecords record = new InspectionRecords();
-            record.setVehicleID(vehicleID);
+            record.setVehicle(vehicleDao.getVehiclesById(vehicleID));
             record.setStationID(stationID);
             record.setInspectionDate(sd.parse(inspectionDate));
             
