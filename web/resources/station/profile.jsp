@@ -308,7 +308,7 @@
                         <div class="modal-body">
                             <div class="form-check mb-3" style="padding-left: 0px;">
                                 <input type="text" name="userId" value="${sessionScope.currentUser.userId}" style="display: none">
-                                <div class="alert alert-danger" role="alert">
+                                <div class="remove-acc" role="alert">
                                     Bạn có chắc chắn muốn xóa vĩnh viễn tài khoản này?
                                 </div>
                             </div>
