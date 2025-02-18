@@ -94,7 +94,7 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
     public int getNumberOfInspectionRecordsIsInspected() {
         int numberRecordsIsInspectedInDay = 0;
         String currentDate = LocalDate.now().toString();
-        String sql = "select count(*) from InspectionRecords where WHERE CAST(InspectionDate AS DATE) = ? and Result <> 'Pedding'";
+        String sql = "select count(*) from InspectionRecords WHERE CAST(InspectionDate AS DATE) = ? and Result <> 'Pending'";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setString(1, currentDate);

@@ -56,11 +56,11 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="text-muted">Lịch hẹn</div>
-                                    <h3>15</h3>
+                                    <h3>${requestScope.InspecRecordsSum}</h3>
                                 </div>
                                 <div class="col">
                                     <div class="text-muted">Đã kiểm định</div>
-                                    <h3>8</h3>
+                                    <h3>${requestScope.InspecedRecordsSum}</h3>
                                 </div>
                             </div>
                         </div>
