@@ -68,7 +68,7 @@
                                     <i class="bi bi-person-fill me-2"></i>Hồ sơ cá nhân
                                 </a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="../logout">
+                                <li><a class="dropdown-item" href="dang-xuat">
                                     <i class="bi bi-box-arrow-right me-2"></i>Đăng xuất
                                 </a></li>
                             </ul>

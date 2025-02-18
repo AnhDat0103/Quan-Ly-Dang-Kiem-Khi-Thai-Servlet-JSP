@@ -145,5 +145,30 @@ public class UserDao implements Dao<User> {
         }
         return result;
     }
+    
+    public User findUserById(int id) {
+        String sql = "select * from Users where UserID = ?";
+        try {
+            PreparedStatement pt =connect.prepareStatement(sql);
+            pt.setInt(1, id);
+            ResultSet rs = pt.executeQuery();
+            if(rs.next()){
+                InspectionStation is = sd.findStationById(rs.getInt("StationID")) != null ? sd.findStationById(rs.getInt("StationID")) : new InspectionStation();
+                User user = new User(rs.getInt("UserID"), 
+                        rs.getString("FullName"),
+                        rs.getString("Email"), 
+                        rs.getString("Password"), 
+                        RoleEnums.valueOf(rs.getString("Role")), 
+                        rs.getString("Phone"),
+                        rs.getString("Address"),
+                        is
+                );
+                return user;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 }

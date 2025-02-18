@@ -11,28 +11,30 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.util.List;
 import java.util.ArrayList;
+import model.User;
 
 /**
  *
  * @author Lenovo
  */
 public class VehicleDao implements Dao<Vehicles> {
-    
-    Connection connect = DBContext.getInstance().getConnection();  
-    
+
+    Connection connect = DBContext.getInstance().getConnection();
+    UserDao ud = new UserDao();
+
     @Override
     public int save(Vehicles t) {
-        String sql = "INSERT INTO Vehicles (OwnerID, PlateNumber, Brand, Model, ManufactureYear, EngineNumber)" +
-        " VALUES (?,?,?,?,?,?)";
+        String sql = "INSERT INTO Vehicles (OwnerID, PlateNumber, Brand, Model, ManufactureYear, EngineNumber)"
+                + " VALUES (?,?,?,?,?,?)";
         try {
             PreparedStatement st = connect.prepareStatement(sql);
-            st.setInt(1, t.getOwnerID());
+            st.setInt(1, t.getOwner().getUserId());
             st.setString(2, t.getPlateNumber());
             st.setString(3, t.getBrand());
             st.setString(4, t.getModel());
             st.setInt(5, t.getManufactureYear());
             st.setString(6, t.getEngineNumber());
-             
+
             int result = st.executeUpdate();
             return result;
         } catch (SQLException e) {
@@ -55,29 +57,29 @@ public class VehicleDao implements Dao<Vehicles> {
     public int delete(int t) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
-    public boolean deleteByPlateNumber(String plateNumber){
+
+    public boolean deleteByPlateNumber(String plateNumber) {
         String sql = "DELETE FROM Vehicles WHERE PlateNumber = ?";
         try {
             PreparedStatement st = connect.prepareStatement(sql);
             st.setString(1, plateNumber);
             int aftectedRows = st.executeUpdate();
-            
+
             return aftectedRows > 0;
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
-    
+
     public String selectByPlateNumber(String plateNumber) {
-        String sql = "SELECT vehicleID, ownerID, plateNumber, brand, model, manufactureYear, engineNumber " +
-                    "FROM Vehicles WHERE PlateNumber = ?";
+        String sql = "SELECT vehicleID, ownerID, plateNumber, brand, model, manufactureYear, engineNumber "
+                + "FROM Vehicles WHERE PlateNumber = ?";
         try {
             PreparedStatement st = connect.prepareStatement(sql);
             st.setString(1, plateNumber);
             ResultSet rs = st.executeQuery();
-            
+
             if (rs.next()) {
                 return "VehicleID: " + rs.getInt("vehicleID")
                         + ", OwnerID: " + rs.getInt("ownerID")
@@ -92,7 +94,7 @@ public class VehicleDao implements Dao<Vehicles> {
         }
         return null;
     }
-    
+
     public boolean kiemtraphuongtien(String plateNumber) throws SQLException {
         String sql = "SELECT COUNT(*) FROM Vehicles WHERE PlateNumber = ?";
         try (PreparedStatement st = connect.prepareStatement(sql)) {
@@ -102,23 +104,23 @@ public class VehicleDao implements Dao<Vehicles> {
             }
         }
     }
-    
-    public List<String> getPlateNumberByOwnerID(int ownerID){
+
+    public List<String> getPlateNumberByOwnerID(int ownerID) {
         List<String> plateNumbers = new ArrayList<>();
         String sql = "SELECT PlateNumber FROM Vehicles WHERE OwnerID = ?";
         try {
             PreparedStatement st = connect.prepareStatement(sql);
             st.setInt(1, ownerID);
             ResultSet rs = st.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 plateNumbers.add(rs.getString("PlateNumber"));
             }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return plateNumbers;
     }
-    
+
     public int getVehicleIDByPlateNumber(String plateNumber) {
         int vehicleID = 0;
         String sql = "SELECT VehicleID FROM Vehicles WHERE PlateNumber = ?";
@@ -134,5 +136,44 @@ public class VehicleDao implements Dao<Vehicles> {
         }
         return vehicleID;
     }
-    
+
+    public User getOwnerByPlateNumber(String plateNumber) {
+        String sql = "select * from Vehicles where PlateNumber = ?";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setString(1, plateNumber);
+            ResultSet rs = pt.executeQuery();
+            if (rs.next()) {
+                int ownerId = rs.getInt("OwnerID");
+                User owner = ud.findUserById(ownerId);
+                return owner;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Vehicles getVehiclesById(int id) {
+        String sql = "select * from Vehicles where VehicleID = ?";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setInt(1, id);
+            ResultSet rs = pt.executeQuery();
+            if (rs.next()) {
+                Vehicles v = new Vehicles(rs.getInt("VehicleID"),
+                        ud.findUserById(rs.getInt("OwnerID")),
+                        rs.getString("PlateNumber"),
+                        rs.getString("Brand"), 
+                        rs.getString("Model"),
+                        rs.getInt("ManufactureYear"),
+                        rs.getString("EngineNumber"));
+                return v;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }
