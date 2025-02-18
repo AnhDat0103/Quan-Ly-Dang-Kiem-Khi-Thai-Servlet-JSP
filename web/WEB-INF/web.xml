@@ -5,6 +5,21 @@
         <servlet-class>controller.LoginServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>UpdateProfile</servlet-name>
+        <servlet-class>controller.station.UpdateProfile</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>GetProfilePage</servlet-name>
+        <url-pattern>/thong-tin-ca-nhan</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateProfile</servlet-name>
+        <url-pattern>/cap-nhat-thong-tin</url-pattern>
+    </servlet-mapping>
+    <welcome-file-list>
+        <welcome-file>dashboard/auth/login.jsp</welcome-file>
+    </welcome-file-list>
+    <servlet>
         <servlet-name>RegisterServlet</servlet-name>
         <servlet-class>controller.RegisterServlet</servlet-class>
     </servlet>
@@ -31,6 +46,10 @@
     <servlet>
         <servlet-name>dangKyKD</servlet-name>
         <servlet-class>controller.vehicleController.dangKyKD</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetProfilePage</servlet-name>
+        <servlet-class>controller.station.GetProfilePage</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>

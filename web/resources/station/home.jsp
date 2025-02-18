@@ -51,8 +51,8 @@
                 <!-- Thống kê -->
                 <div class="col-md-4">
                     <div class="card mb-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Hôm nay</h5>
+                        <h5 class="card-header">Hôm nay</h5>
+                        <div class="card-body">   
                             <div class="row">
                                 <div class="col">
                                     <div class="text-muted">Lịch hẹn</div>
@@ -72,11 +72,7 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex justify-content-between align-items-center">
-                                <h5 class="card-title mb-0">Lịch kiểm định</h5>
-                                <div class="current-time">
-                                    <strong>Hôm nay: </strong>
-                                    <span id="current-time"></span>
-                                </div>
+                                <h5 class="card-title mb-0">Lịch kiểm định</h5>    
                             </div>
                         </div>
                         <div class="card-body">
@@ -220,34 +216,6 @@
         <!-- Thêm Bootstrap JS và Popper.js -->
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
-
-        <!-- Script hiển thị thời gian hiện tại -->
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                function updateCurrentTime() {
-                    const now = new Date();
-                    const dateString = now.toLocaleDateString('vi-VN', {
-                        weekday: 'long',
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                    });
-                    const timeString = now.toLocaleTimeString('vi-VN', {
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        second: '2-digit'
-                    });
-
-                    const timeElement = document.getElementById('current-time');
-                    if (timeElement) {
-                        timeElement.textContent = `${dateString} ${timeString}`;
-                                    }
-                                }
-
-                                updateCurrentTime();
-                                setInterval(updateCurrentTime, 1000);
-                            });
-
-        </script>
+        
     </body>
 </html>
