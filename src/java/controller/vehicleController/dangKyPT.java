@@ -128,11 +128,9 @@ public class dangKyPT extends HttpServlet {
             bug += "Dữ liệu nhập vào không hợp lệ! Vui lòng kiểm tra lại.\n";
         }
         
-
         if (!bug.isEmpty()) {
-            request.setAttribute("errorMessage", bug);
-            RequestDispatcher rd = request.getRequestDispatcher("/thongbao.jsp");
-            rd.forward(request, response);
+            request.setAttribute("bug", bug);
+            request.getRequestDispatcher("/submit/Failed.jsp").forward(request, response);
             return;
         }
 
@@ -145,8 +143,8 @@ public class dangKyPT extends HttpServlet {
 
         Vehicles vh = new Vehicles(ownerID, plateNumber, brand, model, manufactureYear, engineNumber);
         vehicleDao.save(vh);
-        RequestDispatcher rd = request.getRequestDispatcher("/thanhcong.jsp");
-        rd.forward(request, response);
+        request.getRequestDispatcher("/submit/Successfully.jsp").forward(request, response);
+
     }
 
     /**

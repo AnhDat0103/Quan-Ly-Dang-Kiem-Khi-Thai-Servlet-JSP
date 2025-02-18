@@ -10,43 +10,35 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  *
  * @author Lenovo
  */
 public class VehicleDao implements Dao<Vehicles> {
-
+    
+    Connection connect = DBContext.getInstance().getConnection();  
+    
     @Override
     public int save(Vehicles t) {
-        int ketQua = 0;
-
-        // Chuẩn bị câu lệnh SQL
         String sql = "INSERT INTO Vehicles (OwnerID, PlateNumber, Brand, Model, ManufactureYear, EngineNumber)" +
         " VALUES (?,?,?,?,?,?)";
-
-        Connection connection = null;
         try {
-            connection = DBContext.getInstance().getConnection();
-            if (connection == null || connection.isClosed()) {
-                throw new SQLException("Không thể kết nối đến cơ sở dữ liệu.");
-            }
-            try (PreparedStatement st = connection.prepareStatement(sql)) {
-                st.setInt(1, t.getOwnerID());
-                st.setString(2, t.getPlateNumber());
-                st.setString(3, t.getBrand());
-                st.setString(4, t.getModel());
-                st.setInt(5, t.getManufactureYear());
-                st.setString(6, t.getEngineNumber());
-                 
-                ketQua = st.executeUpdate();
-                connection.commit();
-                System.out.println("Thêm phương tiện thành công, số dòng bị ảnh hưởng: " + ketQua);
-            }
+            PreparedStatement st = connect.prepareStatement(sql);
+            st.setInt(1, t.getOwnerID());
+            st.setString(2, t.getPlateNumber());
+            st.setString(3, t.getBrand());
+            st.setString(4, t.getModel());
+            st.setInt(5, t.getManufactureYear());
+            st.setString(6, t.getEngineNumber());
+             
+            int result = st.executeUpdate();
+            return result;
         } catch (SQLException e) {
-            System.err.println("Lỗi khi thêm dữ liệu vào Vehicles: " + e.getMessage());
+            e.printStackTrace();
         }
-        return ketQua;
+        return 0;
     }
 
     @Override
@@ -65,69 +57,82 @@ public class VehicleDao implements Dao<Vehicles> {
     }
     
     public boolean deleteByPlateNumber(String plateNumber){
-        String xe = "";
         String sql = "DELETE FROM Vehicles WHERE PlateNumber = ?";
-        
-        try(Connection connection = DBContext.getInstance().getConnection();
-            PreparedStatement st = connection.prepareStatement(sql)){
-            
+        try {
+            PreparedStatement st = connect.prepareStatement(sql);
             st.setString(1, plateNumber);
             int aftectedRows = st.executeUpdate();
             
             return aftectedRows > 0;
-        }catch(SQLException e){
-            System.err.println("Xoá phương tiện không thành công: " + e.getMessage());
+        } catch(SQLException e) {
+            e.printStackTrace();
         }
         return false;
     }
     
     public String selectByPlateNumber(String plateNumber) {
-        String xe = null;
-
-        // Chuẩn bị câu lệnh SQL
-        String sql = "SELECT * FROM Vehicles WHERE PlateNumber = ?";
-
-        try (
-                // Tự động quản lý tài nguyên với try-with-resources
-                Connection connection = DBContext.getInstance().getConnection(); PreparedStatement st = connection.prepareStatement(sql)) {
-            // Gán giá trị tham số
-            st.setString(1, plateNumber);
-
-            // Thực thi câu lệnh SQL
-            try (ResultSet rs = st.executeQuery()) {
-                // Kiểm tra nếu có kết quả trả về
-                if (rs.next()) {
-                    // Lấy dữ liệu từ ResultSet và khởi tạo đối tượng Vehicles
-                    xe = "VehicleID: " + rs.getInt("vehicleID")
-                            + ", OwnerID: " + rs.getInt("ownerID")
-                            + ", PlateNumber: " + rs.getString("plateNumber")
-                            + ", Brand: " + rs.getString("brand")
-                            + ", Model: " + rs.getString("model")
-                            + ", ManufactureYear: " + rs.getInt("manufactureYear")
-                            + ", EngineNumber: " + rs.getString("engineNumber");
-                }
-            }
-        } catch (SQLException e) {
-            // Xử lý ngoại lệ và in thông báo lỗi
-            System.err.println("Lỗi khi truy vấn Vehicles: " + e.getMessage());
-        }
-
-        return xe;
-    }
-    
-    public boolean kiemtraphuongtien(String plateNumber) throws SQLException {
-        String sql = "SELECT * FROM Vehicles WHERE PlateNumber = ?";
-        try (
-                Connection db = DBContext.getInstance().getConnection(); PreparedStatement st = db.prepareStatement(sql);) {
+        String sql = "SELECT vehicleID, ownerID, plateNumber, brand, model, manufactureYear, engineNumber " +
+                    "FROM Vehicles WHERE PlateNumber = ?";
+        try {
+            PreparedStatement st = connect.prepareStatement(sql);
             st.setString(1, plateNumber);
             ResultSet rs = st.executeQuery();
+            
             if (rs.next()) {
-                return rs.getInt(1) > 0;
+                return "VehicleID: " + rs.getInt("vehicleID")
+                        + ", OwnerID: " + rs.getInt("ownerID")
+                        + ", PlateNumber: " + rs.getString("plateNumber")
+                        + ", Brand: " + rs.getString("brand")
+                        + ", Model: " + rs.getString("model")
+                        + ", ManufactureYear: " + rs.getInt("manufactureYear")
+                        + ", EngineNumber: " + rs.getString("engineNumber");
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        return null;
     }
+    
+    public boolean kiemtraphuongtien(String plateNumber) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM Vehicles WHERE PlateNumber = ?";
+        try (PreparedStatement st = connect.prepareStatement(sql)) {
+            st.setString(1, plateNumber);
+            try (ResultSet rs = st.executeQuery()) {
+                return rs.next() && rs.getInt(1) > 0;
+            }
+        }
+    }
+    
+    public List<String> getPlateNumberByOwnerID(int ownerID){
+        List<String> plateNumbers = new ArrayList<>();
+        String sql = "SELECT PlateNumber FROM Vehicles WHERE OwnerID = ?";
+        try {
+            PreparedStatement st = connect.prepareStatement(sql);
+            st.setInt(1, ownerID);
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                plateNumbers.add(rs.getString("PlateNumber"));
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return plateNumbers;
+    }
+    
+    public int getVehicleIDByPlateNumber(String plateNumber) {
+        int vehicleID = 0;
+        String sql = "SELECT VehicleID FROM Vehicles WHERE PlateNumber = ?";
+        try {
+            PreparedStatement st = connect.prepareStatement(sql);
+            st.setString(1, plateNumber);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                vehicleID = rs.getInt("VehicleID");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return vehicleID;
+    }
+    
 }

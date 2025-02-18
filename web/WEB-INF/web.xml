@@ -34,12 +34,18 @@
     <servlet>
         <servlet-name>GetOwnerHomePage</servlet-name>
         <servlet-class>controller.ownerController.GetOwnerHomePage</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>GetAppointmentPage</servlet-name>
         <servlet-class>controller.station.GetAppointmentPage</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>GetReportPage</servlet-name>
-        <servlet-class>controller.station.GetReportPage</servlet-class> 
+        <servlet-class>controller.station.GetReportPage</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>dangKyKD</servlet-name>
+        <servlet-class>controller.vehicleController.dangKyKD</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>GetProfilePage</servlet-name>
@@ -64,11 +70,17 @@
     <servlet-mapping>
         <servlet-name>GetOwnerHomePage</servlet-name>
         <url-pattern>/chu-phuong-tien</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>GetAppointmentPage</servlet-name>
         <url-pattern>/quan-ly-lich-hen</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>GetReportPage</servlet-name>
         <url-pattern>/bao-cao-kiem-dinh</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dangKyKD</servlet-name>
+        <url-pattern>/dang-ky-kiem-dinh</url-pattern>
     </servlet-mapping>
 </web-app>

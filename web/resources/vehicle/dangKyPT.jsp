@@ -29,7 +29,7 @@
         <form action="<%= request.getContextPath() %>/dangkyPT" method="POST">
             <div class="form-group">
                 <label for="ownerID">ID Chủ Sở Hữu:</label>
-                <input type="number" id="ownerID" name="ownerID" required>
+                <input type="number" id="ownerID" value="${sessionScope.currentUser.userId}" name="ownerID" readonly>
             </div>
 
             <div class="form-group">
