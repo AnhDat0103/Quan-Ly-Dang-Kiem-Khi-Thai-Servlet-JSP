@@ -9,7 +9,8 @@ package model;
  * @author Lenovo
  */
 public class Vehicles {
-    private int ownerID;
+    private int vehicleId;
+    private User owner;
     private String plateNumber;
     private String brand;
     private String model;
@@ -19,8 +20,9 @@ public class Vehicles {
     public Vehicles() {
     }
 
-    public Vehicles(int ownerID, String plateNumber, String brand, String model, int manufactureYear, String engineNumber) {
-        this.ownerID = ownerID;
+    public Vehicles(int vehicleId,User owner, String plateNumber, String brand, String model, int manufactureYear, String engineNumber) {
+        this.vehicleId = vehicleId;
+        this.owner = owner;
         this.plateNumber = plateNumber;
         this.brand = brand;
         this.model = model;
@@ -28,12 +30,20 @@ public class Vehicles {
         this.engineNumber = engineNumber;
     }
 
-    public int getOwnerID() {
-        return ownerID;
+    public int getVehicleId() {
+        return vehicleId;
     }
 
-    public void setOwnerID(int ownerID) {
-        this.ownerID = ownerID;
+    public void setVehicleId(int vehicleId) {
+        this.vehicleId = vehicleId;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 
     public String getPlateNumber() {
@@ -75,6 +85,8 @@ public class Vehicles {
     public void setEngineNumber(String engineNumber) {
         this.engineNumber = engineNumber;
     }
+
+   
 
     
     
