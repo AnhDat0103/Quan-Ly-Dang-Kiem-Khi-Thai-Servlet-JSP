@@ -103,11 +103,32 @@ public class StationDao implements Dao<InspectionStation> {
             ResultSet rs = pt.executeQuery();
             if (rs.next()) {
                 numberRecordsInDay = rs.getInt(1);
+               }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+      return numberRecordsInDay;
+    }
+  
+    public List<InspectionStation> getAllStations() {
+        List<InspectionStation> stations = new ArrayList<>();
+        String sql = "SELECT * FROM InspectionStations";
+        try {
+            PreparedStatement st = connect.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                InspectionStation station = new InspectionStation();
+                station.setStationId(rs.getInt("stationID"));
+                station.setName(rs.getString("name"));
+                station.setAddress(rs.getString("address"));
+                station.setPhone(rs.getString("phone"));
+                station.setEmail(rs.getString("email"));
+                stations.add(station);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return numberRecordsInDay;
+       return stations;
     }
 
     public int getNumberOfInspectionRecordsIsInspected() {
@@ -120,10 +141,42 @@ public class StationDao implements Dao<InspectionStation> {
             ResultSet rs = pt.executeQuery();
             if (rs.next()) {
                 numberRecordsIsInspectedInDay = rs.getInt(1);
+               }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+      return numberRecordsIsInspectedInDay;
+    }
+    
+
+    public List<String> getAllStationNames() {
+        List<String> stationNames = new ArrayList<>();
+        String sql = "SELECT Name FROM InspectionStations";
+        try {
+            PreparedStatement st = connect.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                stationNames.add(rs.getString("Name"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return numberRecordsIsInspectedInDay;
+        return stationNames;
     }
+    
+    public int getStationIDByName(String stationName) {
+    int stationID = 0;
+    String sql = "SELECT StationID FROM InspectionStations WHERE Name = ?";
+    try {
+        PreparedStatement st = connect.prepareStatement(sql);
+        st.setString(1, stationName);
+        ResultSet rs = st.executeQuery();
+        if (rs.next()) {
+            stationID = rs.getInt("StationID");
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return stationID;
+}
 }

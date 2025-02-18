@@ -97,9 +97,7 @@ public class User {
     public void setInspectionStation(InspectionStation inspectionStation) {
         this.inspectionStation = inspectionStation;
     }
-    
-    
-
+   
     @Override
     public String toString() {
         return "User{" + "userId=" + userId + ", fullName=" + fullName + ", email=" + email + ", password=" + password + ", role=" + role + ", phone=" + phone + ", address=" + address + '}';

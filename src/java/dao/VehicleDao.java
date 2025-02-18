@@ -1,0 +1,138 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package dao;
+
+import java.sql.Connection;
+import model.Vehicles;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.ResultSet;
+import java.util.List;
+import java.util.ArrayList;
+
+/**
+ *
+ * @author Lenovo
+ */
+public class VehicleDao implements Dao<Vehicles> {
+    
+    Connection connect = DBContext.getInstance().getConnection();  
+    
+    @Override
+    public int save(Vehicles t) {
+        String sql = "INSERT INTO Vehicles (OwnerID, PlateNumber, Brand, Model, ManufactureYear, EngineNumber)" +
+        " VALUES (?,?,?,?,?,?)";
+        try {
+            PreparedStatement st = connect.prepareStatement(sql);
+            st.setInt(1, t.getOwnerID());
+            st.setString(2, t.getPlateNumber());
+            st.setString(3, t.getBrand());
+            st.setString(4, t.getModel());
+            st.setInt(5, t.getManufactureYear());
+            st.setString(6, t.getEngineNumber());
+             
+            int result = st.executeUpdate();
+            return result;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    @Override
+    public List<Vehicles> findAll() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public int update(Vehicles t) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public int delete(int t) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
+    public boolean deleteByPlateNumber(String plateNumber){
+        String sql = "DELETE FROM Vehicles WHERE PlateNumber = ?";
+        try {
+            PreparedStatement st = connect.prepareStatement(sql);
+            st.setString(1, plateNumber);
+            int aftectedRows = st.executeUpdate();
+            
+            return aftectedRows > 0;
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public String selectByPlateNumber(String plateNumber) {
+        String sql = "SELECT vehicleID, ownerID, plateNumber, brand, model, manufactureYear, engineNumber " +
+                    "FROM Vehicles WHERE PlateNumber = ?";
+        try {
+            PreparedStatement st = connect.prepareStatement(sql);
+            st.setString(1, plateNumber);
+            ResultSet rs = st.executeQuery();
+            
+            if (rs.next()) {
+                return "VehicleID: " + rs.getInt("vehicleID")
+                        + ", OwnerID: " + rs.getInt("ownerID")
+                        + ", PlateNumber: " + rs.getString("plateNumber")
+                        + ", Brand: " + rs.getString("brand")
+                        + ", Model: " + rs.getString("model")
+                        + ", ManufactureYear: " + rs.getInt("manufactureYear")
+                        + ", EngineNumber: " + rs.getString("engineNumber");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public boolean kiemtraphuongtien(String plateNumber) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM Vehicles WHERE PlateNumber = ?";
+        try (PreparedStatement st = connect.prepareStatement(sql)) {
+            st.setString(1, plateNumber);
+            try (ResultSet rs = st.executeQuery()) {
+                return rs.next() && rs.getInt(1) > 0;
+            }
+        }
+    }
+    
+    public List<String> getPlateNumberByOwnerID(int ownerID){
+        List<String> plateNumbers = new ArrayList<>();
+        String sql = "SELECT PlateNumber FROM Vehicles WHERE OwnerID = ?";
+        try {
+            PreparedStatement st = connect.prepareStatement(sql);
+            st.setInt(1, ownerID);
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                plateNumbers.add(rs.getString("PlateNumber"));
+            }
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return plateNumbers;
+    }
+    
+    public int getVehicleIDByPlateNumber(String plateNumber) {
+        int vehicleID = 0;
+        String sql = "SELECT VehicleID FROM Vehicles WHERE PlateNumber = ?";
+        try {
+            PreparedStatement st = connect.prepareStatement(sql);
+            st.setString(1, plateNumber);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                vehicleID = rs.getInt("VehicleID");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return vehicleID;
+    }
+    
+}
