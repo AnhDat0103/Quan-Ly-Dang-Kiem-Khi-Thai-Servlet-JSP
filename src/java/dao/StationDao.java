@@ -10,6 +10,7 @@ import model.InspectionStation;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -32,7 +33,7 @@ public class StationDao implements Dao<InspectionStation> {
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             ResultSet rs = pt.executeQuery();
-            while(rs.next()) {
+            while (rs.next()) {
                 stations.add(new InspectionStation(rs.getInt("StationID"),
                         rs.getString("Name"),
                         rs.getString("Address"),
@@ -75,6 +76,40 @@ public class StationDao implements Dao<InspectionStation> {
         return null;
     }
 
+    public List<InspectionStation> getInspectationRecords(int stationId) {
+        List<InspectionStation> stations = new ArrayList<>();
+        String sql = "select * from InspectionRecords where StationID = ? and Result = 'Pass'";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setInt(1, stationId);
+            ResultSet rs = pt.executeQuery();
+            if (rs.next()) {
+
+            }
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    public int getNumberOfInspectionRecordsInCurrentDay() {
+        int numberRecordsInDay = 0;
+        String currentDate = LocalDate.now().toString();
+        String sql = "SELECT COUNT(*)  \n"
+                + "FROM InspectionRecords  \n"
+                + "WHERE CAST(InspectionDate AS DATE) = ?";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setString(1, currentDate);
+            ResultSet rs = pt.executeQuery();
+            if (rs.next()) {
+                numberRecordsInDay = rs.getInt(1);
+               }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+      return numberRecordsInDay;
+    }
+  
     public List<InspectionStation> getAllStations() {
         List<InspectionStation> stations = new ArrayList<>();
         String sql = "SELECT * FROM InspectionStations";
@@ -93,7 +128,24 @@ public class StationDao implements Dao<InspectionStation> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return stations;
+       return stations;
+    }
+
+    public int getNumberOfInspectionRecordsIsInspected() {
+        int numberRecordsIsInspectedInDay = 0;
+        String currentDate = LocalDate.now().toString();
+        String sql = "select count(*) from InspectionRecords where WHERE CAST(InspectionDate AS DATE) = ? and Result <> 'Pedding'";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setString(1, currentDate);
+            ResultSet rs = pt.executeQuery();
+            if (rs.next()) {
+                numberRecordsIsInspectedInDay = rs.getInt(1);
+               }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+      return numberRecordsIsInspectedInDay;
     }
     
 

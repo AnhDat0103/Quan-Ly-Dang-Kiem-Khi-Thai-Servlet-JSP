@@ -100,30 +100,6 @@
                                             </button>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td>09:00</td>
-                                        <td>AB-12345</td>
-                                        <td>Nguyễn Văn A</td>
-                                        <td><span class="badge bg-success">Đạt</span></td>
-                                        <td><span class="badge bg-warning">Chờ kiểm định</span></td>
-                                        <td>
-                                            <button class="btn btn-sm btn-info " data-bs-toggle="modal" data-bs-target="#detailModal">
-                                                <i class="bi bi-eye"></i> Xem
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>09:00</td>
-                                        <td>AB-12345</td>
-                                        <td>Nguyễn Văn A</td>
-                                        <td><span class="badge bg-success">Đạt</span></td>
-                                        <td><span class="badge bg-warning">Chờ kiểm định</span></td>
-                                        <td>
-                                            <button class="btn btn-sm btn-info " data-bs-toggle="modal" data-bs-target="#detailModal">
-                                                <i class="bi bi-eye"></i> Xem
-                                            </button>
-                                        </td>
-                                    </tr>
                                 </tbody>
                             </table>
                         </div>
