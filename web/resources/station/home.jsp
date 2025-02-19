@@ -79,7 +79,7 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>Giờ hẹn</th>
+                                        <th>Ngày</th>
                                         <th>Biển số</th>
                                         <th>Chủ xe</th>
                                         <th>Kết quả</th>
@@ -116,14 +116,14 @@
 
                         <nav class="mt-3">
                             <ul class="pagination justify-content-center">
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#"><i class="bi bi-chevron-left"></i></a>
+                                <li class="page-item ${currentPage != 1 ? '' : 'disabled'}">
+                                    <a class="page-link" href="trung-tam-dang-kiem?trang-so=${currentPage - 1}"><i class="bi bi-chevron-left"></i></a>
                                 </li>
-                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#"><i class="bi bi-chevron-right"></i></a>
+                                <c:forEach begin="1" end="${noOfPage}" var="i">
+                                    <li class="page-item ${currentPage == i ? 'active' : ''}"><a class="page-link" href="trung-tam-dang-kiem?trang-so=${i}">${i}</a></li>
+                                </c:forEach>
+                                <li class="page-item ${currentPage lt noOfPage ? '' : 'disabled'}">
+                                    <a class="page-link" href="trung-tam-dang-kiem?trang-so=${currentPage + 1}"><i class="bi bi-chevron-right"></i></a>
                                 </li>
                             </ul>
                         </nav>

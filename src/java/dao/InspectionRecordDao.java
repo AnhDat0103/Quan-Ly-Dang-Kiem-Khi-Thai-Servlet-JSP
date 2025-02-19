@@ -4,6 +4,7 @@
  */
 package dao;
 
+import com.oracle.wls.shaded.org.apache.bcel.generic.RETURN;
 import java.sql.Connection;
 import java.util.List;
 import model.InspectionRecords;
@@ -108,12 +109,14 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
         return numberRecordsIsInspectedInDay;
     }
 
-    public List<InspectionRecords> getInspecedtationRecords(int stationId) {
+    public List<InspectionRecords> getInspecedtationRecords(int stationId, int startRecord, int recordsPerPage) {
         List<InspectionRecords> recordses = new ArrayList<>();
-        String sql = "select * from InspectionRecords where StationID = ? and Result <> 'Pending'";
+        String sql = "SELECT * FROM InspectionRecords where StationID = ? and Result <> 'Pending' ORDER BY RecordID desc OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setInt(1, stationId);
+            pt.setInt(2, startRecord);
+            pt.setInt(3, recordsPerPage);
             ResultSet rs = pt.executeQuery();
             while (rs.next()) {
                 recordses.add(new InspectionRecords(rs.getInt("RecordID"),
@@ -133,5 +136,21 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
         }
         return null;
     }
+
+    public int getNoOfRecord(int stationId) {
+        int noOfRecords = 0;
+        String sql = "SELECT count(*) FROM InspectionRecords where StationID = ? and Result <> 'Pending'";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setInt(1, stationId);
+            ResultSet rs = pt.executeQuery();
+            if(rs.next()){
+                noOfRecords = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return noOfRecords;
+    }   
 
 }
