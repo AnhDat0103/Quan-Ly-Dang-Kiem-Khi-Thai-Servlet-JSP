@@ -126,7 +126,13 @@
                                     <td><span class="badge bg-warning">Chờ xác nhận</span></td>
                                     <td>
                                         <div class="btn-group">
-                                            <button class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#viewAppointmentModal">
+                                            <button class="btn btn-sm btn-info view-detail" data-bs-toggle="modal" 
+                                                    data-bs-target="#viewAppointmentModal"
+                                                    data-inspectId="${r.recordId}"
+                                                    data-plate="${r.vehicle.plateNumber}"
+                                                    data-owner="${r.vehicle.owner.fullName}"
+                                                    data-phone="${r.vehicle.owner.phone}"
+                                                    data-inspectDate="${r.inspectionDate}">
                                                 <i class="bi bi-eye"></i>
                                             </button>
                                             <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editAppointmentModal">
@@ -216,27 +222,23 @@
                     <div class="modal-body">
                         <div class="row mb-3">
                             <div class="col-4"><strong>Mã lịch hẹn:</strong></div>
-                            <div class="col-8">APT001</div>
+                            <div class="col-8" id="modalInspecId"></div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-4"><strong>Biển số xe:</strong></div>
-                            <div class="col-8">51F-123.45</div>
+                            <div class="col-8" id="modalPlateNumber"></div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-4"><strong>Chủ xe:</strong></div>
-                            <div class="col-8">Nguyễn Văn A</div>
+                            <div class="col-8" id="modalOwnerName"></div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-4"><strong>Số điện thoại:</strong></div>
-                            <div class="col-8">0901234567</div>
+                            <div class="col-8" id="modalOwnerPhone"></div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-4"><strong>Ngày hẹn:</strong></div>
-                            <div class="col-8">20/03/2024</div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-4"><strong>Giờ hẹn:</strong></div>
-                            <div class="col-8">09:00</div>
+                            <div class="col-8" id="modalDate"></div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-4"><strong>Trạng thái:</strong></div>
@@ -265,5 +267,19 @@
         <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
         <script src="resources/js/sb-admin-2.min.js"></script>
         <script src="resources/js/appointments.js"></script>
+         <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                document.querySelectorAll(".view-detail").forEach(button => {
+                    button.addEventListener("click", function () {
+                        document.getElementById("modalInspecId").innerText = this.getAttribute("data-inspectId");
+                        document.getElementById("modalOwnerName").innerText = this.getAttribute("data-owner");
+                        document.getElementById("modalDate").innerText = this.getAttribute("data-inspectDate");
+                        document.getElementById("modalOwnerPhone").innerText = this.getAttribute("data-phone");
+                        document.getElementById("modalPlateNumber").innerText = this.getAttribute("data-plate");
+                    });
+                });
+            });
+
+        </script>
     </body>
 </html> 
