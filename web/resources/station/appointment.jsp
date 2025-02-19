@@ -51,7 +51,7 @@
                 <div class="col-md-6">
                     <form action="quan-ly-lich-hen?action=tim-kiem" method="POST">
                         <div class="d-flex gap-2">
-                            <input type="text" class="form-control" placeholder="Tìm kiếm..." name="research-details">
+                            <input type="text" class="form-control" placeholder="Tìm kiếm..." name="research-details" required>
                             <button type="submit" class="btn btn-success">
                                 <i class="bi bi-search"></i>
                             </button>
@@ -137,9 +137,7 @@
                                                         data-inspectDate="${r.inspectionDate}">
                                                     <i class="bi bi-eye"></i>
                                                 </button>
-                                                <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editAppointmentModal">
-                                                    <i class="bi bi-pencil"></i>
-                                                </button>
+
                                                 <button class="btn btn-sm btn-danger">
                                                     <i class="bi bi-trash"></i>
                                                 </button>
@@ -150,7 +148,7 @@
 
                             </tbody>
                         </table>
-
+   
                         <!-- Phân trang -->
                         <nav class="mt-3">
                             <ul class="pagination justify-content-center">
