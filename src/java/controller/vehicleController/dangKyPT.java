@@ -4,10 +4,11 @@
  */
 package controller.vehicleController;
 
+import dao.UserDao;
 import model.Vehicles;
 import dao.VehicleDao;
-import validation.Validate;
 import jakarta.servlet.RequestDispatcher;
+import validation.Validate;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -15,16 +16,19 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.User;
 
 /**
  *
  * @author Lenovo
  */
-@WebServlet("/dangkyPT")  // <-- URL mapping
 public class dangKyPT extends HttpServlet {
+    
+    UserDao ud = new UserDao();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -68,7 +72,8 @@ public class dangKyPT extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        RequestDispatcher dispatcher = request.getRequestDispatcher("resources/vehicle/dangKyPT.jsp");
+        dispatcher.forward(request, response); 
     }
 
     /**
@@ -89,6 +94,8 @@ public class dangKyPT extends HttpServlet {
         String model = request.getParameter("model");
         String manufactureYeard = request.getParameter("manufactureYear");
         String engineNumber = request.getParameter("engineNumber");
+        HttpSession session = request.getSession();
+        User currentUser =(User) session.getAttribute("currentUser");
 
         String bug = "";
 
@@ -128,11 +135,9 @@ public class dangKyPT extends HttpServlet {
             bug += "Dữ liệu nhập vào không hợp lệ! Vui lòng kiểm tra lại.\n";
         }
         
-
         if (!bug.isEmpty()) {
-            request.setAttribute("errorMessage", bug);
-            RequestDispatcher rd = request.getRequestDispatcher("/thongbao.jsp");
-            rd.forward(request, response);
+            request.setAttribute("bug", bug);
+            request.getRequestDispatcher("/submit/Failed.jsp").forward(request, response);
             return;
         }
 
@@ -142,11 +147,15 @@ public class dangKyPT extends HttpServlet {
         request.setAttribute("model", model);
         request.setAttribute("manufactureYear", manufactureYeard);
         request.setAttribute("engineNumber", engineNumber);
-
-        Vehicles vh = new Vehicles(ownerID, plateNumber, brand, model, manufactureYear, engineNumber);
+        Vehicles vh = new Vehicles();
+        vh.setOwner(ud.findUserById(ownerID));
+        vh.setBrand(brand);
+        vh.setEngineNumber(engineNumber);
+        vh.setManufactureYear(manufactureYear);
+        vh.setModel(model);
+        vh.setPlateNumber(plateNumber);
         vehicleDao.save(vh);
-        RequestDispatcher rd = request.getRequestDispatcher("/thanhcong.jsp");
-        rd.forward(request, response);
+        request.getRequestDispatcher("/submit/Successfully.jsp").forward(request, response);  
     }
 
     /**

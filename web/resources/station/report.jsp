@@ -23,6 +23,7 @@
 
         <!-- Custom CSS -->
         <link href="resources/css/sb-admin-2.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
     </head>
     <body id="page-top">
         <%@include file="../layout/navbar.jsp"%>
@@ -31,7 +32,8 @@
                 <div id="content">
 
                     <!-- Begin Page Content -->
-                    <div class="container-fluid">
+                    <div class="container-fluid" style="padding-left: 118px;
+                         padding-right: 124px; margin-top: 24px;">
                         <!-- Page Heading -->
                         <h1 class="h3 mb-2 text-gray-800">Báo cáo Thống kê</h1>
 
@@ -195,7 +197,7 @@
                 </div>
 
                 <!-- Footer -->
-                  <%@include file="../layout/footer.jsp" %>
+                <%@include file="../layout/footer.jsp" %>
             </div>
         </div>
 
@@ -205,7 +207,7 @@
         </a>
 
         <!-- Logout Modal-->
-        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<!--        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
              aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -222,7 +224,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
 
         <!-- jQuery -->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -239,7 +241,6 @@
 
         <!-- Chart.js -->
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 
         <!-- Custom scripts -->
         <script src="resources/js/sb-admin-2.min.js"></script>

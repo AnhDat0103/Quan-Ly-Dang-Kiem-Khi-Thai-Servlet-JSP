@@ -23,15 +23,6 @@ public class LoginServlet extends HttpServlet {
 
     UserDao ud = new UserDao();
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -86,8 +77,13 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("currentUser", currentUser);
                 if(currentUser.getRole().equals(RoleEnums.Station)) {
                       response.sendRedirect("trung-tam-dang-kiem");
+                }                
+                if(currentUser.getRole().equals(RoleEnums.Owner)) {
+                    response.sendRedirect("chu-phuong-tien");
+
                 }if(currentUser.getRole().equals(RoleEnums.Inspector)){
                      response.sendRedirect("nguoi-kiem-dinh");
+
                 }
             } else {
                 request.setAttribute("notFound", "Tài khoản hoặc mật khẩu không chính xác.");

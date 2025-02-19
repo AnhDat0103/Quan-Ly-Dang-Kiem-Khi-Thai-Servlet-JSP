@@ -51,16 +51,16 @@
                 <!-- Thống kê -->
                 <div class="col-md-4">
                     <div class="card mb-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Hôm nay</h5>
+                        <h5 class="card-header">Hôm nay</h5>
+                        <div class="card-body">   
                             <div class="row">
                                 <div class="col">
                                     <div class="text-muted">Lịch hẹn</div>
-                                    <h3>15</h3>
+                                    <h3>${requestScope.InspecRecordsSum}</h3>
                                 </div>
                                 <div class="col">
                                     <div class="text-muted">Đã kiểm định</div>
-                                    <h3>8</h3>
+                                    <h3>${requestScope.InspecedRecordsSum}</h3>
                                 </div>
                             </div>
                         </div>
@@ -72,18 +72,14 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex justify-content-between align-items-center">
-                                <h5 class="card-title mb-0">Lịch kiểm định</h5>
-                                <div class="current-time">
-                                    <strong>Hôm nay: </strong>
-                                    <span id="current-time"></span>
-                                </div>
+                                <h5 class="card-title mb-0">Kết quả kiểm định</h5>    
                             </div>
                         </div>
                         <div class="card-body">
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>Giờ hẹn</th>
+                                        <th>Ngày</th>
                                         <th>Biển số</th>
                                         <th>Chủ xe</th>
                                         <th>Kết quả</th>
@@ -92,45 +88,45 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>09:00</td>
-                                        <td>AB-12345</td>
-                                        <td>Nguyễn Văn A</td>
-                                        <td><span class="badge bg-success">Đạt</span></td>
-                                        <td><span class="badge bg-warning">Chờ kiểm định</span></td>
-                                        <td>
-                                            <button class="btn btn-sm btn-info " data-bs-toggle="modal" data-bs-target="#detailModal">
-                                                <i class="bi bi-eye"></i> Xem
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>09:00</td>
-                                        <td>AB-12345</td>
-                                        <td>Nguyễn Văn A</td>
-                                        <td><span class="badge bg-success">Đạt</span></td>
-                                        <td><span class="badge bg-warning">Chờ kiểm định</span></td>
-                                        <td>
-                                            <button class="btn btn-sm btn-info " data-bs-toggle="modal" data-bs-target="#detailModal">
-                                                <i class="bi bi-eye"></i> Xem
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>09:00</td>
-                                        <td>AB-12345</td>
-                                        <td>Nguyễn Văn A</td>
-                                        <td><span class="badge bg-success">Đạt</span></td>
-                                        <td><span class="badge bg-warning">Chờ kiểm định</span></td>
-                                        <td>
-                                            <button class="btn btn-sm btn-info " data-bs-toggle="modal" data-bs-target="#detailModal">
-                                                <i class="bi bi-eye"></i> Xem
-                                            </button>
-                                        </td>
-                                    </tr>
+                                    <c:forEach var="record" items="${InspecedtionRecords}">
+                                        <tr>
+                                            <td>${record.inspectionDate}</td>
+                                            <td>${record.vehicle.plateNumber}</td>
+                                            <td>${record.vehicle.owner.fullName}</td>
+                                            <td><span class="badge ${record.result eq 'Pass' ? 'bg-success' : 'bg-danger'}">${record.result}</span></td>
+                                            <td><span class="badge bg-success">Đã kiểm định</span></td>
+                                            <td>
+                                                <button class="btn btn-sm btn-info view-detail" data-bs-toggle="modal" 
+                                                        data-bs-target="#detailModal"
+                                                        data-plate="${record.vehicle.plateNumber}"
+                                                        data-owner="${record.vehicle.owner.fullName}"
+                                                        data-date="${record.inspectionDate}"
+                                                        data-engine="${record.vehicle.engineNumber}"
+                                                        data-result="${record.result}"
+                                                        data-model="${record.vehicle.model}"
+                                                        data-comment="${record.comments}">
+                                                    <i class="bi bi-eye"></i> Xem
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
                                 </tbody>
                             </table>
                         </div>
+
+                        <nav class="mt-3">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item ${currentPage != 1 ? '' : 'disabled'}">
+                                    <a class="page-link" href="trung-tam-dang-kiem?trang-so=${currentPage - 1}"><i class="bi bi-chevron-left"></i></a>
+                                </li>
+                                <c:forEach begin="1" end="${noOfPage}" var="i">
+                                    <li class="page-item ${currentPage == i ? 'active' : ''}"><a class="page-link" href="trung-tam-dang-kiem?trang-so=${i}">${i}</a></li>
+                                    </c:forEach>
+                                <li class="page-item ${currentPage lt noOfPage ? '' : 'disabled'}">
+                                    <a class="page-link" href="trung-tam-dang-kiem?trang-so=${currentPage + 1}"><i class="bi bi-chevron-right"></i></a>
+                                </li>
+                            </ul>
+                        </nav>
                     </div>
                 </div>
             </div>
@@ -141,7 +137,7 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Chi tiết kiểm định - Biển số: AB-12345</h5>
+                        <h5 class="modal-title">Chi tiết kiểm định</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
@@ -151,23 +147,23 @@
                                 <table class="table table-bordered">
                                     <tr>
                                         <th>Chủ xe:</th>
-                                        <td>Nguyễn Văn A</td>
+                                        <td id="modalOwner"></td>
                                     </tr>
                                     <tr>
                                         <th>Hãng xe:</th>
-                                        <td>Toyota</td>
+                                        <td id="modalModel"></td>
                                     </tr>
                                     <tr>
                                         <th>Ngày kiểm định:</th>
-                                        <td>18/03/2024</td>
+                                        <td id="modalDate"></td>
                                     </tr>
                                     <tr>
                                         <th>Biển số:</th>
-                                        <td>XXXXXXXXXXXXXX</td>
+                                        <td id="modalPlateNumber"></td>
                                     </tr>
                                     <tr>
                                         <th>Số máy:</th>
-                                        <td>YYYYYYYYYYYYYY</td>
+                                        <td id="modalEngine"></td>
                                     </tr>
                                 </table>
                             </div>
@@ -176,23 +172,23 @@
                                 <table class="table table-bordered">
                                     <tr>
                                         <th>Hệ thống phanh:</th>
-                                        <td><span class="badge bg-success">Đạt</span></td>
+                                        <td><span class="badge bg-success">Pass</span></td>
                                     </tr>
                                     <tr>
                                         <th>Hệ thống lái:</th>
-                                        <td><span class="badge bg-success">Đạt</span></td>
+                                        <td><span class="badge bg-success">Pass</span></td>
                                     </tr>
                                     <tr>
                                         <th>Khí thải:</th>
-                                        <td><span class="badge bg-success">Đạt</span></td>
+                                        <td><span id="modelResult" class="badge"></span></td>
                                     </tr>
                                     <tr>
                                         <th>Đèn chiếu sáng:</th>
-                                        <td><span class="badge bg-success">Đạt</span></td>
+                                        <td><span class="badge bg-success">Pass</span></td>
                                     </tr>
                                     <tr>
                                         <th>Gầm xe:</th>
-                                        <td><span class="badge bg-success">Đạt</span></td>
+                                        <td><span class="badge bg-success">Pass</span></td>
                                     </tr>
                                 </table>
                             </div>
@@ -200,12 +196,11 @@
                         <div class="row">
                             <div class="col-12">
                                 <h6>Ghi chú</h6>
-                                <textarea class="form-control" rows="3" readonly>Xe đạt tiêu chuẩn kiểm định. Cần bảo dưỡng định kỳ theo khuyến cáo của nhà sản xuất.</textarea>
+                                <textarea class="form-control" rows="3" id="modelComment" readonly></textarea>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary">In kết quả</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                     </div>
                 </div>
@@ -220,34 +215,29 @@
         <!-- Thêm Bootstrap JS và Popper.js -->
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
-
-        <!-- Script hiển thị thời gian hiện tại -->
         <script>
             document.addEventListener("DOMContentLoaded", function () {
-                function updateCurrentTime() {
-                    const now = new Date();
-                    const dateString = now.toLocaleDateString('vi-VN', {
-                        weekday: 'long',
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
+                document.querySelectorAll(".view-detail").forEach(button => {
+                    button.addEventListener("click", function () {
+                        document.getElementById("modalModel").innerText = this.getAttribute("data-model");
+                        document.getElementById("modalOwner").innerText = this.getAttribute("data-owner");
+                        document.getElementById("modalDate").innerText = this.getAttribute("data-date");
+                        document.getElementById("modalEngine").innerText = this.getAttribute("data-engine");
+                        document.getElementById("modalPlateNumber").innerText = this.getAttribute("data-plate");
+                        document.getElementById("modelComment").innerText = this.getAttribute("data-comment");
+
+                        // Cập nhật trạng thái kiểm tra
+                        setBadge("modelResult", this.getAttribute("data-result"));
                     });
-                    const timeString = now.toLocaleTimeString('vi-VN', {
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        second: '2-digit'
-                    });
+                });
+            });
 
-                    const timeElement = document.getElementById('current-time');
-                    if (timeElement) {
-                        timeElement.textContent = `${dateString} ${timeString}`;
-                                    }
-                                }
-
-                                updateCurrentTime();
-                                setInterval(updateCurrentTime, 1000);
-                            });
-
+// Hàm cập nhật màu sắc cho badge
+            function setBadge(elementId, status) {
+                const element = document.getElementById(elementId);
+                element.innerText = status;
+                element.className = "badge " + (status === "Pass" ? "bg-success" : "bg-danger");
+            }
         </script>
     </body>
 </html>

@@ -11,7 +11,8 @@ document.addEventListener('DOMContentLoaded', function () {
     let selectedAvatarFile = null;
 
     // Load thông tin người dùng
-    loadUserProfile();
+//    loadUserProfile();
+
 
     // Xử lý sự kiện chỉnh sửa profile
     editProfileBtn.addEventListener('click', function () {
@@ -26,7 +27,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Xử lý sự kiện submit form
     profileForm.addEventListener('submit', function (e) {
-        e.preventDefault();
         saveProfile();
     });
 
@@ -66,24 +66,24 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     //Hàm load thông tin người dùng
-    function loadUserProfile() {
-        // TODO: Gọi API để lấy thông tin người dùng
-        // Demo data
-        const userData = {
-            fullName: 'Nguyễn Văn A',
-            email: 'nguyenvana@example.com',
-            phone: '0901234567',
-            address: '123 Đường ABC, Quận XYZ, TP.HCM'
-        };
-
-        // Điền thông tin vào form
-        Object.keys(userData).forEach(key => {
-            const input = document.getElementById(key);
-            if (input) {
-                input.value = userData[key];
-            }
-        });
-    }
+//    function loadUserProfile() {
+//        // TODO: Gọi API để lấy thông tin người dùng
+//        // Demo data
+//        const userData = {
+//            fullName: 'Nguyễn Văn A',
+//            email: 'nguyenvana@example.com',
+//            phone: '0901234567',
+//            address: '123 Đường ABC, Quận XYZ, TP.HCM'
+//        };
+//
+//        // Điền thông tin vào form
+//        Object.keys(userData).forEach(key => {
+//            const input = document.getElementById(key);
+//            if (input) {
+//                input.value = userData[key];
+//            }
+//        });
+//    }
 
     // Hàm lưu thông tin profile
     function saveProfile() {
@@ -164,8 +164,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Xử lý đổi mật khẩu
     document.getElementById('changePasswordForm')?.addEventListener('submit', function (e) {
-        e.preventDefault();
-        // TODO: Xử lý đổi mật khẩu
         console.log('Changing password...');
     });
 

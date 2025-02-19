@@ -49,12 +49,33 @@ public class UserDao implements Dao<User> {
 
     @Override
     public int update(User t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        int result = 0;
+        String sql = "UPDATE Users SET FullName = ?, Phone = ?, Address = ? where UserID = ?";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setString(1, t.getFullName());
+            pt.setString(2, t.getPhone());
+            pt.setString(3, t.getAddress());
+            pt.setInt(4, t.getUserId());
+            result = pt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     @Override
     public int delete(int t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        int result = 0;
+        String sql  = "Delete from Users where UserID = ?";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setInt(1, t);
+            pt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
     
     public User findUserByEmailAndPasswordAndRole(String email, String password, String role) {
@@ -95,6 +116,59 @@ public class UserDao implements Dao<User> {
             e.printStackTrace();
         }     
         return 0;
+    }
+    
+    public int updatePassword(String newPassword, int userId) {
+        int updatedRow = 0;
+        String sql = "UPDATE Users SET Password = ? WHERE UserID = ?";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setString(1, newPassword);
+            pt.setInt(2, userId);
+            updatedRow = pt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return updatedRow;
+    }
+
+    public int updateInspecStationId(int parseInt, int userId) {
+        int result = 0;
+        String sql  = "update Users set StationID = ? WHERE UserID = ?";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setInt(1, parseInt);
+            pt.setInt(2, userId);
+            result = pt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+    
+    public User findUserById(int id) {
+        String sql = "select * from Users where UserID = ?";
+        try {
+            PreparedStatement pt =connect.prepareStatement(sql);
+            pt.setInt(1, id);
+            ResultSet rs = pt.executeQuery();
+            if(rs.next()){
+                InspectionStation is = sd.findStationById(rs.getInt("StationID")) != null ? sd.findStationById(rs.getInt("StationID")) : new InspectionStation();
+                User user = new User(rs.getInt("UserID"), 
+                        rs.getString("FullName"),
+                        rs.getString("Email"), 
+                        rs.getString("Password"), 
+                        RoleEnums.valueOf(rs.getString("Role")), 
+                        rs.getString("Phone"),
+                        rs.getString("Address"),
+                        is
+                );
+                return user;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }
