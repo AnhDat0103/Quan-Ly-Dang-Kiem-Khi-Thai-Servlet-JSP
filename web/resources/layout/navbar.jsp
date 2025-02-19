@@ -31,7 +31,7 @@
                              style="width: 24px; height: 24px; margin-right: 4px;"> ${currentUser.fullName}
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="thong-tin-ca-nhan    ">Hồ sơ cá nhân</a></li>
+                        <li><a class="dropdown-item" href="thong-tin-ca-nhan">Hồ sơ cá nhân</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="dang-xuat">Đăng xuất</a></li>
                     </ul>

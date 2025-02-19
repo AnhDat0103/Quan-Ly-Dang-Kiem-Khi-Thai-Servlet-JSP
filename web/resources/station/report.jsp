@@ -33,7 +33,7 @@
 
                     <!-- Begin Page Content -->
                     <div class="container-fluid" style="padding-left: 118px;
-        padding-right: 124px; margin-top: 24px;">
+                         padding-right: 124px; margin-top: 24px;">
                         <!-- Page Heading -->
                         <h1 class="h3 mb-2 text-gray-800">Báo cáo Thống kê</h1>
 
@@ -197,7 +197,7 @@
                 </div>
 
                 <!-- Footer -->
-                  <%@include file="../layout/footer.jsp" %>
+                <%@include file="../layout/footer.jsp" %>
             </div>
         </div>
 
@@ -207,7 +207,7 @@
         </a>
 
         <!-- Logout Modal-->
-        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<!--        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
              aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -224,7 +224,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
 
         <!-- jQuery -->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

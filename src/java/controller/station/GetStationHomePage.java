@@ -24,9 +24,7 @@ import model.User;
  * @author DAT
  */
 public class GetStationHomePage extends HttpServlet {
-        StationDao sd = new StationDao();
         InspectionRecordDao ird = new InspectionRecordDao();
-        VehicleDao vd = new VehicleDao();
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
