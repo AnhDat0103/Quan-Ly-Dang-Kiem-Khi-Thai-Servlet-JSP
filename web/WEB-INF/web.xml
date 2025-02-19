@@ -48,6 +48,10 @@
         <servlet-class>controller.vehicleController.dangKyKD</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>dangKyPT</servlet-name>
+        <servlet-class>controller.vehicleController.dangKyPT</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>GetProfilePage</servlet-name>
         <servlet-class>controller.station.GetProfilePage</servlet-class>
     </servlet>
@@ -82,5 +86,9 @@
     <servlet-mapping>
         <servlet-name>dangKyKD</servlet-name>
         <url-pattern>/dang-ky-kiem-dinh</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dangKyPT</servlet-name>
+        <url-pattern>/dang-ky-phuong-tien</url-pattern>
     </servlet-mapping>
 </web-app>

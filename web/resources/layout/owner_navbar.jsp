@@ -14,6 +14,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
     <style>
         body {
             min-height: 100vh;
@@ -45,10 +48,10 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link active" href="../owner/ownerHomePage.jsp">Trang chủ</a>
+                            <a class="nav-link active" href="chu-phuong-tien">Trang chủ</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="resources/vehicle/vehicleManagement.jsp">Phương tiện của tôi</a>
+                            <a class="nav-link" href="dang-ky-phuong-tien">Phương tiện của tôi</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="dang-ky-kiem-dinh">Đặt lịch kiểm định</a>
