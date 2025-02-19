@@ -121,7 +121,7 @@
                                 </li>
                                 <c:forEach begin="1" end="${noOfPage}" var="i">
                                     <li class="page-item ${currentPage == i ? 'active' : ''}"><a class="page-link" href="trung-tam-dang-kiem?trang-so=${i}">${i}</a></li>
-                                </c:forEach>
+                                    </c:forEach>
                                 <li class="page-item ${currentPage lt noOfPage ? '' : 'disabled'}">
                                     <a class="page-link" href="trung-tam-dang-kiem?trang-so=${currentPage + 1}"><i class="bi bi-chevron-right"></i></a>
                                 </li>
@@ -240,7 +240,5 @@
                 element.className = "badge " + (status === "Pass" ? "bg-success" : "bg-danger");
             }
         </script>
-
-
     </body>
 </html>

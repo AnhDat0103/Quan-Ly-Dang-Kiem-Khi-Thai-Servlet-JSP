@@ -5,18 +5,25 @@
 
 package controller.station;
 
+import dao.InspectionRecordDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.util.List;
+import model.InspectionRecords;
+import model.User;
 
 /**
  *
  * @author DAT
  */
 public class GetAppointmentPage extends HttpServlet {
+    
+    InspectionRecordDao ird = new InspectionRecordDao();
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -53,6 +60,21 @@ public class GetAppointmentPage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        User currentUser = (User) session.getAttribute("currentUser");
+        int stationId = currentUser.getInspectionStation().getStationId();
+        int page = 1;
+        int recordPerPage = 4;
+        if(request.getParameter("trang-so") != null) {
+            page = Integer.parseInt(request.getParameter("trang-so"));
+        }
+        int noOfRecords = ird.getNoOfRecordsPending(stationId);
+        int startRecord = (page - 1) * recordPerPage;
+        int noOfPage = (int) Math.ceil(noOfRecords * 1.0 / recordPerPage);
+        List<InspectionRecords> inspectionRecordses = ird.getListInspectionRecordsPending(stationId, startRecord, recordPerPage);
+        request.setAttribute("inspectionPedding", inspectionRecordses);
+        request.setAttribute("currentPage", page);
+        request.setAttribute("noOfPage", noOfPage);
         request.getRequestDispatcher("resources/station/appointment.jsp").forward(request, response);
     } 
 

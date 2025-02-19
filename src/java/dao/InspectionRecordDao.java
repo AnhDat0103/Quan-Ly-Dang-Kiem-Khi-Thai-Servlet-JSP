@@ -144,13 +144,57 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setInt(1, stationId);
             ResultSet rs = pt.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 noOfRecords = rs.getInt(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return noOfRecords;
-    }   
+    }
+
+    public int getNoOfRecordsPending(int stationId) {
+        int noOfRecords = 0;
+        String sql = "SELECT count(*) FROM InspectionRecords where StationID = ? and Result = 'Pending'";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setInt(1, stationId);
+            ResultSet rs = pt.executeQuery();
+            if (rs.next()) {
+                noOfRecords = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return noOfRecords;
+    }
+
+    public List<InspectionRecords> getListInspectionRecordsPending(int stationId, int startRecord, int recordsPerPage) {
+        List<InspectionRecords> recordses = new ArrayList<>();
+        String sql = "SELECT * FROM InspectionRecords where StationID = ? and Result = 'Pending' ORDER BY RecordID desc OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setInt(1, stationId);
+            pt.setInt(2, startRecord);
+            pt.setInt(3, recordsPerPage);
+            ResultSet rs = pt.executeQuery();
+            while (rs.next()) {
+                recordses.add(new InspectionRecords(rs.getInt("RecordID"),
+                        vd.getVehiclesById(rs.getInt("VehicleID")),
+                        rs.getInt("StationID"),
+                        rs.getInt("InspectorID"),
+                        rs.getDate("InspectionDate"),
+                        rs.getDate("NextInspectionDate"),
+                        rs.getString("Result"),
+                        rs.getDouble("CO2Emission"),
+                        rs.getDouble("HCEmission"),
+                        rs.getString("Comments")));
+            }
+            return recordses;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 }
