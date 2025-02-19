@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.List;
 import model.InspectionRecords;
 import model.User;
 
@@ -54,9 +55,21 @@ public class GetStationHomePage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        int page = 1;
+        int recordsPerPage = 4;
         HttpSession session = request.getSession();
         User currentUser = (User) session.getAttribute("currentUser");
-        request.setAttribute("InspecedtionRecords", ird.getInspecedtationRecords(currentUser.getInspectionStation().getStationId()));
+        if(request.getParameter("trang-so") != null){
+            page = Integer.parseInt(request.getParameter("trang-so"));
+        }
+        int stationId = currentUser.getInspectionStation().getStationId();
+        int startRecord =  (page - 1) * recordsPerPage;
+        int noOfRecords = ird.getNoOfRecord(stationId);
+        int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
+        List<InspectionRecords> inspectionRecordses = ird.getInspecedtationRecords(stationId,startRecord, recordsPerPage);
+        request.setAttribute("currentPage", page);
+        request.setAttribute("noOfPage", noOfPages);
+        request.setAttribute("InspecedtionRecords", inspectionRecordses);
         request.setAttribute("InspecRecordsSum", ird.getNumberOfInspectionRecordsInCurrentDay());
         request.setAttribute("InspecedRecordsSum", ird.getNumberOfInspectionRecordsIsInspected());
         request.getRequestDispatcher("resources/station/home.jsp").forward(request, response);
