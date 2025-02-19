@@ -71,30 +71,31 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            <div class="row g-3">
-                                <div class="col-md-3">
-                                    <label class="form-label">Từ ngày</label>
-                                    <input type="date" class="form-control">
+                            <form action="quan-ly-lich-hen?action=loc" method="POST">
+                                <div class="row g-3">
+                                    <div class="col-md-3">
+                                        <label class="form-label">Từ ngày</label>
+                                        <input type="date" class="form-control" name="date1">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">Đến ngày</label>
+                                        <input type="date" class="form-control" name="date2">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">Trạng thái</label>
+                                        <select class="form-select">
+                                            <option value="">Tất cả</option>
+                                            <option value="pending">Chờ xác nhận</option>
+                                            <option value="confirmed">Đã Pass</option>
+                                            <option value="completed">Chưa Pass</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">&nbsp;</label>
+                                        <button class="btn btn-success d-block w-100">Lọc</button>
+                                    </div>
                                 </div>
-                                <div class="col-md-3">
-                                    <label class="form-label">Đến ngày</label>
-                                    <input type="date" class="form-control">
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label">Trạng thái</label>
-                                    <select class="form-select">
-                                        <option value="">Tất cả</option>
-                                        <option value="pending">Chờ xác nhận</option>
-                                        <option value="confirmed">Đã xác nhận</option>
-                                        <option value="completed">Đã hoàn thành</option>
-                                        <option value="cancelled">Đã hủy</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="form-label">&nbsp;</label>
-                                    <button class="btn btn-success d-block w-100">Lọc</button>
-                                </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -102,69 +103,77 @@
 
             <!-- Bảng lịch hẹn -->
             <div class="card">
-                <div class="card-body">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Mã lịch hẹn</th>
-                                <th>Ngày hẹn</th>
-                                <th>Biển số xe</th>
-                                <th>Chủ xe</th>
-                                <th>Số điện thoại</th>
-                                <th>Trạng thái</th>
-                                <th>Thao tác</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <c:forEach items="${inspectionPedding}" var="r">
+                <c:if test="${empty requestScope.listEmpty}">
+                    <div class="card-body">
+                        <table class="table table-hover">
+                            <thead>
                                 <tr>
-                                    <td>${r.recordId}</td>
-                                    <td>${r.inspectionDate}</td>
-                                    <td>${r.vehicle.plateNumber}</td>
-                                    <td>${r.vehicle.owner.fullName}</td>
-                                    <td>${r.vehicle.owner.phone}</td>
-                                    <td><span class="badge bg-warning">Chờ xác nhận</span></td>
-                                    <td>
-                                        <div class="btn-group">
-                                            <button class="btn btn-sm btn-info view-detail" data-bs-toggle="modal" 
-                                                    data-bs-target="#viewAppointmentModal"
-                                                    data-inspectId="${r.recordId}"
-                                                    data-plate="${r.vehicle.plateNumber}"
-                                                    data-owner="${r.vehicle.owner.fullName}"
-                                                    data-phone="${r.vehicle.owner.phone}"
-                                                    data-inspectDate="${r.inspectionDate}">
-                                                <i class="bi bi-eye"></i>
-                                            </button>
-                                            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editAppointmentModal">
-                                                <i class="bi bi-pencil"></i>
-                                            </button>
-                                            <button class="btn btn-sm btn-danger">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </div>
-                                    </td>
+                                    <th>Mã lịch hẹn</th>
+                                    <th>Ngày hẹn</th>
+                                    <th>Biển số xe</th>
+                                    <th>Chủ xe</th>
+                                    <th>Số điện thoại</th>
+                                    <th>Trạng thái</th>
+                                    <th>Thao tác</th>
                                 </tr>
-                            </c:forEach>
+                            </thead>
+                            <tbody>
+                                <c:forEach items="${inspectionPedding}" var="r">
+                                    <tr>
+                                        <td>${r.recordId}</td>
+                                        <td>${r.inspectionDate}</td>
+                                        <td>${r.vehicle.plateNumber}</td>
+                                        <td>${r.vehicle.owner.fullName}</td>
+                                        <td>${r.vehicle.owner.phone}</td>
+                                        <td><span class="badge bg-warning">Chờ xác nhận</span></td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <button class="btn btn-sm btn-info view-detail" data-bs-toggle="modal" 
+                                                        data-bs-target="#viewAppointmentModal"
+                                                        data-inspectId="${r.recordId}"
+                                                        data-plate="${r.vehicle.plateNumber}"
+                                                        data-owner="${r.vehicle.owner.fullName}"
+                                                        data-phone="${r.vehicle.owner.phone}"
+                                                        data-inspectDate="${r.inspectionDate}">
+                                                    <i class="bi bi-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editAppointmentModal">
+                                                    <i class="bi bi-pencil"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-danger">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
 
-                        </tbody>
-                    </table>
+                            </tbody>
+                        </table>
 
-                    <!-- Phân trang -->
-                    <nav class="mt-3">
-                        <ul class="pagination justify-content-center">
-                            <li class="page-item ${currentPage != 1 ? '' : 'disabled'} ">
-                                <a class="page-link" href="quan-ly-lich-hen?trang-so=${currentPage - 1}"><i class="bi bi-chevron-left"></i></a>
-                            </li>
-                            <c:forEach begin="1" end="${noOfPage}" var="i">
-                                <li class="page-item ${currentPage == i ? 'active' : ''}"><a class="page-link" href="quan-ly-lich-hen?trang-so=${i}">${i}</a></li>
-                            </c:forEach>
-                            <li class="page-item ${currentPage lt noOfPage ? '' : 'disabled'}">
-                                <a class="page-link" href="quan-ly-lich-hen?trang-so=${currentPage + 1}"><i class="bi bi-chevron-right"></i></a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
+                        <!-- Phân trang -->
+                        <nav class="mt-3">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item ${currentPage != 1 ? '' : 'disabled'} ">
+                                    <a class="page-link" href="quan-ly-lich-hen?trang-so=${currentPage - 1}"><i class="bi bi-chevron-left"></i></a>
+                                </li>
+                                <c:forEach begin="1" end="${noOfPage}" var="i">
+                                    <li class="page-item ${currentPage == i ? 'active' : ''}"><a class="page-link" href="quan-ly-lich-hen?trang-so=${i}">${i}</a></li>
+                                    </c:forEach>
+                                <li class="page-item ${currentPage lt noOfPage ? '' : 'disabled'}">
+                                    <a class="page-link" href="quan-ly-lich-hen?trang-so=${currentPage + 1}"><i class="bi bi-chevron-right"></i></a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </c:if>
             </div>
+            <c:if test="${not empty listEmpty}">
+                <div class="alert alert-dark text-center" role="alert">
+                    ${requestScope.listEmpty}
+                </div>
+            </c:if>
+
         </div>
 
         <!-- Modal Thêm lịch hẹn -->
@@ -192,10 +201,6 @@
                             <div class="mb-3">
                                 <label class="form-label">Ngày hẹn</label>
                                 <input type="date" class="form-control" required>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Giờ hẹn</label>
-                                <input type="time" class="form-control" required>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Ghi chú</label>
@@ -267,7 +272,7 @@
         <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
         <script src="resources/js/sb-admin-2.min.js"></script>
         <script src="resources/js/appointments.js"></script>
-         <script>
+        <script>
             document.addEventListener("DOMContentLoaded", function () {
                 document.querySelectorAll(".view-detail").forEach(button => {
                     button.addEventListener("click", function () {
