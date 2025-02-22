@@ -49,9 +49,10 @@
                     <h3>Quản lý Lịch hẹn</h3>
                 </div>
                 <div class="col-md-6">
-                    <form action="quan-ly-lich-hen?action=tim-kiem" method="POST">
+                    <form action="quan-ly-lich-hen" method="GET">
+                        <input type="hidden" name="action" value="tim-kiem">
                         <div class="d-flex gap-2">
-                            <input type="text" class="form-control" placeholder="Tìm kiếm..." name="research-details" required>
+                            <input type="text" class="form-control" placeholder="Tìm kiếm..." name="tu-khoa-tim-kiem" value="${searchKeyWord}" required>
                             <button type="submit" class="btn btn-success">
                                 <i class="bi bi-search"></i>
                             </button>
@@ -153,13 +154,13 @@
                         <nav class="mt-3">
                             <ul class="pagination justify-content-center">
                                 <li class="page-item ${currentPage != 1 ? '' : 'disabled'} ">
-                                    <a class="page-link" href="quan-ly-lich-hen?trang-so=${currentPage - 1}"><i class="bi bi-chevron-left"></i></a>
+                                    <a class="page-link" href="quan-ly-lich-hen?action=${action}&trang-so=${currentPage - 1}&tu-khoa-tim-kiem=${searchKeyWord}"><i class="bi bi-chevron-left"></i></a>
                                 </li>
                                 <c:forEach begin="1" end="${noOfPage}" var="i">
-                                    <li class="page-item ${currentPage == i ? 'active' : ''}"><a class="page-link" href="quan-ly-lich-hen?trang-so=${i}">${i}</a></li>
+                                    <li class="page-item ${currentPage == i ? 'active' : ''}"><a class="page-link" href="quan-ly-lich-hen?action=${action}&trang-so=${i}&tu-khoa-tim-kiem=${searchKeyWord}">${i}</a></li>
                                     </c:forEach>
                                 <li class="page-item ${currentPage lt noOfPage ? '' : 'disabled'}">
-                                    <a class="page-link" href="quan-ly-lich-hen?trang-so=${currentPage + 1}"><i class="bi bi-chevron-right"></i></a>
+                                    <a class="page-link" href="quan-ly-lich-hen?action=${action}&trang-so=${currentPage + 1}&tu-khoa-tim-kiem=${searchKeyWord}"><i class="bi bi-chevron-right"></i></a>
                                 </li>
                             </ul>
                         </nav>
