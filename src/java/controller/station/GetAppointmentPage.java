@@ -4,7 +4,10 @@
  */
 package controller.station;
 
+import config.Configuration;
 import dao.InspectionRecordDao;
+import dao.UserDao;
+import dao.VehicleDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -12,10 +15,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import model.InspectionRecords;
 import model.User;
+import model.Vehicles;
 
 /**
  *
@@ -24,6 +30,8 @@ import model.User;
 public class GetAppointmentPage extends HttpServlet {
 
     InspectionRecordDao ird = new InspectionRecordDao();
+    UserDao ud = new UserDao();
+    VehicleDao vd = new VehicleDao();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -67,6 +75,7 @@ public class GetAppointmentPage extends HttpServlet {
         HttpSession session = request.getSession();
         User currentUser = (User) session.getAttribute("currentUser");
         int stationId = currentUser.getInspectionStation().getStationId();
+        request.setAttribute("stationID", stationId);
         String keyWord = request.getParameter("tu-khoa-tim-kiem") != null ? request.getParameter("tu-khoa-tim-kiem") : "";
         String startDate = request.getParameter("start-date") != null ? request.getParameter("start-date") : "";
         String endDate = request.getParameter("end-date") != null ? request.getParameter("end-date") : "";
@@ -121,6 +130,45 @@ public class GetAppointmentPage extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String plateNumber = request.getParameter("plateNumber");
+        String ownerName = request.getParameter("ownerName");
+        String tel = request.getParameter("tel");
+        String inspectionDate = request.getParameter("inspectionDate");
+        String stationIdReq = request.getParameter("stationID");
+        int stationId;
+        try {
+            stationId = Integer.parseInt(stationIdReq);
+        } catch (NumberFormatException e) {
+            stationId = 0;
+        }
+
+        String errorMsg = "";
+
+        User owner = ud.getUserbyTelAndName(tel, ownerName);
+        Vehicles v = vd.checkPlateNumAndOwner(plateNumber, ownerName, tel);
+        if (owner != null && v != null) {
+            if (Configuration.checkInspectionDate(inspectionDate)) {
+                errorMsg = "Ngày kiểm định không phù hợp. Hãy chọn ngày khác!";
+            } else {
+                java.sql.Date date = new java.sql.Date(Configuration.convertStringToDate(inspectionDate).getTime());
+                if (!ird.isInspectionDateExists(v.getVehicleId(), date)) {
+                    errorMsg = "Phương tiện đã đăng ký.";
+                } else {
+                    InspectionRecords t = new InspectionRecords();
+                    t.setVehicle(v);
+                    t.setStationID(stationId);
+                    t.setInspectionDate(date);
+                    t.setNextInspectionDate(Configuration.getNextInspectionDate(inspectionDate));
+                    t.setResult("Pending");
+                    ird.save(t);
+                    request.setAttribute("successMsg", "Xe mang biển số: " + v.getPlateNumber() + "đã đăng ký thành công.");
+                }
+            }
+        } else {
+            errorMsg = "Người dùng hoặc phương tiện không chính xác. Vui lòng thử lại!";
+        }
+        request.setAttribute("errorMsg", errorMsg);
+        doGet(request, response);
     }
 
     /**
@@ -132,15 +180,21 @@ public class GetAppointmentPage extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    
+
     private String getStatus(String statusReq) {
-        if (statusReq == null) return " ";
+        if (statusReq == null) {
+            return " ";
+        }
         return switch (statusReq) {
-            case "pending" -> "AND Result = 'Pending'";
-            case "pass" -> "AND Result = 'Pass'";
-            case "not-pass" -> "AND Result = 'Fail'";
-            default -> " ";
-        };  
+            case "pending" ->
+                "AND Result = 'Pending'";
+            case "pass" ->
+                "AND Result = 'Pass'";
+            case "not-pass" ->
+                "AND Result = 'Fail'";
+            default ->
+                " ";
+        };
     }
 
 }

@@ -45,6 +45,16 @@
         <div class="container mt-4">
             <!-- Tiêu đề và công cụ tìm kiếm -->
             <div class="row mb-4">
+                <c:if test="${not empty successMsg}">
+                    <div class="alert alert-success col-md-12">
+                        ${requestScope.successMsg}
+                    </div>
+                </c:if>
+                <c:if test="${not empty errorMsg}">
+                    <div class="alert alert-danger col-md-12">
+                        ${requestScope.errorMsg}
+                    </div>
+                </c:if>
                 <div class="col-md-6">
                     <h3>Quản lý Lịch hẹn</h3>
                 </div>
@@ -181,38 +191,36 @@
         <div class="modal fade" id="addAppointmentModal" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Thêm lịch hẹn mới</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form>
+                    <form action="quan-ly-lich-hen" method="POST">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Thêm lịch hẹn mới</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+
+                            <input type="hidden" name="stationID" value="${stationID}">
                             <div class="mb-3">
                                 <label class="form-label">Biển số xe</label>
-                                <input type="text" class="form-control" required>
+                                <input type="text" class="form-control" name="plateNumber" required>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Chủ xe</label>
-                                <input type="text" class="form-control" required>
+                                <input type="text" class="form-control" name="ownerName" required>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Số điện thoại</label>
-                                <input type="tel" class="form-control" required>
+                                <input type="tel" class="form-control" name="tel" required>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Ngày hẹn</label>
-                                <input type="date" class="form-control" required>
+                                <input type="date" class="form-control" name="inspectionDate" required>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label">Ghi chú</label>
-                                <textarea class="form-control" rows="3"></textarea>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                        <button type="button" class="btn btn-primary">Lưu lịch hẹn</button>
-                    </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                            <button type="submit" class="btn btn-primary">Lưu lịch hẹn</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -301,6 +309,13 @@
                     element.className = "badge " + (status === "Pass" ? "bg-success" : "bg-danger") + " modelResult";
                 }
             }
+
+            setTimeout(function () {
+                let alertBox = document.querySelector(".alert");
+                if (alertBox) {
+                    alertBox.style.display = "none";
+                }
+            }, 5000);
         </script>
     </body>
 </html> 
