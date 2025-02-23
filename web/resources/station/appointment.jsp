@@ -72,23 +72,24 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            <form action="quan-ly-lich-hen?action=loc" method="POST">
+                            <form action="quan-ly-lich-hen" method="GET">
+                                <input type="hidden" name="action" value="loc-theo-thoi-gian">
                                 <div class="row g-3">
                                     <div class="col-md-3">
                                         <label class="form-label">Từ ngày</label>
-                                        <input type="date" class="form-control" name="date1">
+                                        <input type="date" class="form-control" name="start-date" value="${startDateKey}" required>
                                     </div>
                                     <div class="col-md-3">
                                         <label class="form-label">Đến ngày</label>
-                                        <input type="date" class="form-control" name="date2">
+                                        <input type="date" class="form-control" name="end-date" value="${endDateKey}" required>
                                     </div>
                                     <div class="col-md-3">
                                         <label class="form-label">Trạng thái</label>
-                                        <select class="form-select">
-                                            <option value="">Tất cả</option>
-                                            <option value="pending">Chờ xác nhận</option>
-                                            <option value="confirmed">Đã Pass</option>
-                                            <option value="completed">Chưa Pass</option>
+                                        <select class="form-select" name="trang-thai">
+                                            <option value="all" ${statusFiltered == 'all' ? 'selected' : ''}>Tất cả</option>
+                                            <option value="pending" ${statusFiltered == 'pending' ? 'selected' : ''}>Chờ xác nhận</option>
+                                            <option value="pass" ${statusFiltered == 'pass' ? 'selected' : ''}>Đã Pass</option>
+                                            <option value="not-pass" ${statusFiltered == 'not-pass' ? 'selected' : ''}>Chưa Pass</option>
                                         </select>
                                     </div>
                                     <div class="col-md-3">
@@ -126,7 +127,7 @@
                                         <td>${r.vehicle.plateNumber}</td>
                                         <td>${r.vehicle.owner.fullName}</td>
                                         <td>${r.vehicle.owner.phone}</td>
-                                        <td><span class="badge bg-warning">Chờ xác nhận</span></td>
+                                        <td><span class="badge modelResult">${r.result}</span></td>
                                         <td>
                                             <div class="btn-group">
                                                 <button class="btn btn-sm btn-info view-detail" data-bs-toggle="modal" 
@@ -135,7 +136,8 @@
                                                         data-plate="${r.vehicle.plateNumber}"
                                                         data-owner="${r.vehicle.owner.fullName}"
                                                         data-phone="${r.vehicle.owner.phone}"
-                                                        data-inspectDate="${r.inspectionDate}">
+                                                        data-inspectDate="${r.inspectionDate}"
+                                                        data-result="${r.result}">
                                                     <i class="bi bi-eye"></i>
                                                 </button>
 
@@ -149,18 +151,18 @@
 
                             </tbody>
                         </table>
-   
+
                         <!-- Phân trang -->
                         <nav class="mt-3">
                             <ul class="pagination justify-content-center">
                                 <li class="page-item ${currentPage != 1 ? '' : 'disabled'} ">
-                                    <a class="page-link" href="quan-ly-lich-hen?action=${action}&trang-so=${currentPage - 1}&tu-khoa-tim-kiem=${searchKeyWord}"><i class="bi bi-chevron-left"></i></a>
+                                    <a class="page-link" href="quan-ly-lich-hen?action=${action}&trang-so=${currentPage - 1}&tu-khoa-tim-kiem=${searchKeyWord}&start-date=${startDateKey}&end-date=${endDateKey}&trang-thai=${statusFiltered}"><i class="bi bi-chevron-left"></i></a>
                                 </li>
                                 <c:forEach begin="1" end="${noOfPage}" var="i">
-                                    <li class="page-item ${currentPage == i ? 'active' : ''}"><a class="page-link" href="quan-ly-lich-hen?action=${action}&trang-so=${i}&tu-khoa-tim-kiem=${searchKeyWord}">${i}</a></li>
+                                    <li class="page-item ${currentPage == i ? 'active' : ''}"><a class="page-link" href="quan-ly-lich-hen?action=${action}&trang-so=${i}&tu-khoa-tim-kiem=${searchKeyWord}&start-date=${startDateKey}&end-date=${endDateKey}&trang-thai=${statusFiltered}">${i}</a></li>
                                     </c:forEach>
                                 <li class="page-item ${currentPage lt noOfPage ? '' : 'disabled'}">
-                                    <a class="page-link" href="quan-ly-lich-hen?action=${action}&trang-so=${currentPage + 1}&tu-khoa-tim-kiem=${searchKeyWord}"><i class="bi bi-chevron-right"></i></a>
+                                    <a class="page-link" href="quan-ly-lich-hen?action=${action}&trang-so=${currentPage + 1}&tu-khoa-tim-kiem=${searchKeyWord}&start-date=${startDateKey}&end-date=${endDateKey}&trang-thai=${statusFiltered}"><i class="bi bi-chevron-right"></i></a>
                                 </li>
                             </ul>
                         </nav>
@@ -246,7 +248,7 @@
                         </div>
                         <div class="row mb-3">
                             <div class="col-4"><strong>Trạng thái:</strong></div>
-                            <div class="col-8"><span class="badge bg-warning">Chờ xác nhận</span></div>
+                            <div class="col-8"><span class="badge modelResult"></span></div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-4"><strong>Ghi chú:</strong></div>
@@ -280,10 +282,25 @@
                         document.getElementById("modalDate").innerText = this.getAttribute("data-inspectDate");
                         document.getElementById("modalOwnerPhone").innerText = this.getAttribute("data-phone");
                         document.getElementById("modalPlateNumber").innerText = this.getAttribute("data-plate");
+                        const modalBadge = document.querySelector("#viewAppointmentModal .modelResult");
+                        if (modalBadge) {
+                            setBadge(modalBadge, this.getAttribute("data-result"));
+                        }
                     });
+                });
+                document.querySelectorAll(".modelResult").forEach(span => {
+                    setBadge(span, span.innerText);
                 });
             });
 
+            function setBadge(element, status) {
+                element.innerText = status;
+                if (status === "Pending") {
+                    element.className = "badge bg-warning modelResult";
+                } else {
+                    element.className = "badge " + (status === "Pass" ? "bg-success" : "bg-danger") + " modelResult";
+                }
+            }
         </script>
     </body>
 </html> 

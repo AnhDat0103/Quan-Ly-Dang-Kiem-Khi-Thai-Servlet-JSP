@@ -67,7 +67,11 @@ public class GetAppointmentPage extends HttpServlet {
         HttpSession session = request.getSession();
         User currentUser = (User) session.getAttribute("currentUser");
         int stationId = currentUser.getInspectionStation().getStationId();
-        String keyWord = request.getParameter("tu-khoa-tim-kiem");
+        String keyWord = request.getParameter("tu-khoa-tim-kiem") != null ? request.getParameter("tu-khoa-tim-kiem") : "";
+        String startDate = request.getParameter("start-date") != null ? request.getParameter("start-date") : "";
+        String endDate = request.getParameter("end-date") != null ? request.getParameter("end-date") : "";
+        String statusReq = request.getParameter("trang-thai") != null ? request.getParameter("trang-thai") : "";
+        request.setAttribute("statusFiltered", statusReq);
         int page = 1;
         int recordPerPage = 4;
         try {
@@ -77,21 +81,24 @@ public class GetAppointmentPage extends HttpServlet {
         } catch (NumberFormatException e) {
             page = 1;
         }
-        if (keyWord == null || keyWord.isEmpty()) {
-            keyWord = "";
-        }
         int noOfRecords = 0;
         int startRecord = (page - 1) * recordPerPage;
 
         String action = request.getParameter("action") == null ? "" : request.getParameter("action");
         request.setAttribute("action", action);
-        if (action.equals("")) {
-            inspectionRecordses = ird.getListInspectionRecordsPending(stationId, startRecord, recordPerPage);
-            noOfRecords = ird.getNoOfRecordsPending(stationId);
+        if (action.equals("loc-theo-thoi-gian")) {
+            String status = getStatus(statusReq);
+            inspectionRecordses = ird.getListInspectionRecordsWithTime(status, startDate, endDate, stationId, startRecord, recordPerPage);
+            request.setAttribute("startDateKey", startDate);
+            request.setAttribute("endDateKey", endDate);
+            noOfRecords = ird.getNoOfRecordsWithTime(status, startDate, endDate, stationId);
         } else if (action.equals("tim-kiem")) {
             inspectionRecordses = ird.getListInspectionRecordsPendingBySearching(keyWord, stationId, startRecord, recordPerPage);
             request.setAttribute("searchKeyWord", keyWord);
             noOfRecords = ird.getNoOfRecordPendingByResearch(stationId, keyWord);
+        } else {
+            inspectionRecordses = ird.getListInspectionRecordsPending(stationId, startRecord, recordPerPage);
+            noOfRecords = ird.getNoOfRecordsPending(stationId);
         }
         if (inspectionRecordses.isEmpty()) {
             request.setAttribute("listEmpty", "Không tìm thấy đăng kiểm nào.");
@@ -125,5 +132,15 @@ public class GetAppointmentPage extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+    
+    private String getStatus(String statusReq) {
+        if (statusReq == null) return " ";
+        return switch (statusReq) {
+            case "pending" -> "AND Result = 'Pending'";
+            case "pass" -> "AND Result = 'Pass'";
+            case "not-pass" -> "AND Result = 'Fail'";
+            default -> " ";
+        };  
+    }
 
 }

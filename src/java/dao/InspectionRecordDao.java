@@ -4,7 +4,7 @@
  */
 package dao;
 
-import com.oracle.wls.shaded.org.apache.bcel.generic.RETURN;
+import config.Configuration;
 import java.sql.Connection;
 import java.util.List;
 import model.InspectionRecords;
@@ -235,6 +235,53 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setInt(1, stationId);
             pt.setInt(2, id);
+            ResultSet rs = pt.executeQuery();
+            if (rs.next()) {
+                noOfRecords = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return noOfRecords;
+    }
+
+    public List<InspectionRecords> getListInspectionRecordsWithTime(String status, String startDate, String endDate, int stationId, int startRecord, int recordPerPage) {
+        List<InspectionRecords> recordses = new ArrayList<>();
+        String sql = "SELECT * FROM InspectionRecords where StationID = ? " + status + " and InspectionDate BETWEEN ? AND ?  ORDER BY RecordID desc OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setInt(1, stationId);
+            pt.setDate(2, new java.sql.Date(Configuration.convertStringToDate(startDate).getTime()));
+            pt.setDate(3, new java.sql.Date(Configuration.convertStringToDate(endDate).getTime()));
+            pt.setInt(4, startRecord);
+            pt.setInt(5, recordPerPage);
+            ResultSet rs = pt.executeQuery();
+            while (rs.next()) {
+                recordses.add(new InspectionRecords(rs.getInt("RecordID"),
+                        vd.getVehiclesById(rs.getInt("VehicleID")),
+                        rs.getInt("StationID"),
+                        rs.getInt("InspectorID"),
+                        rs.getDate("InspectionDate"),
+                        rs.getDate("NextInspectionDate"),
+                        rs.getString("Result"),
+                        rs.getDouble("CO2Emission"),
+                        rs.getDouble("HCEmission"),
+                        rs.getString("Comments")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return recordses;
+    }
+
+    public int getNoOfRecordsWithTime(String status, String startDate, String endDate, int stationId) {
+        int noOfRecords = 0;
+        String sql = "SELECT count(*) FROM InspectionRecords where StationID = ? " + status + " and InspectionDate BETWEEN ? AND ?";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setInt(1, stationId);
+            pt.setString(2, startDate);
+            pt.setString(3, endDate);
             ResultSet rs = pt.executeQuery();
             if (rs.next()) {
                 noOfRecords = rs.getInt(1);
