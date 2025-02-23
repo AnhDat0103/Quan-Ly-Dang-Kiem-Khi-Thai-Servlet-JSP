@@ -7,6 +7,7 @@ package controller.vehicleController;
 import dao.UserDao;
 import model.Vehicles;
 import dao.VehicleDao;
+import jakarta.servlet.RequestDispatcher;
 import validation.Validate;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -25,7 +26,6 @@ import model.User;
  *
  * @author Lenovo
  */
-@WebServlet("/dangkyPT")  // <-- URL mapping
 public class dangKyPT extends HttpServlet {
     
     UserDao ud = new UserDao();
@@ -72,7 +72,8 @@ public class dangKyPT extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        RequestDispatcher dispatcher = request.getRequestDispatcher("resources/vehicle/dangKyPT.jsp");
+        dispatcher.forward(request, response); 
     }
 
     /**
@@ -154,8 +155,7 @@ public class dangKyPT extends HttpServlet {
         vh.setModel(model);
         vh.setPlateNumber(plateNumber);
         vehicleDao.save(vh);
-        request.getRequestDispatcher("/submit/Successfully.jsp").forward(request, response);
-
+        request.getRequestDispatcher("/submit/Successfully.jsp").forward(request, response);  
     }
 
     /**

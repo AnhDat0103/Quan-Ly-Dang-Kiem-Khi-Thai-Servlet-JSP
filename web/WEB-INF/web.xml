@@ -48,8 +48,20 @@
         <servlet-class>controller.vehicleController.dangKyKD</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>dangKyPT</servlet-name>
+        <servlet-class>controller.vehicleController.dangKyPT</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>GetProfilePage</servlet-name>
         <servlet-class>controller.station.GetProfilePage</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetInspectorHomePage</servlet-name>
+        <servlet-class>controller.inspectController.GetInspectorHomePage</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProfileServlet</servlet-name>
+        <servlet-class>controller.inspectController.ProfileServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>LoginServlet</servlet-name>
@@ -83,4 +95,19 @@
         <servlet-name>dangKyKD</servlet-name>
         <url-pattern>/dang-ky-kiem-dinh</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dangKyPT</servlet-name>
+        <url-pattern>/dang-ky-phuong-tien</url-pattern>
+    </servlet-mapping>
+   <servlet-mapping>
+        <servlet-name>GetInspectorHomePage</servlet-name>
+        <url-pattern>/nguoi-kiem-dinh</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProfileServlet</servlet-name>
+        <url-pattern>/thong-tin-nguoi-kiem-dinh</url-pattern>
+    </servlet-mapping>
+    <welcome-file-list>
+        <welcome-file>dashboard/auth/login.jsp</welcome-file>
+    </welcome-file-list>
 </web-app>
