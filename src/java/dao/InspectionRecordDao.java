@@ -200,7 +200,7 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
     public List<InspectionRecords> getListInspectionRecordsPendingBySearching(String searchDetails, int stationId, int startRecord, int recordPerPage) {
         List<InspectionRecords> recordses = new ArrayList<>();
         int id = vd.getVehicleIDByPlateNumber(searchDetails.trim().toUpperCase());
-        String sql = "SELECT * FROM InspectionRecords where StationID = ? and Result = 'Pending' and VehicleID = ?  ORDER BY RecordID desc OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        String sql = "SELECT * FROM InspectionRecords where StationID = ? and VehicleID = ?  ORDER BY RecordID desc OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setInt(1, stationId);
@@ -230,7 +230,7 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
     public int getNoOfRecordPendingByResearch(int stationId, String searchDetails) {
         int noOfRecords = 0;
         int id = vd.getVehicleIDByPlateNumber(searchDetails.trim().toUpperCase());
-        String sql = "SELECT count(*) FROM InspectionRecords where StationID = ? and Result = 'Pending' and VehicleID = ?";
+        String sql = "SELECT count(*) FROM InspectionRecords where StationID = ? and VehicleID = ?";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setInt(1, stationId);
