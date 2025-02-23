@@ -126,6 +126,7 @@ public class dangKyKD extends HttpServlet {
             }
 
             // Kiểm tra ngày đăng kiểm
+            java.util.Date today = new java.util.Date();
             SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
             Date date = sd.parse(inspectionDate);  
             if (today.compareTo(date) > 0) {
