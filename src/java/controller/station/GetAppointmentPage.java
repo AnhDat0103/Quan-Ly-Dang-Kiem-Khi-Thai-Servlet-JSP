@@ -147,7 +147,7 @@ public class GetAppointmentPage extends HttpServlet {
         User owner = ud.getUserbyTelAndName(tel, ownerName);
         Vehicles v = vd.checkPlateNumAndOwner(plateNumber, ownerName, tel);
         if (owner != null && v != null) {
-            if (Configuration.checkInspectionDate(inspectionDate)) {
+            if (!Configuration.checkInspectionDate(inspectionDate)) {
                 errorMsg = "Ngày kiểm định không phù hợp. Hãy chọn ngày khác!";
             } else {
                 java.sql.Date date = new java.sql.Date(Configuration.convertStringToDate(inspectionDate).getTime());
