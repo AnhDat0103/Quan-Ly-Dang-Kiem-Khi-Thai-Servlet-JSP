@@ -127,9 +127,7 @@ public class dangKyKD extends HttpServlet {
 
             // Kiểm tra ngày đăng kiểm
             SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
-            String todayStr = sd.format(new java.util.Date());
-            Date today = sd.parse(todayStr);
-            Date date = sd.parse(inspectionDate);
+            Date date = sd.parse(inspectionDate);  
             if (today.compareTo(date) > 0) {
                 request.setAttribute("message", "Ngày đăng kiểm không thể là ngày trong quá khứ!");
                 doGet(request, response);
