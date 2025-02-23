@@ -54,7 +54,7 @@ public class Configuration {
             SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
             sd.setLenient(false);
             Date date = sd.parse(inspectionDate);
-            if (today.compareTo(date) < 0) {
+            if (today.compareTo(date) > 0) {
                 return false;
             }
         } catch (ParseException ex) {
