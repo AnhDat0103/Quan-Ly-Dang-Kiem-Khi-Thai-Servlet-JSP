@@ -8,6 +8,14 @@
         <servlet-name>UpdateProfile</servlet-name>
         <servlet-class>controller.station.UpdateProfile</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetDashboardPage</servlet-name>
+        <servlet-class>controller.admin.GetDashboardPage</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoginAdminServlet</servlet-name>
+        <servlet-class>controller.LoginAdminServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GetProfilePage</servlet-name>
         <url-pattern>/thong-tin-ca-nhan</url-pattern>
@@ -15,6 +23,14 @@
     <servlet-mapping>
         <servlet-name>UpdateProfile</servlet-name>
         <url-pattern>/cap-nhat-thong-tin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetDashboardPage</servlet-name>
+        <url-pattern>/quan-tri-vien</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginAdminServlet</servlet-name>
+        <url-pattern>/21.04.2000</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>dashboard/auth/login.jsp</welcome-file>
@@ -99,7 +115,7 @@
         <servlet-name>dangKyPT</servlet-name>
         <url-pattern>/dang-ky-phuong-tien</url-pattern>
     </servlet-mapping>
-   <servlet-mapping>
+    <servlet-mapping>
         <servlet-name>GetInspectorHomePage</servlet-name>
         <url-pattern>/nguoi-kiem-dinh</url-pattern>
     </servlet-mapping>
