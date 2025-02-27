@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import model.InspectionStation;
 import model.enums.RoleEnums;
 
@@ -197,4 +198,28 @@ public class UserDao implements Dao<User> {
         return null;
     }
 
+    public List<User> getAllUserByRole(String role) {
+        List<User> users = new ArrayList<>();
+        String sql = "select * from Users where Role = " + role;
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            ResultSet rs = pt.executeQuery();
+            if(rs.next()){
+                InspectionStation is = sd.findStationById(rs.getInt("StationID")) != null ? sd.findStationById(rs.getInt("StationID")) : new InspectionStation();
+                users.add( new User(rs.getInt("UserID"),
+                        rs.getString("FullName"),
+                        rs.getString("Email"),
+                        rs.getString("Password"),
+                        RoleEnums.valueOf(rs.getString("Role")),
+                        rs.getString("Phone"),
+                        rs.getString("Address"),
+                        is
+                        ));
+            }
+            return users;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
