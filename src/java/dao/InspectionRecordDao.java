@@ -4,7 +4,7 @@
  */
 package dao;
 
-import com.oracle.wls.shaded.org.apache.bcel.generic.RETURN;
+import java.lang.invoke.VarHandle;
 import java.sql.Connection;
 import java.util.List;
 import model.InspectionRecords;
@@ -14,6 +14,8 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import microsoft.sql.Types;
+import java.sql.*;
 
 /**
  *
@@ -243,6 +245,56 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
             e.printStackTrace();
         }
         return noOfRecords;
+    }
+
+    public boolean updateEmissions(int recordId, double co2Emission, double hcEmission, String comment, String result) {
+
+        try {
+            String sql = "UPDATE InspectionRecords SET CO2Emission = ?, HCEmission = ? , Comments = ? , Result = ?  WHERE RecordID = ?";
+            PreparedStatement st = connect.prepareStatement(sql);
+
+            // Kiểm tra và gán giá trị mặc định nếu null
+            st.setDouble(1, co2Emission);
+            st.setDouble(2, hcEmission);
+            st.setString(3, comment);
+             st.setString(4, result);
+            st.setInt(5, recordId);
+            
+
+            int rowsUpdated = st.executeUpdate();
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public List<InspectionRecords> getListInspectionRecordsByPendingAndInspectId(int inspectorId) {
+        List<InspectionRecords> recordses = new ArrayList<>();
+
+        String sql = "SELECT * FROM InspectionRecords WHERE InspectorID = ? and Result = 'Pending'";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setInt(1, inspectorId);
+
+            ResultSet rs = pt.executeQuery();
+            while (rs.next()) {
+                recordses.add(new InspectionRecords(rs.getInt("RecordID"),
+                        vd.getVehiclesById(rs.getInt("VehicleID")),
+                        rs.getInt("StationID"),
+                        rs.getInt("InspectorID"),
+                        rs.getDate("InspectionDate"),
+                        rs.getDate("NextInspectionDate"),
+                        rs.getString("Result"),
+                        rs.getDouble("CO2Emission"),
+                        rs.getDouble("HCEmission"),
+                        rs.getString("Comments")));
+            }
+            return recordses;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

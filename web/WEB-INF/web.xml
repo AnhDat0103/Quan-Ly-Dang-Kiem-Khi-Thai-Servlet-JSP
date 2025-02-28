@@ -8,6 +8,18 @@
         <servlet-name>UpdateProfile</servlet-name>
         <servlet-class>controller.station.UpdateProfile</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UpdateEmission</servlet-name>
+        <servlet-class>controller.inspectController.UpdateEmission</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteAccountServlet</servlet-name>
+        <servlet-class>controller.inspectController.DeleteAccountServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SaveInspectionServlet</servlet-name>
+        <servlet-class>controller.inspectController.SaveInspectionServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GetProfilePage</servlet-name>
         <url-pattern>/thong-tin-ca-nhan</url-pattern>
@@ -15,6 +27,18 @@
     <servlet-mapping>
         <servlet-name>UpdateProfile</servlet-name>
         <url-pattern>/cap-nhat-thong-tin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateEmission</servlet-name>
+        <url-pattern>/UpdateEmission</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteAccountServlet</servlet-name>
+        <url-pattern>/DeleteAccountServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SaveInspectionServlet</servlet-name>
+        <url-pattern>/SaveInspectionServlet</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>dashboard/auth/login.jsp</welcome-file>
@@ -99,7 +123,7 @@
         <servlet-name>dangKyPT</servlet-name>
         <url-pattern>/dang-ky-phuong-tien</url-pattern>
     </servlet-mapping>
-   <servlet-mapping>
+    <servlet-mapping>
         <servlet-name>GetInspectorHomePage</servlet-name>
         <url-pattern>/nguoi-kiem-dinh</url-pattern>
     </servlet-mapping>

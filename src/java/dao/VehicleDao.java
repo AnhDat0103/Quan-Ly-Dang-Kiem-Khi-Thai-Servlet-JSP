@@ -164,7 +164,7 @@ public class VehicleDao implements Dao<Vehicles> {
                 Vehicles v = new Vehicles(rs.getInt("VehicleID"),
                         ud.findUserById(rs.getInt("OwnerID")),
                         rs.getString("PlateNumber"),
-                        rs.getString("Brand"), 
+                        rs.getString("Brand"),
                         rs.getString("Model"),
                         rs.getInt("ManufactureYear"),
                         rs.getString("EngineNumber"));
@@ -174,6 +174,39 @@ public class VehicleDao implements Dao<Vehicles> {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public List <Vehicles> getAllVehicles() {
+        String sql = "select * from Vehicles";
+        List<Vehicles> lv = new ArrayList<>();
+        try {
+           
+                    
+            PreparedStatement pt = connect.prepareStatement(sql);
+            
+            ResultSet rs = pt.executeQuery();
+            while (rs.next()) {
+                Vehicles v = new Vehicles(rs.getInt("VehicleID"),
+                        ud.findUserById(rs.getInt("OwnerID")),
+                        rs.getString("PlateNumber"),
+                        rs.getString("Brand"),
+                        rs.getString("Model"),
+                        rs.getInt("ManufactureYear"),
+                        rs.getString("EngineNumber"));
+                lv.add(v);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lv;
+    }
+
+    public static void main(String[] args) {
+        VehicleDao vhc = new VehicleDao();
+        List<Vehicles> lv = vhc.getAllVehicles();
+        for (Vehicles v : lv){
+            System.out.println(v);
+        }
     }
 
 }

@@ -86,6 +86,11 @@ public class Vehicles {
         this.engineNumber = engineNumber;
     }
 
+    @Override
+    public String toString() {
+        return "Vehicles{" + "vehicleId=" + vehicleId + ", owner=" + owner + ", plateNumber=" + plateNumber + ", brand=" + brand + ", model=" + model + ", manufactureYear=" + manufactureYear + ", engineNumber=" + engineNumber + '}';
+    }
+
    
 
     
