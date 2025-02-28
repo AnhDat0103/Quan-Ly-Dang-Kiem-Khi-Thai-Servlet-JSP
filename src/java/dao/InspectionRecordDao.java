@@ -156,12 +156,13 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
         return noOfRecords;
     }
 
-    public int getNoOfRecordsPending(int stationId) {
+    public int getNoOfRecordsPendingAtCurrentDate(int stationId, String today) {
         int noOfRecords = 0;
-        String sql = "SELECT count(*) FROM InspectionRecords where StationID = ? and Result = 'Pending'";
+        String sql = "SELECT count(*) FROM InspectionRecords where StationID = ? and Result = 'Pending' and InspectionDate = ?";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setInt(1, stationId);
+            pt.setDate(2, new java.sql.Date(Configuration.convertStringToDate(today).getTime()));
             ResultSet rs = pt.executeQuery();
             if (rs.next()) {
                 noOfRecords = rs.getInt(1);
@@ -172,14 +173,15 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
         return noOfRecords;
     }
 
-    public List<InspectionRecords> getListInspectionRecordsPending(int stationId, int startRecord, int recordsPerPage) {
+    public List<InspectionRecords> getListInspectionRecordsPendingAtCurrentDate(int stationId, int startRecord, int recordsPerPage, String currentDate) {
         List<InspectionRecords> recordses = new ArrayList<>();
-        String sql = "SELECT * FROM InspectionRecords where StationID = ? and Result = 'Pending' ORDER BY RecordID desc OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        String sql = "SELECT * FROM InspectionRecords where StationID = ? and Result = 'Pending' and InspectionDate = ?  ORDER BY RecordID desc OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setInt(1, stationId);
-            pt.setInt(2, startRecord);
-            pt.setInt(3, recordsPerPage);
+            pt.setDate(2, new java.sql.Date(Configuration.convertStringToDate(currentDate).getTime()));
+            pt.setInt(3, startRecord);
+            pt.setInt(4, recordsPerPage);
             ResultSet rs = pt.executeQuery();
             while (rs.next()) {
                 recordses.add(new InspectionRecords(rs.getInt("RecordID"),
