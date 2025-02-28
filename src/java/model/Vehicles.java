@@ -4,6 +4,8 @@
  */
 package model;
 
+import model.enums.vehicleEnums.vehicleEnums;
+
 /**
  *
  * @author Lenovo
@@ -16,11 +18,20 @@ public class Vehicles {
     private String model;
     private int manufactureYear;
     private String engineNumber;
+    private vehicleEnums status;
+    
 
     public Vehicles() {
     }
+    
+    public Vehicles(String plateNumber, String brand, String model){
+        this.plateNumber = plateNumber;
+        this.brand = brand;
+        this.model = model;
+    }
+    
 
-    public Vehicles(int vehicleId,User owner, String plateNumber, String brand, String model, int manufactureYear, String engineNumber) {
+    public Vehicles(int vehicleId, User owner, String plateNumber, String brand, String model, int manufactureYear, String engineNumber, vehicleEnums status) {
         this.vehicleId = vehicleId;
         this.owner = owner;
         this.plateNumber = plateNumber;
@@ -28,8 +39,17 @@ public class Vehicles {
         this.model = model;
         this.manufactureYear = manufactureYear;
         this.engineNumber = engineNumber;
+        this.status = status;
     }
 
+    public vehicleEnums getStatus() {
+        return status;
+    }
+
+    public void setStatus(vehicleEnums status) {
+        this.status = status;
+    }
+    
     public int getVehicleId() {
         return vehicleId;
     }
@@ -90,12 +110,4 @@ public class Vehicles {
     public String toString() {
         return "Vehicles{" + "vehicleId=" + vehicleId + ", owner=" + owner + ", plateNumber=" + plateNumber + ", brand=" + brand + ", model=" + model + ", manufactureYear=" + manufactureYear + ", engineNumber=" + engineNumber + '}';
     }
-
-   
-
-    
-    
-    
-    
-    
 }

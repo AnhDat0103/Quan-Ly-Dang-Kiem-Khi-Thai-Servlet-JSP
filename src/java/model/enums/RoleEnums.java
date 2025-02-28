@@ -9,5 +9,5 @@ package model.enums;
  * @author DAT
  */
 public enum RoleEnums {
-    Owner, Station, Police, Inspector;
+    Owner, Station, Police, Inspector, Admin;
 }

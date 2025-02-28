@@ -109,15 +109,26 @@ public class dangKyKD extends HttpServlet {
                 doGet(request, response);
                 return;
             }
-
+             
             // Chuyển từ PlateNumber và StationName thành ID
             VehicleDao vehicleDao = new VehicleDao();
             StationDao stationDao = new StationDao();
             InspectionRecordDao inspectionRecordDao = new InspectionRecordDao();
-
+            
             int vehicleID = vehicleDao.getVehicleIDByPlateNumber(plateNumber);
             int stationID = stationDao.getStationIDByName(stationName);
-
+            
+            if(inspectionRecordDao.isVehicleInspectedToday(vehicleID)){
+                request.setAttribute("message", "Phương tiện đã quá số lần đăng kiểm trong một ngày!");
+                doGet(request, response);
+                return;
+            }
+            
+            if (inspectionRecordDao.checkResultOfVehicleID(vehicleID)) {
+                request.setAttribute("message", "Phương tiện đã đạt kiểm định, không thể đăng ký lại!");
+                doGet(request, response);
+                return;
+            }
             // Kiểm tra ID có hợp lệ
             if (vehicleID == 0 || stationID == 0) {
                 request.setAttribute("message", "Không tìm thấy thông tin phương tiện hoặc trạm đăng kiểm!");
@@ -126,16 +137,15 @@ public class dangKyKD extends HttpServlet {
             }
 
             // Kiểm tra ngày đăng kiểm
+            java.util.Date today = new java.util.Date();
             SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
-            String todayStr = sd.format(new java.util.Date());
-            Date today = sd.parse(todayStr);
-            Date date = sd.parse(inspectionDate);
+            Date date = sd.parse(inspectionDate);  
             if (today.compareTo(date) > 0) {
                 request.setAttribute("message", "Ngày đăng kiểm không thể là ngày trong quá khứ!");
                 doGet(request, response);
                 return;
             }
-         
+            
 
             // Tạo bản ghi kiểm định mới
             InspectionRecords record = new InspectionRecords();

@@ -170,5 +170,30 @@ public class UserDao implements Dao<User> {
         }
         return null;
     }
-
+    
+    public User getUserbyTelAndName(String tel, String fullname){
+        String sql = "select * from Users where Phone = ? and FullName = ?";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setString(1, tel);
+            pt.setString(2, fullname);
+            ResultSet rs = pt.executeQuery();
+            if(rs.next()) {
+                InspectionStation is = sd.findStationById(rs.getInt("StationID")) != null ? sd.findStationById(rs.getInt("StationID")) : new InspectionStation();
+                User user = new User(rs.getInt("UserID"), 
+                        rs.getString("FullName"),
+                        rs.getString("Email"), 
+                        rs.getString("Password"), 
+                        RoleEnums.valueOf(rs.getString("Role")), 
+                        rs.getString("Phone"),
+                        rs.getString("Address"),
+                        is
+                );
+                return user;
+            }       
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
