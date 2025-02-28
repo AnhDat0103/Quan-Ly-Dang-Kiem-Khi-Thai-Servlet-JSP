@@ -68,8 +68,8 @@ public class GetStationHomePage extends HttpServlet {
         request.setAttribute("currentPage", page);
         request.setAttribute("noOfPage", noOfPages);
         request.setAttribute("InspecedtionRecords", inspectionRecordses);
-        request.setAttribute("InspecRecordsSum", ird.getNumberOfInspectionRecordsInCurrentDay());
-        request.setAttribute("InspecedRecordsSum", ird.getNumberOfInspectionRecordsIsInspected());
+        request.setAttribute("InspecRecordsSum", ird.getNumberOfInspectionRecordsInCurrentDay(stationId));
+        request.setAttribute("InspecedRecordsSum", ird.getNumberOfInspectionRecordsIsInspected(stationId));
         request.getRequestDispatcher("resources/station/home.jsp").forward(request, response);
     } 
 

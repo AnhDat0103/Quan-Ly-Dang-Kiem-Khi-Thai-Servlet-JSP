@@ -74,15 +74,16 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
         return false;
     }
 
-    public int getNumberOfInspectionRecordsInCurrentDay() {
+    public int getNumberOfInspectionRecordsInCurrentDay(int station) {
         int numberRecordsInDay = 0;
         String currentDate = LocalDate.now().toString();
         String sql = "SELECT COUNT(*)  \n"
                 + "FROM InspectionRecords  \n"
-                + "WHERE CAST(InspectionDate AS DATE) = ?";
+                + "WHERE StationID = ? and CAST(InspectionDate AS DATE) = ?";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
-            pt.setString(1, currentDate);
+            pt.setInt(1, station);
+            pt.setString(2, currentDate);
             ResultSet rs = pt.executeQuery();
             if (rs.next()) {
                 numberRecordsInDay = rs.getInt(1);
@@ -93,13 +94,14 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
         return numberRecordsInDay;
     }
 
-    public int getNumberOfInspectionRecordsIsInspected() {
+    public int getNumberOfInspectionRecordsIsInspected(int stationId) {
         int numberRecordsIsInspectedInDay = 0;
         String currentDate = LocalDate.now().toString();
-        String sql = "select count(*) from InspectionRecords WHERE CAST(InspectionDate AS DATE) = ? and Result <> 'Pending'";
+        String sql = "select count(*) from InspectionRecords WHERE StationID = ? and CAST(InspectionDate AS DATE) = ? and Result <> 'Pending'";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
-            pt.setString(1, currentDate);
+            pt.setInt(1, stationId);
+            pt.setString(2, currentDate);
             ResultSet rs = pt.executeQuery();
             if (rs.next()) {
                 numberRecordsIsInspectedInDay = rs.getInt(1);
