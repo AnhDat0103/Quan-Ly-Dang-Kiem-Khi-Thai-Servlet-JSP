@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Load thông tin người dùng
 //    loadUserProfile();
 
+
     // Xử lý sự kiện chỉnh sửa profile
     editProfileBtn.addEventListener('click', function () {
         toggleEditMode(true);

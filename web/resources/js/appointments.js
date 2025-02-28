@@ -1,13 +1,13 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Khởi tạo biến
     const searchInput = document.getElementById('searchInput');
     const appointmentTable = document.querySelector('.table');
-    
+
     // Xử lý tìm kiếm
     function handleSearch() {
         const searchTerm = searchInput.value.toLowerCase();
         const rows = appointmentTable.querySelectorAll('tbody tr');
-        
+
         rows.forEach(row => {
             const text = row.textContent.toLowerCase();
             row.style.display = text.includes(searchTerm) ? '' : 'none';
@@ -16,20 +16,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Xử lý thêm lịch hẹn mới
     function handleAddAppointment(event) {
-        event.preventDefault();
         const form = event.target;
         const formData = new FormData(form);
-        
-        // TODO: Gửi dữ liệu đến server
-        console.log('Adding new appointment...', Object.fromEntries(formData));
-        
+//        
+//        // TODO: Gửi dữ liệu đến server
+//        console.log('Adding new appointment...', Object.fromEntries(formData));
+
+        fetch('quan-ly-lich-hen', {
+            method: 'POST',
+            body: formData
+        })
+                .catch(error => {
+                    console.error('Lỗi khi cập nhật thông tin:', error);
+                    showAlert('danger', 'Lỗi kết nối máy chủ!');
+                });
+
+
         // Đóng modal sau khi thêm
         const modal = bootstrap.Modal.getInstance(document.getElementById('addAppointmentModal'));
         modal.hide();
-        
+
         // Reset form
         form.reset();
     }
+    
 
     // Xử lý xóa lịch hẹn
     function handleDeleteAppointment(appointmentId) {
@@ -48,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Đăng ký các event listeners
     searchInput?.addEventListener('input', handleSearch);
 
-    document.querySelector('#addAppointmentModal form')?.addEventListener('submit', handleAddAppointment);
+//    document.querySelector('#addAppointmentModal form')?.addEventListener('submit', handleAddAppointment);
 
     // Khởi tạo các tooltips và popovers
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));

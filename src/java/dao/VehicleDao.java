@@ -240,4 +240,28 @@ public class VehicleDao implements Dao<Vehicles> {
         return exist;
     }
     
+    public Vehicles checkPlateNumAndOwner(String plateNum, String fullName, String tel){
+        User u = ud.getUserbyTelAndName(tel, fullName);
+        if(u == null) return null;
+        String sql = "select * from Vehicles where PlateNumber = ? and OwnerID = ?";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setString(1, plateNum);
+            pt.setInt(2, u.getUserId());
+            ResultSet rs = pt.executeQuery();
+            if(rs.next()) {
+                Vehicles v = new Vehicles(rs.getInt("VehicleID"),
+                        ud.findUserById(rs.getInt("OwnerID")),
+                        rs.getString("PlateNumber"),
+                        rs.getString("Brand"), 
+                        rs.getString("Model"),
+                        rs.getInt("ManufactureYear"),
+                        rs.getString("EngineNumber"));
+                return v;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return  null;
+    }
 }

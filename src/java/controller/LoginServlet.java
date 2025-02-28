@@ -87,7 +87,18 @@ public class LoginServlet extends HttpServlet {
                     }else{
                         response.sendRedirect("kiem-tra-tai-khoan");
                     }
-                    
+                }    
+                if(currentUser.getRole().equals(RoleEnums.Station)) {
+                      response.sendRedirect("trung-tam-dang-kiem");
+                }                
+                if(currentUser.getRole().equals(RoleEnums.Owner)) {
+                    response.sendRedirect("chu-phuong-tien");
+
+                }if(currentUser.getRole().equals(RoleEnums.Inspector)){
+                     response.sendRedirect("nguoi-kiem-dinh");
+                }
+                if(currentUser.getRole().equals(RoleEnums.Admin)) {
+                    response.sendRedirect("quan-tri-vien");
                 }
             } else {
                 request.setAttribute("notFound", "Tài khoản hoặc mật khẩu không chính xác.");
