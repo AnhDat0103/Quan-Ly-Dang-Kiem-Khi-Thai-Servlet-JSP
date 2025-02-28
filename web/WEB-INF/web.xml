@@ -8,6 +8,30 @@
         <servlet-name>UpdateProfile</servlet-name>
         <servlet-class>controller.station.UpdateProfile</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>quanLyPhuongTien</servlet-name>
+        <servlet-class>controller.vehicleController.quanLyPhuongTien</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Successfully</servlet-name>
+        <servlet-class>submit.Successfully</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Failed</servlet-name>
+        <servlet-class>submit.Failed</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>chinhSuaPT</servlet-name>
+        <servlet-class>controller.vehicleController.chinhSuaPT</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>lichSuKD</servlet-name>
+        <servlet-class>controller.vehicleController.lichSuKD</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CheckVehicle</servlet-name>
+        <servlet-class>notifications.CheckVehicle</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GetProfilePage</servlet-name>
         <url-pattern>/thong-tin-ca-nhan</url-pattern>
@@ -15,6 +39,30 @@
     <servlet-mapping>
         <servlet-name>UpdateProfile</servlet-name>
         <url-pattern>/cap-nhat-thong-tin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>quanLyPhuongTien</servlet-name>
+        <url-pattern>/quan-ly-phuong-tien</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Successfully</servlet-name>
+        <url-pattern>/thanh-cong</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Failed</servlet-name>
+        <url-pattern>/that-bai</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>chinhSuaPT</servlet-name>
+        <url-pattern>/chinh-sua-phuong-tien</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>lichSuKD</servlet-name>
+        <url-pattern>/lich-su</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CheckVehicle</servlet-name>
+        <url-pattern>/kiem-tra-tai-khoan</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>dashboard/auth/login.jsp</welcome-file>
@@ -47,6 +95,14 @@
         <servlet-name>dangKyKD</servlet-name>
         <servlet-class>controller.vehicleController.dangKyKD</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>xoaPT</servlet-name>
+        <servlet-class>controller.vehicleController.xoaPT</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>xoaPT</servlet-name>
+        <url-pattern>/xoa-phuong-tien</url-pattern>
+    </servlet-mapping>
     <servlet>
         <servlet-name>dangKyPT</servlet-name>
         <servlet-class>controller.vehicleController.dangKyPT</servlet-class>

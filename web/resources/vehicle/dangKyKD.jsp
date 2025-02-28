@@ -16,26 +16,26 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
         <style>
-            body {
-                min-height: 100vh;
-                display: flex;
-                flex-direction: column;
-            }
-
-            .content-wrapper {
-                flex: 1 0 auto;
-                margin-bottom: 2rem;
-            }
-
-            .footer {
-                flex-shrink: 0;
-                padding: 1rem 0;
-            }
-        </style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .content-wrapper {
+            flex: 1 0 auto;
+            margin-bottom: 2rem;
+        }
+        
+        .footer {
+            flex-shrink: 0;
+            padding: 1rem 0;
+        }
+    </style>
     </head>
     <body>
         <%@include file="../layout/owner_navbar.jsp" %>
-        <form action="dang-ky-kiem-dinh" method="post">
+        <form id="dangky" action="dang-ky-kiem-dinh" method="post">
             <div class="container mt-4">
                 <div class="row justify-content-center">
                     <div class="col-md-8">
@@ -93,7 +93,7 @@
                                 <!-- Buttons -->
                                 <div class="d-grid gap-2">
                                     <button type="submit" class="btn btn-primary">Đăng Ký Lịch Kiểm Định</button>
-                                    <button type="reset" class="btn btn-secondary">Làm Mới</button>
+                                    <button type="button" class="btn btn-secondary" onclick="resetForm()">Làm Mới</button>
                                 </div>
                             </div>
                         </div>
@@ -101,24 +101,38 @@
                 </div>
             </div>
         </form>
-
         <script>
             // Set min và max date cho input ngày
             const today = new Date().toISOString().split('T')[0];
             const maxDate = new Date();
             maxDate.setMonth(maxDate.getMonth() + 3);
-            
+
             const dateInput = document.getElementById('inspectionDate');
             dateInput.setAttribute('min', today);
             dateInput.setAttribute('max', maxDate.toISOString().split('T')[0]);
         </script>
+        <script>
+            function resetForm() {
+                // Reset các ô nhập liệu
+                document.getElementById("plateNumber").selectedIndex = 0; // Chọn lại mặc định
+                document.getElementById("stationName").selectedIndex = 0; // Chọn lại mặc định
+                document.getElementById("inspectionDate").value = ""; // Xóa ngày chọn
+
+                // Nếu có thông báo thành công, ẩn đi
+                let alertMessage = document.querySelector(".alert");
+                if (alertMessage) {
+                    alertMessage.style.display = "none";
+                }
+            }
+        </script>
 
         <!-- Footer từ owner-dashboard -->
         <%@include file="../layout/owner_footer.jsp"%>
-         <!-- Thêm Bootstrap Icons -->
+        <!-- Thêm Bootstrap Icons -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
         <!-- Thêm Bootstrap JS và Popper.js -->
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
     </body>
+
 </html> 

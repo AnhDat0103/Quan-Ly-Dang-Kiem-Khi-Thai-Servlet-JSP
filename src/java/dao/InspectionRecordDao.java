@@ -5,6 +5,7 @@
 package dao;
 
 import com.oracle.wls.shaded.org.apache.bcel.generic.RETURN;
+import config.Configuration;
 import java.sql.Connection;
 import java.util.List;
 import model.InspectionRecords;
@@ -14,6 +15,7 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import model.Vehicles;
 
 /**
  *
@@ -245,4 +247,81 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
         return noOfRecords;
     }
 
+    public void removeInspectionRecordsWithPlateNumber(String plateNumber) {
+        int vehicleId = vd.getVehicleIDByPlateNumber(plateNumber);
+        String sql = "DELETE FROM InspectionRecords Where VehicleID = ?";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setInt(1, vehicleId);
+            pt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean checkResultOfVehicleID(int vehicleID) {
+        String sql = "SELECT TOP 1 Result FROM InspectionRecords WHERE VehicleID = ? ORDER BY InspectionDate DESC";
+
+        try (PreparedStatement ps = connect.prepareStatement(sql)) {
+            ps.setInt(1, vehicleID);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    String result = rs.getString("Result");
+                    return "Pass".equalsIgnoreCase(result); // Nếu result là "Pass" thì return true
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false; // Nếu không tìm thấy bản ghi nào thì trả về false
+    }
+
+    public boolean isVehicleInspectedToday(int vehicleID) {
+        String sql = "SELECT COUNT(*) FROM InspectionRecords WHERE VehicleID = ? AND CAST(InspectionDate AS DATE) = ?";
+        
+        try {
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.setInt(1, vehicleID);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                return count > 0; // true neu phuong tien da duoc dang kiem qua 1 lan trong ngay 
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public List<InspectionRecords> getInspectedVehilce(int vehicleID) {
+        List<InspectionRecords> listhistory = new ArrayList<>();
+        String sql = "SELECT v.PlateNumber, v.Brand, v.Model, id.InspectionDate, id.Result, id.NextInspectionDate "
+                + "FROM Vehicles v "
+                + "INNER JOIN InspectionRecords id ON id.VehicleID = v.VehicleID "
+                + "WHERE v.VehicleID = ? "
+                + "ORDER BY id.InspectionDate DESC ";
+        try {
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.setInt(1, vehicleID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Vehicles vehicle = new Vehicles(
+                        rs.getString("PlateNumber"),
+                        rs.getString("Brand"),
+                        rs.getString("Model")
+                );
+                InspectionRecords record = new InspectionRecords(
+                        rs.getDate("InspectionDate"),
+                        rs.getString("Result"),
+                        rs.getDate("NextInspectionDate"),
+                        vehicle
+                );
+                listhistory.add(record);
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listhistory;
+    }
 }
