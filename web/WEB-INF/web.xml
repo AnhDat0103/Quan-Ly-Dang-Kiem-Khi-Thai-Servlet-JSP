@@ -9,6 +9,18 @@
         <servlet-class>controller.station.UpdateProfile</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>UpdateEmission</servlet-name>
+        <servlet-class>controller.inspectController.UpdateEmission</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteAccountServlet</servlet-name>
+        <servlet-class>controller.inspectController.DeleteAccountServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SaveInspectionServlet</servlet-name>
+        <servlet-class>controller.inspectController.SaveInspectionServlet</servlet-class>
+      </servlet>
+    <servlet>
         <servlet-name>quanLyPhuongTien</servlet-name>
         <servlet-class>controller.vehicleController.quanLyPhuongTien</servlet-class>
     </servlet>
@@ -47,6 +59,18 @@
     <servlet-mapping>
         <servlet-name>UpdateProfile</servlet-name>
         <url-pattern>/cap-nhat-thong-tin</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateEmission</servlet-name>
+        <url-pattern>/UpdateEmission</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteAccountServlet</servlet-name>
+        <url-pattern>/DeleteAccountServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SaveInspectionServlet</servlet-name>
+        <url-pattern>/SaveInspectionServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>quanLyPhuongTien</servlet-name>
