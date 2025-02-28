@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import model.InspectionRecords;
+import model.InspectionStation;
 import model.User;
 
 /**
@@ -57,6 +58,9 @@ public class GetStationHomePage extends HttpServlet {
         int recordsPerPage = 4;
         HttpSession session = request.getSession();
         User currentUser = (User) session.getAttribute("currentUser");
+        StationDao sd = new StationDao();
+        List<InspectionStation> stations = sd.findAll();
+        request.setAttribute("stations", stations);
         if(request.getParameter("trang-so") != null){
             page = Integer.parseInt(request.getParameter("trang-so"));
         }
