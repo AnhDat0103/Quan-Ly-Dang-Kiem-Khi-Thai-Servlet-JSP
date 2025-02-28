@@ -196,5 +196,4 @@ public class UserDao implements Dao<User> {
         }
         return null;
     }
-
 }

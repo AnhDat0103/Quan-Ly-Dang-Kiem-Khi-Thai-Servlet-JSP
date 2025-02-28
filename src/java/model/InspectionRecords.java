@@ -27,6 +27,14 @@ public class InspectionRecords {
     public InspectionRecords() {
     }
 
+    public InspectionRecords(Date inspectionDate, String result, Date nextInspectionDate, Vehicles vehicle){
+        this.inspectionDate = inspectionDate;
+        this.nextInspectionDate = nextInspectionDate;
+        this.result = result;
+        this.vehicle = vehicle;
+        
+    } 
+    
     // Constructor đầy đủ tham số (không có recordID)
     public InspectionRecords(int recordId, Vehicles vehicle, int stationID, Integer inspectorID, Date inspectionDate, Date nextInspectionDate, String result, Double co2Emission, Double hcEmission, String comments) {
         this.recordId = recordId;

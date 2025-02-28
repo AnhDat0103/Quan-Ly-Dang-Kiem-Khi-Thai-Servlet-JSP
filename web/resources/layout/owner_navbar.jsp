@@ -41,7 +41,7 @@
         <!-- Navbar -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="#">Quản lý Đăng kiểm</a>
+                <a class="navbar-brand" href="chu-phuong-tien">Quản lý Đăng kiểm</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -51,20 +51,20 @@
                             <a class="nav-link active" href="chu-phuong-tien">Trang chủ</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="dang-ky-phuong-tien">Phương tiện của tôi</a>
+                            <a class="nav-link" href="quan-ly-phuong-tien">Phương tiện của tôi</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="dang-ky-kiem-dinh">Đặt lịch kiểm định</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="history.jsp">Lịch sử kiểm định</a>
+                            <a class="nav-link" href="lich-su">Lịch sử kiểm định</a>
                         </li>
                     </ul>
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
                                 <img src="resources/images/avatar.png" class="rounded-circle me-2" width="32" height="32" alt="Avatar">
-                                <span>Nguyễn Văn A</span>
+                                <span>${currentUser.fullName}</span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                 <li><a class="dropdown-item" href="profile.jsp">

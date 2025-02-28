@@ -11,7 +11,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng Ký Phương Tiện</title>
-    <link rel="stylesheet" href="../css/css.vehicle/dangKyPT.css"> 
+    <link rel="stylesheet" href="resources/css/css.vehicle/dangKyPT.css"> 
 </head>
 <body>
 
@@ -26,7 +26,7 @@
             <p class="error-message"><%= bug %></p>
         <% } %>
         
-        <form action="<%= request.getContextPath() %>/dangkyPT" method="POST">
+        <form action="dang-ky-phuong-tien" method="POST">
             <div class="form-group">
                 <label for="ownerID">ID Chủ Sở Hữu:</label>
                 <input type="number" id="ownerID" value="${sessionScope.currentUser.userId}" name="ownerID" readonly>
