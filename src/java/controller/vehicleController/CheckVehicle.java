@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package submit;
+package controller.vehicleController;
 
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
@@ -17,7 +17,7 @@ import jakarta .servlet.http.HttpServletResponse;
  *
  * @author Lenovo
  */
-public class Successfully extends HttpServlet {
+public class CheckVehicle extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -34,10 +34,10 @@ public class Successfully extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Successfully</title>");  
+            out.println("<title>Servlet CheckVehicle</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet Successfully at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet CheckVehicle at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -54,8 +54,8 @@ public class Successfully extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("resources/submit/Successfully.jsp");
-        dispatcher.forward(request, response); 
+        RequestDispatcher dispatcher = request.getRequestDispatcher("resources/vehicle/checkVehicle.jsp");
+        dispatcher.forward(request, response);
     } 
 
     /** 

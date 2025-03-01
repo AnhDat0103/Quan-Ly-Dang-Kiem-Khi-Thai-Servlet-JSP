@@ -118,8 +118,8 @@ public class dangKyKD extends HttpServlet {
             int vehicleID = vehicleDao.getVehicleIDByPlateNumber(plateNumber);
             int stationID = stationDao.getStationIDByName(stationName);
             
-            if(inspectionRecordDao.isVehicleInspectedToday(vehicleID)){
-                request.setAttribute("message", "Phương tiện đã quá số lần đăng kiểm trong một ngày!");
+            if(inspectionRecordDao.isVehicleInspected(vehicleID)){
+                request.setAttribute("message", "Phương tiện đã đăng ký đăng kiểm!");
                 doGet(request, response);
                 return;
             }
