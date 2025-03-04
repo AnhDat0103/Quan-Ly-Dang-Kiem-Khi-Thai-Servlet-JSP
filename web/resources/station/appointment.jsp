@@ -180,7 +180,7 @@
                 </c:if>
             </div>
             <c:if test="${not empty listEmpty}">
-                <div class="alert alert-dark text-center" role="alert">
+                <div class="alert alert-dark text-center notHidden" role="alert">
                     ${requestScope.listEmpty}
                 </div>
             </c:if>
@@ -312,7 +312,8 @@
 
             setTimeout(function () {
                 let alertBox = document.querySelector(".alert");
-                if (alertBox) {
+                let alertBox2 = document.querySelector(".alert .notHidden");
+                if (alertBox && !alertBox2) {
                     alertBox.style.display = "none";
                 }
             }, 5000);

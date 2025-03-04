@@ -16,21 +16,38 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
         <style>
-        body {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .content-wrapper {
-            flex: 1 0 auto;
-            margin-bottom: 2rem;
-        }
-        
-        .footer {
-            flex-shrink: 0;
-            padding: 1rem 0;
-        }
+         body {
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                margin: 0;
+            }
+
+            .navbar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                z-index: 1030;
+            }
+
+            .content-wrapper {
+                flex: 1;
+                padding-top: 0px; /* Đảm bảo nội dung không bị navbar che */
+                padding-bottom: 0px; /* Tránh bị footer che */
+            }
+
+            /* Footer nhỏ gọn hơn */
+            .footer {
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+                background-color: #f8f9fa;
+                padding: 0.5rem 0; /* Giảm padding để footer nhỏ hơn */
+                box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+                font-size: 0.9rem; /* Chữ nhỏ hơn */
+            }
+
     </style>
     </head>
     <body>

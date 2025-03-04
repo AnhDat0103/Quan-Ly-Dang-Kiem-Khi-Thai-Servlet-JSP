@@ -17,7 +17,7 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
         <style>
-            body {
+          body {
                 min-height: 100vh;
                 display: flex;
                 flex-direction: column;
@@ -48,7 +48,6 @@
                 box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
                 font-size: 0.9rem; /* Chữ nhỏ hơn */
             }
-
         </style>
     </head>
     <body>
