@@ -278,6 +278,7 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
         }
         return false; // Nếu không tìm thấy bản ghi nào thì trả về false
     }
+        
     public List<InspectionRecords> getListInspectionRecordsWithTime(String status, String startDate, String endDate, int stationId, int startRecord, int recordPerPage) {
         List<InspectionRecords> recordses = new ArrayList<>();
         String sql = "SELECT * FROM InspectionRecords where StationID = ? " + status + " and InspectionDate BETWEEN ? AND ?  ORDER BY RecordID desc OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
@@ -305,6 +306,7 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
         }
         return recordses;
     }
+        
 
     public boolean updateEmissions(int recordId, double co2Emission, double hcEmission, String comment, String result) {
 
