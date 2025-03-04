@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import microsoft.sql.Types;
 import java.sql.*;
 import model.Vehicles;
-
+import java.util.HashMap;
 
 /**
  *
@@ -79,15 +79,16 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
         return false;
     }
 
-    public int getNumberOfInspectionRecordsInCurrentDay() {
+    public int getNumberOfInspectionRecordsInCurrentDay(int station) {
         int numberRecordsInDay = 0;
         String currentDate = LocalDate.now().toString();
         String sql = "SELECT COUNT(*)  \n"
                 + "FROM InspectionRecords  \n"
-                + "WHERE CAST(InspectionDate AS DATE) = ?";
+                + "WHERE StationID = ? and CAST(InspectionDate AS DATE) = ?";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
-            pt.setString(1, currentDate);
+            pt.setInt(1, station);
+            pt.setString(2, currentDate);
             ResultSet rs = pt.executeQuery();
             if (rs.next()) {
                 numberRecordsInDay = rs.getInt(1);
@@ -98,13 +99,14 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
         return numberRecordsInDay;
     }
 
-    public int getNumberOfInspectionRecordsIsInspected() {
+    public int getNumberOfInspectionRecordsIsInspected(int stationId) {
         int numberRecordsIsInspectedInDay = 0;
         String currentDate = LocalDate.now().toString();
-        String sql = "select count(*) from InspectionRecords WHERE CAST(InspectionDate AS DATE) = ? and Result <> 'Pending'";
+        String sql = "select count(*) from InspectionRecords WHERE StationID = ? and CAST(InspectionDate AS DATE) = ? and Result <> 'Pending'";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
-            pt.setString(1, currentDate);
+            pt.setInt(1, stationId);
+            pt.setString(2, currentDate);
             ResultSet rs = pt.executeQuery();
             if (rs.next()) {
                 numberRecordsIsInspectedInDay = rs.getInt(1);
@@ -159,12 +161,13 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
         return noOfRecords;
     }
 
-    public int getNoOfRecordsPending(int stationId) {
+    public int getNoOfRecordsPendingAtCurrentDate(int stationId, String today) {
         int noOfRecords = 0;
-        String sql = "SELECT count(*) FROM InspectionRecords where StationID = ? and Result = 'Pending'";
+        String sql = "SELECT count(*) FROM InspectionRecords where StationID = ? and Result = 'Pending' and InspectionDate = ?";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setInt(1, stationId);
+            pt.setDate(2, new java.sql.Date(Configuration.convertStringToDate(today).getTime()));
             ResultSet rs = pt.executeQuery();
             if (rs.next()) {
                 noOfRecords = rs.getInt(1);
@@ -175,14 +178,15 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
         return noOfRecords;
     }
 
-    public List<InspectionRecords> getListInspectionRecordsPending(int stationId, int startRecord, int recordsPerPage) {
+    public List<InspectionRecords> getListInspectionRecordsPendingAtCurrentDate(int stationId, int startRecord, int recordsPerPage, String currentDate) {
         List<InspectionRecords> recordses = new ArrayList<>();
-        String sql = "SELECT * FROM InspectionRecords where StationID = ? and Result = 'Pending' ORDER BY RecordID desc OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        String sql = "SELECT * FROM InspectionRecords where StationID = ? and Result = 'Pending' and InspectionDate = ?  ORDER BY RecordID desc OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setInt(1, stationId);
-            pt.setInt(2, startRecord);
-            pt.setInt(3, recordsPerPage);
+            pt.setDate(2, new java.sql.Date(Configuration.convertStringToDate(currentDate).getTime()));
+            pt.setInt(3, startRecord);
+            pt.setInt(4, recordsPerPage);
             ResultSet rs = pt.executeQuery();
             while (rs.next()) {
                 recordses.add(new InspectionRecords(rs.getInt("RecordID"),
@@ -424,4 +428,83 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
         }
         return listhistory;
     }
+
+    public int getNoOfRecordsWithTime(String startDate, String endDate, int stationId) {
+        int noOfRecords = 0;
+        String sql = "select count(*) from InspectionRecords where StationID = ? and Result <> 'Pending' and InspectionDate between ? and ?";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setInt(1, stationId);
+            pt.setDate(2, new java.sql.Date(Configuration.convertStringToDate(startDate).getTime()));
+            pt.setDate(3, new java.sql.Date(Configuration.convertStringToDate(endDate).getTime()));
+            ResultSet rs = pt.executeQuery();
+            if (rs.next()) {
+                noOfRecords = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return noOfRecords;
+    }
+
+    public HashMap<String, Integer> getNoRecordsWithThoughtPendingByADay(String startDate, String endDate, int stationId) {
+        HashMap<String, Integer> records =  new HashMap<>();
+        String sql  = "select CAST(InspectionDate AS DATE), count(*) from InspectionRecords where StationID = ? and Result <> 'Pending' and InspectionDate between ? and ?\n" + " group by CAST(InspectionDate AS DATE)";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setInt(1, stationId);
+            pt.setDate(2, new java.sql.Date(Configuration.convertStringToDate(startDate).getTime()));
+            pt.setDate(3, new java.sql.Date(Configuration.convertStringToDate(endDate).getTime()));
+            ResultSet rs = pt.executeQuery();
+            while(rs.next()) {
+                records.put(rs.getDate(1).toString(), rs.getInt(2));
+            }
+            return records;
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public HashMap<String, Integer> getNoRecordsPassByADay(String startDate, String endDate, int stationId) {
+        HashMap<String, Integer> records =  new HashMap<>();
+        String sql  = "select CAST(InspectionDate AS DATE), count(*) from InspectionRecords where StationID = ? and Result = 'Pass' and InspectionDate between ? and ?\n" + " group by CAST(InspectionDate AS DATE)";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setInt(1, stationId);
+            pt.setDate(2, new java.sql.Date(Configuration.convertStringToDate(startDate).getTime()));
+            pt.setDate(3, new java.sql.Date(Configuration.convertStringToDate(endDate).getTime()));
+            ResultSet rs = pt.executeQuery();
+            while(rs.next()) {
+                records.put(rs.getDate(1).toString(), rs.getInt(2));
+            }
+            return records;
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public HashMap<String, Integer> getNoRecordsFailByADay(String startDate, String endDate, int stationId) {
+        HashMap<String, Integer> records =  new HashMap<>();
+        String sql  = "select CAST(InspectionDate AS DATE), count(*) from InspectionRecords where StationID = ? and Result = 'Fail' and InspectionDate between ? and ?\n" + " group by CAST(InspectionDate AS DATE)";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setInt(1, stationId);
+            pt.setDate(2, new java.sql.Date(Configuration.convertStringToDate(startDate).getTime()));
+            pt.setDate(3, new java.sql.Date(Configuration.convertStringToDate(endDate).getTime()));
+            ResultSet rs = pt.executeQuery();
+            while(rs.next()) {
+                records.put(rs.getDate(1).toString(), rs.getInt(2));
+            }
+            return records;
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

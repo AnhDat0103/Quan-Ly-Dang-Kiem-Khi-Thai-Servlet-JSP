@@ -58,9 +58,6 @@ public class GetProfilePage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        StationDao sd = new StationDao();
-        List<InspectionStation> stations = sd.findAll();
-        request.setAttribute("stations", stations);
         request.getRequestDispatcher("resources/station/profile.jsp").forward(request, response);
     }
 
