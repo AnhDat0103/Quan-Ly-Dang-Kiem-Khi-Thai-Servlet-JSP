@@ -4,7 +4,7 @@
  */
 package dao;
 
-import java.lang.invoke.VarHandle;
+
 import config.Configuration;
 
 import java.sql.Connection;
@@ -16,8 +16,6 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import microsoft.sql.Types;
-import java.sql.*;
 import model.Vehicles;
 import java.util.HashMap;
 
@@ -272,17 +270,16 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
 
         try (PreparedStatement ps = connect.prepareStatement(sql)) {
             ps.setInt(1, vehicleID);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                String result = rs.getString("Result");
-                return "Pass".equalsIgnoreCase(result); // Nếu result là "Pass" thì return true
-            }
-        } catch (SQLException e) {
+             ResultSet rs = ps.executeQuery() ;
+                if (rs.next()) {
+                    String result = rs.getString("Result");
+                    return "Pass".equalsIgnoreCase(result); // Nếu result là "Pass" thì return true
+                }
+            } catch (SQLException e) {
             e.printStackTrace();
         }
         return false; // Nếu không tìm thấy bản ghi nào thì trả về false
     }
-    
 
     public List<InspectionRecords> getListInspectionRecordsWithTime(String status, String startDate, String endDate, int stationId, int startRecord, int recordPerPage) {
         List<InspectionRecords> recordses = new ArrayList<>();
@@ -307,14 +304,14 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
                         rs.getDouble("HCEmission"),
                         rs.getString("Comments")));
             }
+               return recordses;
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-        return recordses;
+         }      
+        return null ;
     }
-    
+  
     public boolean updateEmissions(int recordId, double co2Emission, double hcEmission, String comment, String result) {
-
         try {
             String sql = "UPDATE InspectionRecords SET CO2Emission = ?, HCEmission = ? , Comments = ? , Result = ?  WHERE RecordID = ?";
             PreparedStatement st = connect.prepareStatement(sql);

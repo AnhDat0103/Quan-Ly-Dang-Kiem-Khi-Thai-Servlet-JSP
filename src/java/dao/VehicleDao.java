@@ -200,7 +200,7 @@ public class VehicleDao implements Dao<Vehicles> {
         }
         return null;
     }
-
+  
     public List<Vehicles> getAllVehiclesByUserID(int ownerID) {
         List<Vehicles> vehicleList = new ArrayList<>();
         String sql = "SELECT PlateNumber, Brand, Model FROM Vehicles WHERE OwnerID = ?";
