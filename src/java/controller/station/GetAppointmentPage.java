@@ -15,7 +15,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -92,6 +91,7 @@ public class GetAppointmentPage extends HttpServlet {
         }
         int noOfRecords = 0;
         int startRecord = (page - 1) * recordPerPage;
+        String today = Configuration.getCurrentTimeByFormat(new Date());
 
         String action = request.getParameter("action") == null ? "" : request.getParameter("action");
         request.setAttribute("action", action);
@@ -106,8 +106,8 @@ public class GetAppointmentPage extends HttpServlet {
             request.setAttribute("searchKeyWord", keyWord);
             noOfRecords = ird.getNoOfRecordPendingByResearch(stationId, keyWord);
         } else {
-            inspectionRecordses = ird.getListInspectionRecordsPending(stationId, startRecord, recordPerPage);
-            noOfRecords = ird.getNoOfRecordsPending(stationId);
+            inspectionRecordses = ird.getListInspectionRecordsPendingAtCurrentDate(stationId, startRecord, recordPerPage, today);
+            noOfRecords = ird.getNoOfRecordsPendingAtCurrentDate(stationId, today);
         }
         if (inspectionRecordses.isEmpty()) {
             request.setAttribute("listEmpty", "Không tìm thấy đăng kiểm nào.");

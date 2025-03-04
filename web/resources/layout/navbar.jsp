@@ -26,7 +26,7 @@
             <!-- Thêm phần Profile và Đăng xuất -->
             <ul class="navbar-nav">
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle active" href="profile.html" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                    <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
                         <img class="sidebar-avatar rounded-circle" src="resources/images/avatar.png" 
                              style="width: 24px; height: 24px; margin-right: 4px;"> ${currentUser.fullName}
                     </a>

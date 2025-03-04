@@ -77,4 +77,10 @@ public class Configuration {
         java.sql.Date nextInspectionDate = new java.sql.Date(cal.getTimeInMillis());
         return  nextInspectionDate;
     }
+    
+    public static String getCurrentTimeByFormat(Date date) {
+       SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+       sdf.setLenient(false);
+       return sdf.format(date);
+    }
 }

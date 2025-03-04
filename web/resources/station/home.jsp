@@ -75,59 +75,98 @@
                                 <h5 class="card-title mb-0">Kết quả kiểm định</h5>    
                             </div>
                         </div>
-                        <div class="card-body">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Ngày</th>
-                                        <th>Biển số</th>
-                                        <th>Chủ xe</th>
-                                        <th>Kết quả</th>
-                                        <th>Trạng thái</th>
-                                        <th>Chi tiết</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <c:forEach var="record" items="${InspecedtionRecords}">
-                                        <tr>
-                                            <td>${record.inspectionDate}</td>
-                                            <td>${record.vehicle.plateNumber}</td>
-                                            <td>${record.vehicle.owner.fullName}</td>
-                                            <td><span class="badge ${record.result eq 'Pass' ? 'bg-success' : 'bg-danger'}">${record.result}</span></td>
-                                            <td><span class="badge bg-success">Đã kiểm định</span></td>
-                                            <td>
-                                                <button class="btn btn-sm btn-info view-detail" data-bs-toggle="modal" 
-                                                        data-bs-target="#detailModal"
-                                                        data-plate="${record.vehicle.plateNumber}"
-                                                        data-owner="${record.vehicle.owner.fullName}"
-                                                        data-date="${record.inspectionDate}"
-                                                        data-engine="${record.vehicle.engineNumber}"
-                                                        data-result="${record.result}"
-                                                        data-model="${record.vehicle.model}"
-                                                        data-comment="${record.comments}">
-                                                    <i class="bi bi-eye"></i> Xem
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </c:forEach>
-                                </tbody>
-                            </table>
-                        </div>
+                        <c:choose>
+                            <c:when test="${empty requestScope.InspecedtionRecords}">
+                                <div class="alert text-center errorEmpty" role="alert">
+                                    Hiện chưa có đăng kiểm nào được tìm thấy.
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                <div class="card-body">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Ngày</th>
+                                                <th>Biển số</th>
+                                                <th>Chủ xe</th>
+                                                <th>Kết quả</th>
+                                                <th>Trạng thái</th>
+                                                <th>Chi tiết</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach var="record" items="${InspecedtionRecords}">
+                                                <tr>
+                                                    <td>${record.inspectionDate}</td>
+                                                    <td>${record.vehicle.plateNumber}</td>
+                                                    <td>${record.vehicle.owner.fullName}</td>
+                                                    <td><span class="badge ${record.result eq 'Pass' ? 'bg-success' : 'bg-danger'}">${record.result}</span></td>
+                                                    <td><span class="badge bg-success">Đã kiểm định</span></td>
+                                                    <td>
+                                                        <button class="btn btn-sm btn-info view-detail" data-bs-toggle="modal" 
+                                                                data-bs-target="#detailModal"
+                                                                data-plate="${record.vehicle.plateNumber}"
+                                                                data-owner="${record.vehicle.owner.fullName}"
+                                                                data-date="${record.inspectionDate}"
+                                                                data-engine="${record.vehicle.engineNumber}"
+                                                                data-result="${record.result}"
+                                                                data-model="${record.vehicle.model}"
+                                                                data-comment="${record.comments}">
+                                                            <i class="bi bi-eye"></i> Xem
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
 
-                        <nav class="mt-3">
-                            <ul class="pagination justify-content-center">
-                                <li class="page-item ${currentPage != 1 ? '' : 'disabled'}">
-                                    <a class="page-link" href="trung-tam-dang-kiem?trang-so=${currentPage - 1}"><i class="bi bi-chevron-left"></i></a>
-                                </li>
-                                <c:forEach begin="1" end="${noOfPage}" var="i">
-                                    <li class="page-item ${currentPage == i ? 'active' : ''}"><a class="page-link" href="trung-tam-dang-kiem?trang-so=${i}">${i}</a></li>
-                                    </c:forEach>
-                                <li class="page-item ${currentPage lt noOfPage ? '' : 'disabled'}">
-                                    <a class="page-link" href="trung-tam-dang-kiem?trang-so=${currentPage + 1}"><i class="bi bi-chevron-right"></i></a>
-                                </li>
-                            </ul>
-                        </nav>
+                                <nav class="mt-3">
+                                    <ul class="pagination justify-content-center">
+                                        <li class="page-item ${currentPage != 1 ? '' : 'disabled'}">
+                                            <a class="page-link" href="trung-tam-dang-kiem?trang-so=${currentPage - 1}"><i class="bi bi-chevron-left"></i></a>
+                                        </li>
+                                        <c:forEach begin="1" end="${noOfPage}" var="i">
+                                            <li class="page-item ${currentPage == i ? 'active' : ''}"><a class="page-link" href="trung-tam-dang-kiem?trang-so=${i}">${i}</a></li>
+                                            </c:forEach>
+                                        <li class="page-item ${currentPage lt noOfPage ? '' : 'disabled'}">
+                                            <a class="page-link" href="trung-tam-dang-kiem?trang-so=${currentPage + 1}"><i class="bi bi-chevron-right"></i></a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </c:otherwise>
+                        </c:choose>
+
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal nhập thông tin khi stationId null -->
+
+        <div class="modal fade" id="stationModal" tabindex="-1" aria-labelledby="stationModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="stationModalLabel">Cập nhật nơi làm việc</h5>
+                    </div>
+                    <form action="cap-nhat-thong-tin" method="POST">
+                        <div class="modal-body">
+                            <input type="hidden" name="action" value="change-location">
+                            <div class="mb-3">
+                                <label class="form-label">Cơ sở làm việc</label>
+                                <select class="form-control" name="inspecStation" required>
+                                    <option value="">-- Chọn cơ sở --</option>
+                                    <c:forEach var="s" items="${requestScope.stations}">
+                                        <option value="${s.stationId}">${s.name}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Lưu</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -230,6 +269,12 @@
                         setBadge("modelResult", this.getAttribute("data-result"));
                     });
                 });
+                let stationId = "${currentUser.inspectionStation.stationId}";
+                console.log("Station ID:", stationId);
+                if (!stationId || stationId === "0") {
+                    let stationModal = new bootstrap.Modal(document.getElementById("stationModal"));
+                    stationModal.show();
+                }
             });
 
 // Hàm cập nhật màu sắc cho badge
