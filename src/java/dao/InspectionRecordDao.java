@@ -119,7 +119,7 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
 
     public List<InspectionRecords> getInspecedtationRecords(int stationId, int startRecord, int recordsPerPage) {
         List<InspectionRecords> recordses = new ArrayList<>();
-        String sql = "SELECT * FROM InspectionRecords where StationID = ? and Result <> 'Pending' ORDER BY RecordID desc OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        String sql = "SELECT * FROM InspectionRecords where StationID = ? and Result <> 'Pending' ORDER BY CAST(InspectionDate AS DATE) desc OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setInt(1, stationId);
@@ -180,7 +180,7 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
 
     public List<InspectionRecords> getListInspectionRecordsPendingAtCurrentDate(int stationId, int startRecord, int recordsPerPage, String currentDate) {
         List<InspectionRecords> recordses = new ArrayList<>();
-        String sql = "SELECT * FROM InspectionRecords where StationID = ? and Result = 'Pending' and InspectionDate = ?  ORDER BY RecordID desc OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        String sql = "SELECT * FROM InspectionRecords where StationID = ? and Result = 'Pending' and InspectionDate = ?  ORDER BY CAST(InspectionDate AS DATE), RecordID desc OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setInt(1, stationId);
@@ -210,7 +210,7 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
     public List<InspectionRecords> getListInspectionRecordsPendingBySearching(String searchDetails, int stationId, int startRecord, int recordPerPage) {
         List<InspectionRecords> recordses = new ArrayList<>();
         int id = vd.getVehicleIDByPlateNumber(searchDetails.trim().toUpperCase());
-        String sql = "SELECT * FROM InspectionRecords where StationID = ? and VehicleID = ?  ORDER BY RecordID desc OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        String sql = "SELECT * FROM InspectionRecords where StationID = ? and VehicleID = ?  ORDER BY CAST(InspectionDate AS DATE), RecordID desc OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setInt(1, stationId);
@@ -286,7 +286,7 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
 
     public List<InspectionRecords> getListInspectionRecordsWithTime(String status, String startDate, String endDate, int stationId, int startRecord, int recordPerPage) {
         List<InspectionRecords> recordses = new ArrayList<>();
-        String sql = "SELECT * FROM InspectionRecords where StationID = ? " + status + " and InspectionDate BETWEEN ? AND ?  ORDER BY RecordID desc OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        String sql = "SELECT * FROM InspectionRecords where StationID = ? " + status + " and InspectionDate BETWEEN ? AND ?  ORDER BY CAST(InspectionDate AS DATE), RecordID desc OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setInt(1, stationId);
