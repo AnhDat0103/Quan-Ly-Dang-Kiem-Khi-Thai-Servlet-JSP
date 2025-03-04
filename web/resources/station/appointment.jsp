@@ -140,7 +140,7 @@
                                         <td><span class="badge modelResult">${r.result}</span></td>
                                         <td>
                                             <div class="btn-group">
-                                                <button class="btn btn-sm btn-info view-detail" data-bs-toggle="modal" 
+                                                <button class="btn btn-sm btn-info view-detail mr-2" data-bs-toggle="modal" 
                                                         data-bs-target="#viewAppointmentModal"
                                                         data-inspectId="${r.recordId}"
                                                         data-plate="${r.vehicle.plateNumber}"
@@ -149,10 +149,6 @@
                                                         data-inspectDate="${r.inspectionDate}"
                                                         data-result="${r.result}">
                                                     <i class="bi bi-eye"></i>
-                                                </button>
-
-                                                <button class="btn btn-sm btn-danger">
-                                                    <i class="bi bi-trash"></i>
                                                 </button>
                                             </div>
                                         </td>
@@ -180,7 +176,7 @@
                 </c:if>
             </div>
             <c:if test="${not empty listEmpty}">
-                <div class="alert alert-dark text-center notHidden" role="alert">
+                <div class="text-center">
                     ${requestScope.listEmpty}
                 </div>
             </c:if>
@@ -299,6 +295,13 @@
                 document.querySelectorAll(".modelResult").forEach(span => {
                     setBadge(span, span.innerText);
                 });
+                let alertBox = document.querySelector(".alert");
+
+                if (alertBox) {
+                    setTimeout(function () {
+                        alertBox.style.display = "none";
+                    }, 5000);
+                }
             });
 
             function setBadge(element, status) {
@@ -310,13 +313,6 @@
                 }
             }
 
-            setTimeout(function () {
-                let alertBox = document.querySelector(".alert");
-                let alertBox2 = document.querySelector(".alert .notHidden");
-                if (alertBox && !alertBox2) {
-                    alertBox.style.display = "none";
-                }
-            }, 5000);
         </script>
     </body>
 </html> 
