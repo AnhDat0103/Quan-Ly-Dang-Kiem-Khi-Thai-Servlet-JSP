@@ -105,7 +105,9 @@
 
                                     </div></c:if>
                                 <c:if test="${empty historyList}">
-                                    Bạn chưa đăng ký kiểm định
+                                    <div class="alert text-center">
+                                        Bạn chưa đăng ký kiểm định
+                                    </div>  
                                 </c:if>
                             </div>
                         </div>

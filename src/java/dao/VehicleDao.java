@@ -24,7 +24,7 @@ public class VehicleDao implements Dao<Vehicles> {
     Connection connect = DBContext.getInstance().getConnection();
     UserDao ud = new UserDao();
 //    InspectionRecordDao id = new InspectionRecordDao();
-    
+
     @Override
     public int save(Vehicles t) {
         String sql = "INSERT INTO Vehicles (OwnerID, PlateNumber, Brand, Model, ManufactureYear, EngineNumber, Status)"
@@ -80,9 +80,7 @@ public class VehicleDao implements Dao<Vehicles> {
     public int delete(int t) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
-    
-    
-    
+
     public boolean deleteByPlateNumber(String plateNumber) {
         String sql = "DELETE FROM Vehicles WHERE PlateNumber = ?";
         try {
@@ -95,7 +93,7 @@ public class VehicleDao implements Dao<Vehicles> {
         }
         return false;
     }
-    
+
     public String selectByPlateNumber(String plateNumber) {
         String sql = "SELECT vehicleID, ownerID, plateNumber, brand, model, manufactureYear, engineNumber "
                 + "FROM Vehicles WHERE PlateNumber = ?";
@@ -161,7 +159,7 @@ public class VehicleDao implements Dao<Vehicles> {
         }
         return vehicleID;
     }
-    
+
     public User getOwnerByPlateNumber(String plateNumber) {
         String sql = "select * from Vehicles where PlateNumber = ?";
         try {
@@ -203,36 +201,14 @@ public class VehicleDao implements Dao<Vehicles> {
         return null;
     }
 
-    public List <Vehicles> getAllVehicles() {
-        String sql = "select * from Vehicles";
-        List<Vehicles> lv = new ArrayList<>();
-        try {        
-            PreparedStatement pt = connect.prepareStatement(sql);
-            
-            ResultSet rs = pt.executeQuery();
-            while (rs.next()) {
-                Vehicles v = new Vehicles(rs.getInt("VehicleID"),
-                        ud.findUserById(rs.getInt("OwnerID")),
-                        rs.getString("PlateNumber"),
-                        rs.getString("Brand"),
-                        rs.getString("Model"),
-                        rs.getInt("ManufactureYear"),
-                        rs.getString("EngineNumber"));
-                lv.add(v);
-               } catch(SQLException e){
-            e.printStackTrace();
-        }
-               return lv;
-    }
-    
-    public List<Vehicles> getAllVehiclesByUserID(int ownerID){
+    public List<Vehicles> getAllVehiclesByUserID(int ownerID) {
         List<Vehicles> vehicleList = new ArrayList<>();
         String sql = "SELECT PlateNumber, Brand, Model FROM Vehicles WHERE OwnerID = ?";
-        try{
+        try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setInt(1, ownerID);
             ResultSet rs = pt.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 Vehicles vehilce = new Vehicles(
                         rs.getString("plateNumber"),
                         rs.getString("brand"),
@@ -240,45 +216,48 @@ public class VehicleDao implements Dao<Vehicles> {
                 );
                 vehicleList.add(vehilce);
             }
-        } catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return vehicleList;
     }
-     
-    public boolean checkVehicleExistByOwnerId(int ownerID){
+
+    public boolean checkVehicleExistByOwnerId(int ownerID) {
         boolean exist = false;
         String sql = "SELECT COUNT(*) FROM Vehicles WHERE OwnerID = ?";
-        try{
+        try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setInt(1, ownerID);
             ResultSet rs = pt.executeQuery();
-            if(rs.next()){
-               exist = rs.getInt(1) > 0;
+            if (rs.next()) {
+                exist = rs.getInt(1) > 0;
             }
-        }catch(SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return exist;
     }
-    
-    public Vehicles checkPlateNumAndOwner(String plateNum, String fullName, String tel){
+
+    public Vehicles checkPlateNumAndOwner(String plateNum, String fullName, String tel) {
         User u = ud.getUserbyTelAndName(tel, fullName);
-        if(u == null) return null;
+        if (u == null) {
+            return null;
+        }
         String sql = "select * from Vehicles where PlateNumber = ? and OwnerID = ?";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setString(1, plateNum);
             pt.setInt(2, u.getUserId());
             ResultSet rs = pt.executeQuery();
-            if(rs.next()) {
+            if (rs.next()) {
                 Vehicles v = new Vehicles(rs.getInt("VehicleID"),
                         ud.findUserById(rs.getInt("OwnerID")),
                         rs.getString("PlateNumber"),
-                        rs.getString("Brand"), 
+                        rs.getString("Brand"),
                         rs.getString("Model"),
                         rs.getInt("ManufactureYear"),
-                        rs.getString("EngineNumber"));
+                        rs.getString("EngineNumber"),
+                        vehicleEnums.valueOf(rs.getString("Status")));
                 return v;
             }
         } catch (SQLException e) {

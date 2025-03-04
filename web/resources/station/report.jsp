@@ -4,7 +4,9 @@
     Author     : DAT
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="vi">
     <head>
@@ -18,12 +20,8 @@
         <!-- Font Awesome -->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
-        <!-- DataTables -->
-        <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-
         <!-- Custom CSS -->
         <link href="resources/css/sb-admin-2.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
     </head>
     <body id="page-top">
         <%@include file="../layout/navbar.jsp"%>
@@ -42,30 +40,30 @@
                             <div class="card-header py-3">
                                 <h6 class="m-0 font-weight-bold text-primary">Bộ lọc báo cáo</h6>
                             </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-3 mb-3">
-                                        <label>Từ ngày:</label>
-                                        <input type="date" class="form-control form-control-lg">
-                                    </div>
-                                    <div class="col-md-3 mb-3">
-                                        <label>Đến ngày:</label>
-                                        <input type="date" class="form-control form-control-lg">
-                                    </div>
-                                    <div class="col-md-3 mb-3">
-                                        <label>Loại báo cáo:</label>
-                                        <select class="form-control form-control-lg">
-                                            <option value="daily">Báo cáo theo ngày</option>
-                                            <option value="monthly">Báo cáo theo tháng</option>
-                                            <option value="yearly">Báo cáo theo năm</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-3 mb-3">
-                                        <label>&nbsp;</label>
-                                        <button style="margin-top:24px;" class="btn btn-primary btn-lg btn-block">Tạo báo cáo</button>
+                            <form action="bao-cao-kiem-dinh" method="GET">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-3 mb-3">
+                                            <label>Từ ngày:</label>
+                                            <input type="date" class="form-control form-control-lg" name="fromDate" value="${requestScope.startDate}" required>
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label>Đến ngày:</label>
+                                            <input type="date" class="form-control form-control-lg" name="toDate" value="${requestScope.endDate}" required>
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label>Loại báo cáo:</label>
+                                            <select class="form-control form-control-lg">
+                                                <option value="daily">Báo cáo theo ngày</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label>&nbsp;</label>
+                                            <button style="margin-top:24px;" class="btn btn-primary btn-lg btn-block" type="submit">Tạo báo cáo</button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            </form>
                         </div>
 
                         <!-- Thống kê tổng quan -->
@@ -77,7 +75,7 @@
                                             <div class="col mr-2">
                                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                     Tổng số xe đăng kiểm</div>
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800">215</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">${requestScope.sumVehicle}</div>
                                             </div>
                                             <div class="col-auto">
                                                 <i class="fas fa-car fa-2x text-gray-300"></i>
@@ -94,7 +92,7 @@
                                             <div class="col mr-2">
                                                 <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                                     Đạt tiêu chuẩn</div>
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800">180</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">${requestScope.sumVehiclePass}</div>
                                             </div>
                                             <div class="col-auto">
                                                 <i class="fas fa-check fa-2x text-gray-300"></i>
@@ -111,7 +109,7 @@
                                             <div class="col mr-2">
                                                 <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                                     Không đạt</div>
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800">35</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">${requestScope.sumVehicleFail}</div>
                                             </div>
                                             <div class="col-auto">
                                                 <i class="fas fa-exclamation-triangle fa-2x text-gray-300"></i>
@@ -130,12 +128,12 @@
                                                     Tỷ lệ đạt</div>
                                                 <div class="row no-gutters align-items-center">
                                                     <div class="col-auto">
-                                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">83.7%</div>
+                                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800"><fmt:formatNumber value="${percentPass}" type="number" maxFractionDigits="2" />%</div>
                                                     </div>
                                                     <div class="col">
                                                         <div class="progress progress-sm mr-2">
                                                             <div class="progress-bar bg-info" role="progressbar"
-                                                                 style="width: 83.7%"></div>
+                                                                 style="width: ${requestScope.percentPass}px;"></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -149,49 +147,51 @@
                             </div>
                         </div>
 
-                        <!-- Bảng chi tiết -->
-                        <div class="card shadow mb-4">
-                            <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                                <h6 class="m-0 font-weight-bold text-primary">Chi tiết báo cáo</h6>
-                                <button class="btn btn-success">
-                                    <i class="fas fa-download fa-sm text-white-50"></i> Xuất Excel
-                                </button>
-                            </div>
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered" width="100%" cellspacing="0">
-                                        <thead>
-                                            <tr>
-                                                <th>Ngày</th>
-                                                <th>Số lượng xe</th>
-                                                <th>Đạt</th>
-                                                <th>Không đạt</th>
-                                                <th>Tỷ lệ đạt</th>
-                                                <th>Doanh thu</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>20/03/2024</td>
-                                                <td>25</td>
-                                                <td>20</td>
-                                                <td>5</td>
-                                                <td>80%</td>
-                                                <td>12,500,000 đ</td>
-                                            </tr>
-                                            <tr>
-                                                <td>19/03/2024</td>
-                                                <td>30</td>
-                                                <td>28</td>
-                                                <td>2</td>
-                                                <td>93.3%</td>
-                                                <td>15,000,000 đ</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                        <c:if test="${requestScope.records.size() > 0}">
+                            <!-- Bảng chi tiết -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                                    <h6 class="m-0 font-weight-bold text-primary">Chi tiết báo cáo</h6>
+                                    <button class="btn btn-success">
+                                        <i class="fas fa-download fa-sm text-white-50"></i> Xuất Excel
+                                    </button>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" width="100%" cellspacing="0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Ngày</th>
+                                                    <th>Số lượng xe</th>
+                                                    <th>Đạt</th>
+                                                    <th>Không đạt</th>
+                                                    <th>Tỷ lệ đạt</th>
+                                                    <th>Doanh thu</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <c:forEach items="${records}" var="r">
+                                                    <tr>
+                                                        <td>${r.inspectionDate}</td>
+                                                        <td>${r.sumNumOfVehicle}</td>
+                                                        <td>${r.sumNumOfPass}</td>
+                                                        <td>${r.sumNumOfFail}</td>
+                                                        <td><fmt:formatNumber value="${(r.sumNumOfPass  * 100) / r.sumNumOfVehicle}" type="number" maxFractionDigits="2" />%</td>
+                                                        <td><fmt:formatNumber value="${r.sumNumOfVehicle * 90000}" />đ</td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </c:if>
+                        <c:if test="${requestScope.records.size() == 0}">
+                            <div class="alert alert-dark text-center" role="alert">
+                                Không có bản đăng kiểm nào được tìm thấy.
+                            </div>
+                        </c:if>
+
 
                     </div>
                 </div>
@@ -206,44 +206,6 @@
             <i class="fas fa-angle-up"></i>
         </a>
 
-        <!-- Logout Modal-->
-<!--        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Bạn muốn đăng xuất?</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">Chọn "Đăng xuất" bên dưới nếu bạn thực sự muốn kết thúc phiên làm việc.</div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy</button>
-                        <a class="btn btn-primary" href="login.html">Đăng xuất</a>
-                    </div>
-                </div>
-            </div>
-        </div>-->
-
-        <!-- jQuery -->
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-        <!-- Bootstrap Bundle JS -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-
-        <!-- jQuery Easing -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
-
-        <!-- DataTables -->
-        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-        <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
-
-        <!-- Chart.js -->
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-        <!-- Custom scripts -->
-        <script src="resources/js/sb-admin-2.min.js"></script>
-        <script src="resources/js/reports.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
     </body>
 </html> 

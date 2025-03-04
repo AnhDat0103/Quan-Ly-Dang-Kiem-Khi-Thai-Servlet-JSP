@@ -75,7 +75,7 @@ public class lichSuKD extends HttpServlet {
         List<String> plateNumbers = vehicleDao.getPlateNumberByOwnerID(currentUser.getUserId());
         if(plateNumbers.isEmpty()){
             request.setAttribute("message","Vui Long Dang Ky Phuong Tien");
-            request.getRequestDispatcher("chu-phuong-tien").forward(request, response);
+            request.getRequestDispatcher("resources/vehicle/lichSuKD.jsp").forward(request, response);
             return;
         }
         
