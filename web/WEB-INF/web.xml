@@ -19,7 +19,7 @@
     <servlet>
         <servlet-name>SaveInspectionServlet</servlet-name>
         <servlet-class>controller.inspectController.SaveInspectionServlet</servlet-class>
-      </servlet>
+    </servlet>
     <servlet>
         <servlet-name>quanLyPhuongTien</servlet-name>
         <servlet-class>controller.vehicleController.quanLyPhuongTien</servlet-class>
@@ -51,6 +51,14 @@
     <servlet>
         <servlet-name>LoginAdminServlet</servlet-name>
         <servlet-class>controller.LoginAdminServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetVehicleOwner</servlet-name>
+        <servlet-class>controller.admin.GetVehicleOwner</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetInspectionStation</servlet-name>
+        <servlet-class>controller.admin.GetInspectionStation</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>GetProfilePage</servlet-name>
@@ -103,6 +111,14 @@
     <servlet-mapping>
         <servlet-name>LoginAdminServlet</servlet-name>
         <url-pattern>/21.04.2000</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetVehicleOwner</servlet-name>
+        <url-pattern>/chi-tiet-chu-phuong-tien</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetInspectionStation</servlet-name>
+        <url-pattern>/chi-tiet-trung-tam-dang-kiem</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>dashboard/auth/login.jsp</welcome-file>
