@@ -278,7 +278,8 @@ public class VehicleDao implements Dao<Vehicles> {
                         rs.getString("Brand"), 
                         rs.getString("Model"),
                         rs.getInt("ManufactureYear"),
-                        rs.getString("EngineNumber"));
+                        rs.getString("EngineNumber"),
+                        vehicleEnums.valueOf(rs.getString("Status")));
                 return v;
             }
         } catch (SQLException e) {

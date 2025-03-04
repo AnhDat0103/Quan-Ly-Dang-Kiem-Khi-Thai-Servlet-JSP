@@ -268,16 +268,18 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
 
         try (PreparedStatement ps = connect.prepareStatement(sql)) {
             ps.setInt(1, vehicleID);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    String result = rs.getString("Result");
-                    return "Pass".equalsIgnoreCase(result); // Nếu result là "Pass" thì return true
-                }
-            } catch (SQLException e) {
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                String result = rs.getString("Result");
+                return "Pass".equalsIgnoreCase(result); // Nếu result là "Pass" thì return true
+            }
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return false; // Nếu không tìm thấy bản ghi nào thì trả về false
     }
+    
+
     public List<InspectionRecords> getListInspectionRecordsWithTime(String status, String startDate, String endDate, int stationId, int startRecord, int recordPerPage) {
         List<InspectionRecords> recordses = new ArrayList<>();
         String sql = "SELECT * FROM InspectionRecords where StationID = ? " + status + " and InspectionDate BETWEEN ? AND ?  ORDER BY RecordID desc OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
@@ -300,12 +302,13 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
                         rs.getDouble("CO2Emission"),
                         rs.getDouble("HCEmission"),
                         rs.getString("Comments")));
-            }catch (SQLException e) {
+            }
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return recordses;
     }
-
+    
     public boolean updateEmissions(int recordId, double co2Emission, double hcEmission, String comment, String result) {
 
         try {
@@ -358,14 +361,13 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
 
     public boolean isVehicleInspectedToday(int vehicleID) {
         String sql = "SELECT COUNT(*) FROM InspectionRecords WHERE VehicleID = ? AND CAST(InspectionDate AS DATE) = ?";
-        
         try {
             PreparedStatement ps = connect.prepareStatement(sql);
             ps.setInt(1, vehicleID);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 int count = rs.getInt(1);
-                return count > 0; // true neu phuong tien da duoc dang kiem qua 1 lan trong ngay 
+                return count > 0; // true neu phuong tien da duoc dang kiem 
            }
         } catch (SQLException e) {
             e.printStackTrace();

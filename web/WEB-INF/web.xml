@@ -26,11 +26,11 @@
     </servlet>
     <servlet>
         <servlet-name>Successfully</servlet-name>
-        <servlet-class>submit.Successfully</servlet-class>
+        <servlet-class>controller.vehicleController.Successfully</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Failed</servlet-name>
-        <servlet-class>submit.Failed</servlet-class>
+        <servlet-class>controller.vehicleController.Failed</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>chinhSuaPT</servlet-name>
@@ -42,9 +42,9 @@
     </servlet>
     <servlet>
         <servlet-name>CheckVehicle</servlet-name>
-        <servlet-class>notifications.CheckVehicle</servlet-class>
-   </servlet>
-   <servlet>
+        <servlet-class>controller.vehicleController.CheckVehicle</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>GetDashboardPage</servlet-name>
         <servlet-class>controller.admin.GetDashboardPage</servlet-class>
     </servlet>
