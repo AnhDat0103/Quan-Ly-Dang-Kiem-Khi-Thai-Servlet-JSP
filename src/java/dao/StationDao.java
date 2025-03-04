@@ -128,4 +128,23 @@ public class StationDao implements Dao<InspectionStation> {
     }
     return stationID;
 }
+    
+    public boolean updateStation(int stationId, String stationName, String address, String phoneNumber ,String email ) {
+    String sql = "UPDATE Stations SET Name = ?, Address = ?, PhoneNumber = ? , Email = ? WHERE StationID = ?";
+    
+    try{
+          PreparedStatement pt = connect.prepareStatement(sql);
+        pt.setString(1, stationName);
+        pt.setString(2, address);
+        pt.setString(3, phoneNumber);
+        pt.setInt(4, stationId);
+
+        int rowsUpdated = pt.executeUpdate();
+        return rowsUpdated > 0; // Trả về true nếu update thành công
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+
 }

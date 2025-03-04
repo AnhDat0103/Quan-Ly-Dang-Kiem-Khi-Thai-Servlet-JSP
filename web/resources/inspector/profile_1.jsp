@@ -21,12 +21,39 @@
         <!-- Custom CSS -->
         <link href="resources/css/sb-admin-2.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+        <style>
+            .alert {
+                padding: 15px;
+                margin: 10px 0;
+                border-radius: 5px;
+                font-weight: bold;
+                text-align: center;
+            }
+            .alert-success {
+                background-color: #d4edda;
+                color: #155724;
+                border: 1px solid #c3e6cb;
+            }
+            .alert-error {
+                background-color: #f8d7da;
+                color: #721c24;
+                border: 1px solid #f5c6cb;
+            }
+        </style>
     </head>
     <body id="page-top">
         <%@include file="../layout/narbar_inspector.jsp"%>
         <div id="wrapper">
 
             <div id="content-wrapper" class="d-flex flex-column">
+                <% 
+       String status = request.getParameter("status");
+       if ("success".equals(status)) { 
+                %>
+                <div class="alert alert-success">Cập nhật thành công!</div>
+                <% } else if ("error".equals(status)) { %>
+                <div class="alert alert-error">Cập nhật thất bại! Vui lòng kiểm tra lại.</div>
+                <% } %>
                 <div id="content">
 
                     <!-- Begin Page Content -->
@@ -95,7 +122,7 @@
                                         </button>
                                     </div>
                                     <div class="card-body">
-                                        <form id="profileForm" action="cap-nhat-thong-tin" method="POST">
+                                        <form id="profileForm" action="cap-nhat-thong-tin?role=inspector" method="POST">
                                             <div class="row mb-3">
                                                 <div class="col-md-6" style="display: none">
                                                     <input type="text" value="${requestScope.currentUser.userId}">
@@ -174,26 +201,30 @@
                         <h5 class="modal-title">Đổi mật khẩu</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
-                    <div class="modal-body">
-                        <form id="changePasswordForm">
+
+                    <form id="changePasswordForm" action="cap-nhat-thong-tin?role=inspector" method="POST">
+                        <input type="hidden" name="action" value="change-pass">
+                        <div class="modal-body">
                             <div class="mb-3">
                                 <label class="form-label">Mật khẩu hiện tại</label>
-                                <input type="password" class="form-control" required>
+                                <input type="password" class="form-control" required name="oldPass">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Mật khẩu mới</label>
-                                <input type="password" class="form-control" required>
+                                <input type="password" class="form-control" required name="newPass">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Xác nhận mật khẩu mới</label>
-                                <input type="password" class="form-control" required>
+                                <input type="password" class="form-control" required name="confirmNewPass">
                             </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                        <button type="button" class="btn btn-primary">Lưu thay đổi</button>
-                    </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                            <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                        </div>
+                    </form>
+
+
                 </div>
             </div>
         </div>
@@ -251,28 +282,64 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                        <input type="submit" class="btn btn-primary" value="Xóa">
+                        <button type="button" class="btn btn-danger" id="deleteAccountBtn">Xóa</button>
                     </div>
                 </div>
             </div>
         </div>
 
         <!-- Logout Modal-->
-<!--        <div class="modal fade" id="logoutModal" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Bạn muốn đăng xuất?</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        <!--        <div class="modal fade" id="logoutModal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Bạn muốn đăng xuất?</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">Chọn "Đăng xuất" bên dưới nếu bạn thực sự muốn kết thúc phiên làm việc.</div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                <a class="btn btn-primary" href="login.html">Đăng xuất</a>
+                            </div>
+                        </div>
                     </div>
-                    <div class="modal-body">Chọn "Đăng xuất" bên dưới nếu bạn thực sự muốn kết thúc phiên làm việc.</div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                        <a class="btn btn-primary" href="login.html">Đăng xuất</a>
-                    </div>
-                </div>
-            </div>
-        </div>-->
+                </div>-->
+        <script>
+
+            document.addEventListener("DOMContentLoaded", function () {
+
+                let stationId = "${currentUser.inspectionStation.stationId}";
+                console.log("Station ID:", stationId);
+                if (!stationId || stationId === "0") {
+                    let stationModal = new bootstrap.Modal(document.getElementById("stationModal"));
+                    stationModal.show();
+                }
+            });
+            setTimeout(function () {
+                let alertBox = document.querySelector(".alert");
+                if (alertBox) {
+                    alertBox.style.display = "none";
+                }
+            }, 5000);
+
+            document.getElementById("deleteAccountBtn").addEventListener("click", function () {
+                if (confirm("Bạn có chắc chắn muốn xóa tài khoản này không?")) {
+                    let userId = "${sessionScope.currentUser.userId}";
+
+                    fetch("DeleteAccountServlet", {
+                        method: "POST",
+                        headers: {"Content-Type": "application/x-www-form-urlencoded"},
+                        body: "userId=" + encodeURIComponent(userId)
+                    })
+                            .then(response => response.text())
+                            .then(data => {
+                                alert("Tài khoản đã được xóa!");
+                                window.location.href = "dang-nhap"; // Điều hướng về trang đăng nhập
+                            })
+                            .catch(error => console.error("Lỗi:", error));
+                }
+            });
+        </script>
 
         <!-- Scripts -->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
