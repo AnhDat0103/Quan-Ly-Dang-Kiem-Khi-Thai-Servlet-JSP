@@ -5,6 +5,7 @@ package controller;
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 import dao.UserDao;
+import dao.VehicleDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -75,13 +76,21 @@ public class LoginServlet extends HttpServlet {
             User currentUser = ud.findUserByEmailAndPasswordAndRole(email, password, role);
             if (currentUser != null) {
                 session.setAttribute("currentUser", currentUser);
-                if(currentUser.getRole().equals(RoleEnums.Station)) {
-                      response.sendRedirect("trung-tam-dang-kiem");
-                }                
-                if(currentUser.getRole().equals(RoleEnums.Owner)) {
-                    response.sendRedirect("chu-phuong-tien");
-
-                }if(currentUser.getRole().equals(RoleEnums.Inspector)){
+                if (currentUser.getRole().equals(RoleEnums.Station)) {
+                    response.sendRedirect("trung-tam-dang-kiem");
+                }
+                if (currentUser.getRole().equals(RoleEnums.Owner)) {
+                    VehicleDao vehicleDao = new VehicleDao();
+                    boolean checkVehicle = vehicleDao.checkVehicleExistByOwnerId(currentUser.getUserId());
+                    if(checkVehicle){
+                        response.sendRedirect("chu-phuong-tien"); 
+                        
+                    }else{
+                        response.sendRedirect("kiem-tra-tai-khoan");
+                        
+                    }
+                }                    
+                if(currentUser.getRole().equals(RoleEnums.Inspector)){
                      response.sendRedirect("nguoi-kiem-dinh");
                 }
                 if(currentUser.getRole().equals(RoleEnums.Admin)) {

@@ -109,15 +109,26 @@ public class dangKyKD extends HttpServlet {
                 doGet(request, response);
                 return;
             }
-
+             
             // Chuyển từ PlateNumber và StationName thành ID
             VehicleDao vehicleDao = new VehicleDao();
             StationDao stationDao = new StationDao();
             InspectionRecordDao inspectionRecordDao = new InspectionRecordDao();
-
+            
             int vehicleID = vehicleDao.getVehicleIDByPlateNumber(plateNumber);
             int stationID = stationDao.getStationIDByName(stationName);
-
+            
+            if(inspectionRecordDao.isVehicleInspected(vehicleID)){
+                request.setAttribute("message", "Phương tiện đã đăng ký đăng kiểm!");
+                doGet(request, response);
+                return;
+            }
+            
+            if (inspectionRecordDao.checkResultOfVehicleID(vehicleID)) {
+                request.setAttribute("message", "Phương tiện đã đạt kiểm định, không thể đăng ký lại!");
+                doGet(request, response);
+                return;
+            }
             // Kiểm tra ID có hợp lệ
             if (vehicleID == 0 || stationID == 0) {
                 request.setAttribute("message", "Không tìm thấy thông tin phương tiện hoặc trạm đăng kiểm!");
@@ -134,7 +145,7 @@ public class dangKyKD extends HttpServlet {
                 doGet(request, response);
                 return;
             }
-         
+            
 
             // Tạo bản ghi kiểm định mới
             InspectionRecords record = new InspectionRecords();

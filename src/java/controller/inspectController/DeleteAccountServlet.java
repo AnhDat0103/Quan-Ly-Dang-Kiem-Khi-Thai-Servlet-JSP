@@ -2,28 +2,27 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.vehicleController;
+package controller.inspectController;
 
-import dao.InspectionRecordDao;
-import dao.VehicleDao;
-import jakarta.servlet.RequestDispatcher;
+import dao.DBContext;
+import dao.UserDao;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.Connection;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import validation.Validate;
+import java.io.PrintWriter;
 
 /**
  *
- * @author Lenovo
+ * @author DUYEN
  */
-public class xoaPT extends HttpServlet {
-    VehicleDao vehicleDao = new VehicleDao();
-    InspectionRecordDao inspectionRecordDao = new InspectionRecordDao();
+public class DeleteAccountServlet extends HttpServlet {
+
+    Connection connect = DBContext.getInstance().getConnection();
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -41,10 +40,10 @@ public class xoaPT extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet xoaPT</title>");
+            out.println("<title>Servlet DeleteAccountServlet</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet xoaPT at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet DeleteAccountServlet at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -62,8 +61,7 @@ public class xoaPT extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("resources/vehicle/xoaPT.jsp");
-        dispatcher.forward(request, response);
+        processRequest(request, response);
     }
 
     /**
@@ -77,31 +75,30 @@ public class xoaPT extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        String plateNumber = request.getParameter("plateNumber");
-        
-        String message = "";
-        boolean isDeleted = false;
+        try {
+            int userId = Integer.parseInt(request.getParameter("userId"));
 
-        if (plateNumber == null || plateNumber.isEmpty() || !Validate.checkPlateNumber(plateNumber)) {
-            message = "Vui lòng nhập đúng thông tin!";
-        } else {
-            inspectionRecordDao.removeInspectionRecordsWithPlateNumber(plateNumber);
-            isDeleted = vehicleDao.deleteByPlateNumber(plateNumber);
-            if (!isDeleted) {
-                message = "Không tìm thấy phương tiện có biển số: " + plateNumber;
+            // Lấy kết nối CSDL
+            // Tạo UserDao và gọi phương thức delete
+            UserDao userDao = new UserDao();
+            int rowsAffected = userDao.delete(userId);
+
+            // Đóng kết nối
+            connect.close();
+
+            if (rowsAffected > 0) {
+                HttpSession session = request.getSession();
+                session.invalidate(); // Xóa session sau khi xóa tài khoản
+                response.getWriter().write("Success");
             } else {
-                message = "Xóa phương tiện thành công!";
+                response.getWriter().write("Failed");
             }
+        } catch (NumberFormatException e) {
+            response.getWriter().write("Invalid UserID");
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.getWriter().write("Error");
         }
-
-        // Đặt thông báo vào session để chuyển lại trang hiện tại
-        HttpSession session = request.getSession();
-        session.setAttribute("deleteMessage", message);
-        session.setAttribute("deleteSuccess", isDeleted);
-
-        // Chuyển hướng về trang chính
-        response.sendRedirect("quan-ly-phuong-tien");
     }
 
     /**

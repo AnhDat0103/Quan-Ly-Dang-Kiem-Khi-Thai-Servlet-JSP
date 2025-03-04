@@ -21,6 +21,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.User;
+import model.enums.vehicleEnums.vehicleEnums;
 
 /**
  *
@@ -96,6 +97,7 @@ public class dangKyPT extends HttpServlet {
         String engineNumber = request.getParameter("engineNumber");
         HttpSession session = request.getSession();
         User currentUser =(User) session.getAttribute("currentUser");
+        
 
         String bug = "";
 
@@ -137,7 +139,7 @@ public class dangKyPT extends HttpServlet {
         
         if (!bug.isEmpty()) {
             request.setAttribute("bug", bug);
-            request.getRequestDispatcher("/submit/Failed.jsp").forward(request, response);
+            request.getRequestDispatcher("resources/submit/Failed.jsp").forward(request, response);
             return;
         }
 
@@ -154,8 +156,10 @@ public class dangKyPT extends HttpServlet {
         vh.setManufactureYear(manufactureYear);
         vh.setModel(model);
         vh.setPlateNumber(plateNumber);
+        vh.setStatus(vehicleEnums.Fail);
         vehicleDao.save(vh);
-        request.getRequestDispatcher("/submit/Successfully.jsp").forward(request, response);  
+        request.getRequestDispatcher("resources/submit/Successfully.jsp").forward(request, response);  
+         
     }
 
     /**

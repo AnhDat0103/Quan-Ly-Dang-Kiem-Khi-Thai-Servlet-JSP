@@ -2,58 +2,60 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
+
 package controller.vehicleController;
 
 import dao.InspectionRecordDao;
+import dao.StationDao;
 import dao.VehicleDao;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta .servlet.ServletException;
+import jakarta .servlet.http.HttpServlet;
+import jakarta .servlet.http.HttpServletRequest;
+import jakarta .servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import validation.Validate;
+import java.util.ArrayList;
+import java.util.List;
+import model.InspectionRecords;
+import model.User;
+import model.Vehicles;
+import model.enums.RoleEnums;
 
 /**
  *
  * @author Lenovo
  */
-public class xoaPT extends HttpServlet {
-    VehicleDao vehicleDao = new VehicleDao();
-    InspectionRecordDao inspectionRecordDao = new InspectionRecordDao();
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
+public class lichSuKD extends HttpServlet {
+   
+    /** 
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet xoaPT</title>");
+            out.println("<title>Servlet lichSuKD</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet xoaPT at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet lichSuKD at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
-    }
+    } 
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
+    /** 
      * Handles the HTTP <code>GET</code> method.
-     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -61,14 +63,41 @@ public class xoaPT extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("resources/vehicle/xoaPT.jsp");
-        dispatcher.forward(request, response);
+    throws ServletException, IOException {
+    response.setContentType("text/html;charset=UTF-8");
+    HttpSession session = request.getSession();
+    User currentUser = (User) session.getAttribute("currentUser");
+    
+    if (currentUser != null && currentUser.getRole().equals(RoleEnums.Owner)) {
+        VehicleDao vehicleDao = new VehicleDao();
+        InspectionRecordDao inspectionRecordDao = new InspectionRecordDao();
+        //lay plateNumber tu UserID
+        List<String> plateNumbers = vehicleDao.getPlateNumberByOwnerID(currentUser.getUserId());
+        if(plateNumbers.isEmpty()){
+            request.setAttribute("message","Vui Long Dang Ky Phuong Tien");
+            request.getRequestDispatcher("resources/vehicle/lichSuKD.jsp").forward(request, response);
+            return;
+        }
+        
+        //lay vehicleID tu plateNumber
+        List<InspectionRecords> historyList = new ArrayList<>();
+        for(String plateNumber : plateNumbers){
+            int vehicle = vehicleDao.getVehicleIDByPlateNumber(plateNumber);
+            if(vehicle != -1){
+                historyList.addAll(inspectionRecordDao.getInspectedVehilce(vehicle));
+            }
+        }
+        
+        request.setAttribute("historyList", historyList);
+        request.getRequestDispatcher("resources/vehicle/lichSuKD.jsp").forward(request, response);
+    } else {
+        // Nếu không phải chủ phương tiện, chuyển hướng về trang đăng nhập
+        response.sendRedirect("dang-nhap");
     }
+}
 
-    /**
+    /** 
      * Handles the HTTP <code>POST</code> method.
-     *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
@@ -76,37 +105,12 @@ public class xoaPT extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        String plateNumber = request.getParameter("plateNumber");
+    throws ServletException, IOException {
         
-        String message = "";
-        boolean isDeleted = false;
-
-        if (plateNumber == null || plateNumber.isEmpty() || !Validate.checkPlateNumber(plateNumber)) {
-            message = "Vui lòng nhập đúng thông tin!";
-        } else {
-            inspectionRecordDao.removeInspectionRecordsWithPlateNumber(plateNumber);
-            isDeleted = vehicleDao.deleteByPlateNumber(plateNumber);
-            if (!isDeleted) {
-                message = "Không tìm thấy phương tiện có biển số: " + plateNumber;
-            } else {
-                message = "Xóa phương tiện thành công!";
-            }
-        }
-
-        // Đặt thông báo vào session để chuyển lại trang hiện tại
-        HttpSession session = request.getSession();
-        session.setAttribute("deleteMessage", message);
-        session.setAttribute("deleteSuccess", isDeleted);
-
-        // Chuyển hướng về trang chính
-        response.sendRedirect("quan-ly-phuong-tien");
     }
 
-    /**
+    /** 
      * Returns a short description of the servlet.
-     *
      * @return a String containing servlet description
      */
     @Override
