@@ -60,6 +60,26 @@
         <servlet-name>GetInspectionStation</servlet-name>
         <servlet-class>controller.admin.GetInspectionStation</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LoginOauth2WithGoogle</servlet-name>
+        <servlet-class>controller.LoginOauth2WithGoogle</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Get500Page</servlet-name>
+        <servlet-class>controller.Get500Page</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Get401Page</servlet-name>
+        <servlet-class>controller.Get401Page</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Get404Page</servlet-name>
+        <servlet-class>controller.Get404Page</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetChooseRolePage</servlet-name>
+        <servlet-class>controller.GetChooseRolePage</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GetProfilePage</servlet-name>
         <url-pattern>/thong-tin-ca-nhan</url-pattern>
@@ -119,6 +139,26 @@
     <servlet-mapping>
         <servlet-name>GetInspectionStation</servlet-name>
         <url-pattern>/chi-tiet-trung-tam-dang-kiem</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginOauth2WithGoogle</servlet-name>
+        <url-pattern>/dang-nhap/oauth2/google</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Get500Page</servlet-name>
+        <url-pattern>/500error</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Get401Page</servlet-name>
+        <url-pattern>/401error</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Get404Page</servlet-name>
+        <url-pattern>/404error</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetChooseRolePage</servlet-name>
+        <url-pattern>/chon-vai-tro</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>dashboard/auth/login.jsp</welcome-file>

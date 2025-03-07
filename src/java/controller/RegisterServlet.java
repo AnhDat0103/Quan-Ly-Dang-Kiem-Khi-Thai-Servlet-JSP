@@ -13,6 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.User;
 import model.dto.RegisterForm;
+import model.enums.ProviderClass;
 import model.enums.RoleEnums;
 import validation.Validate;
 
@@ -99,6 +100,7 @@ public class RegisterServlet extends HttpServlet {
                 newUser.setRole(RoleEnums.valueOf(role));
                 newUser.setAddress(address);
                 newUser.setPhone(phone);
+                newUser.setProvider(ProviderClass.LOCAL);
                 int result = ud.save(newUser);
                 if (result == 1) {
                     response.sendRedirect("dang-nhap");

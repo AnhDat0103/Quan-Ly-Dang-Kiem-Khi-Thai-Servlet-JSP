@@ -31,6 +31,11 @@
                             <li class="breadcrumb-item"><a href="#">Bảng điều kiển</a></li>
                             <li class="breadcrumb-item active">Danh sách chủ phương tiện</li>
                         </ol>
+                        <div class="mb-3">
+                            <button class="btn btn-secondary" onclick="history.back()">
+                                <i class="fas fa-arrow-left me-1"></i>Quay lại
+                            </button>
+                        </div>
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>

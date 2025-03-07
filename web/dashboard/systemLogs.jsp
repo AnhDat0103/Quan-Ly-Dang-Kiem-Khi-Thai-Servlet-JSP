@@ -3,12 +3,10 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="utf-8" />
+        <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>Danh sách trung tâm đăng kiểm</title>
+        <title>Logs hệ thống</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="./resources/css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -20,44 +18,33 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Danh sách trung tâm đăng kiểm</h1>
+                        <h1 class="mt-4">Logs hệ thống</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item"><a href="#">Bảng điều khiển</a></li>
-                            <li class="breadcrumb-item active">Danh sách trung tâm đăng kiểm</li>
+                            <li class="breadcrumb-item"><a href="dashboard.jsp">Bảng điều khiển</a></li>
+                            <li class="breadcrumb-item active">Logs hệ thống</li>
                         </ol>
-                        <div class="mb-3">
-                            <button class="btn btn-secondary" onclick="history.back()">
-                                <i class="fas fa-arrow-left me-1"></i>Quay lại
-                            </button>
-                        </div>
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
-                                Danh sách trung tâm đăng kiểm
+                                Logs hệ thống
                             </div>
                             <div class="card-body">
                                 <table id="datatablesSimple">
                                     <thead>
                                         <tr>
-                                            <th>Tên trung tâm</th>
-                                            <th>Địa chỉ</th>
-                                            <th>Số điện thoại</th>
-                                            <th>Email</th>
-                                            <th>Hành động</th>
+                                            <th>ID</th>
+                                            <th>Thời gian</th>
+                                            <th>Mức độ</th>
+                                            <th>Thông điệp</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <c:forEach var="station" items="${stations}">
+                                        <c:forEach var="log" items="${logs}">
                                             <tr>
-                                                <td>${station.name}</td>
-                                                <td>${station.address}</td>
-                                                <td>${station.phone}</td>
-                                                <td>${station.email}</td>
-                                                <td>
-                                                    <a class="btn btn-warning btn-sm" href="#?stationId=${station.stationId}">Danh sách nhân viên</a>
-                                                    <a class="btn btn-primary btn-sm" href="#?stationId=${station.stationId}">Cập nhật</a>
-                                                    <a class="btn btn-danger btn-sm" href="#?stationId=${station.stationId}">Xóa</a>
-                                                </td>
+                                                <td>${log.id}</td>
+                                                <td>${log.timestamp}</td>
+                                                <td>${log.level}</td>
+                                                <td>${log.message}</td>
                                             </tr>
                                         </c:forEach>
                                     </tbody>

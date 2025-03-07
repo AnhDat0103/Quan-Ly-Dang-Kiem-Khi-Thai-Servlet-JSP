@@ -14,6 +14,10 @@
                                 Cấp quyền 
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
+                            <a class="nav-link collapsed" href="#">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-bell"></i></div>
+                                Logs hệ thống
+                            </a>
                             <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
                                 
                                 <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">

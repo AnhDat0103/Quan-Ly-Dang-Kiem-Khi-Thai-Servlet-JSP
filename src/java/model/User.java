@@ -4,6 +4,7 @@
  */
 package model;
 
+import model.enums.ProviderClass;
 import model.enums.RoleEnums;
 
 /**
@@ -18,12 +19,13 @@ public class User {
     private RoleEnums role;
     private String phone;
     private String address;
+    private ProviderClass provider;
     private InspectionStation inspectionStation;
 
     public User() {
     }
 
-    public User(int userId, String fullName, String email, String password, RoleEnums role, String phone, String address, InspectionStation inspectionStation) {
+    public User(int userId, String fullName, String email, String password, RoleEnums role, String phone, String address,ProviderClass provider, InspectionStation inspectionStation) {
         this.userId = userId;
         this.fullName = fullName;
         this.email = email;
@@ -31,6 +33,7 @@ public class User {
         this.role = role;
         this.phone = phone;
         this.address = address;
+        this.provider = provider;
         this.inspectionStation = inspectionStation;
     }
 
@@ -88,6 +91,14 @@ public class User {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public ProviderClass getProvider() {
+        return provider;
+    }
+
+    public void setProvider(ProviderClass provider) {
+        this.provider = provider;
     }
 
     public InspectionStation getInspectionStation() {

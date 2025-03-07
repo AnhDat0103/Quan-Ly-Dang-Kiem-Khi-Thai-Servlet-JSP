@@ -13,6 +13,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import model.InspectionStation;
+import model.enums.ProviderClass;
 import model.enums.RoleEnums;
 
 /**
@@ -20,13 +21,13 @@ import model.enums.RoleEnums;
  * @author DAT
  */
 public class UserDao implements Dao<User> {
-    
+
     Connection connect = DBContext.getInstance().getConnection();
     StationDao sd = new StationDao();
 
     @Override
     public int save(User t) {
-        String sql = "INSERT INTO Users(FullName, Email, Password, Role, Phone, Address) VALUES(?,?,?,?,?,?)";
+        String sql = "INSERT INTO Users(FullName, Email, Password, Role, Phone, Address, Provider) VALUES(?,?,?,?,?,?,?)";
         try {
             PreparedStatement ps = connect.prepareStatement(sql);
             ps.setString(1, t.getFullName());
@@ -35,6 +36,7 @@ public class UserDao implements Dao<User> {
             ps.setString(4, t.getRole().toString());
             ps.setString(5, t.getPhone());
             ps.setString(6, t.getAddress());
+            ps.setString(7, t.getProvider().name());
             int result = ps.executeUpdate();
             return result;
         } catch (SQLException e) {
@@ -68,7 +70,7 @@ public class UserDao implements Dao<User> {
     @Override
     public int delete(int t) {
         int result = 0;
-        String sql  = "Delete from Users where UserID = ?";
+        String sql = "Delete from Users where UserID = ?";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setInt(1, t);
@@ -78,7 +80,7 @@ public class UserDao implements Dao<User> {
         }
         return result;
     }
-    
+
     public User findUserByEmailAndPasswordAndRole(String email, String password, String role) {
         String sql = "SELECT * FROM Users WHERE Email = ? AND Password = ? And Role = ?";
         try {
@@ -87,15 +89,16 @@ public class UserDao implements Dao<User> {
             ps.setString(2, Configuration.hashPasswordByMD5(password));
             ps.setString(3, role);
             ResultSet rs = ps.executeQuery();
-            if(rs.next()) {
+            if (rs.next()) {
                 InspectionStation is = sd.findStationById(rs.getInt("StationID")) != null ? sd.findStationById(rs.getInt("StationID")) : new InspectionStation();
-                User user = new User(rs.getInt("UserID"), 
-                        rs.getString("FullName"), 
-                        rs.getString("Email"), 
-                        rs.getString("Password"), 
-                        RoleEnums.valueOf(rs.getString("Role")), 
-                        rs.getString("Phone"), 
+                User user = new User(rs.getInt("UserID"),
+                        rs.getString("FullName"),
+                        rs.getString("Email"),
+                        rs.getString("Password"),
+                        RoleEnums.valueOf(rs.getString("Role")),
+                        rs.getString("Phone"),
                         rs.getString("Address"),
+                        ProviderClass.valueOf(rs.getString("Provider")),
                         is);
                 return user;
             }
@@ -110,15 +113,15 @@ public class UserDao implements Dao<User> {
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             ResultSet rs = pt.executeQuery();
-            if(rs.next()) {
+            if (rs.next()) {
                 return 1;
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }     
+        }
         return 0;
     }
-    
+
     public int updatePassword(String newPassword, int userId) {
         int updatedRow = 0;
         String sql = "UPDATE Users SET Password = ? WHERE UserID = ?";
@@ -135,7 +138,7 @@ public class UserDao implements Dao<User> {
 
     public int updateInspecStationId(int parseInt, int userId) {
         int result = 0;
-        String sql  = "update Users set StationID = ? WHERE UserID = ?";
+        String sql = "update Users set StationID = ? WHERE UserID = ?";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setInt(1, parseInt);
@@ -146,22 +149,23 @@ public class UserDao implements Dao<User> {
         }
         return result;
     }
-    
+
     public User findUserById(int id) {
         String sql = "select * from Users where UserID = ?";
         try {
-            PreparedStatement pt =connect.prepareStatement(sql);
+            PreparedStatement pt = connect.prepareStatement(sql);
             pt.setInt(1, id);
             ResultSet rs = pt.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 InspectionStation is = sd.findStationById(rs.getInt("StationID")) != null ? sd.findStationById(rs.getInt("StationID")) : new InspectionStation();
-                User user = new User(rs.getInt("UserID"), 
+                User user = new User(rs.getInt("UserID"),
                         rs.getString("FullName"),
-                        rs.getString("Email"), 
-                        rs.getString("Password"), 
-                        RoleEnums.valueOf(rs.getString("Role")), 
+                        rs.getString("Email"),
+                        rs.getString("Password"),
+                        RoleEnums.valueOf(rs.getString("Role")),
                         rs.getString("Phone"),
                         rs.getString("Address"),
+                        ProviderClass.valueOf(rs.getString("Provider")),
                         is
                 );
                 return user;
@@ -171,27 +175,28 @@ public class UserDao implements Dao<User> {
         }
         return null;
     }
-    
-    public User getUserbyTelAndName(String tel, String fullname){
+
+    public User getUserbyTelAndName(String tel, String fullname) {
         String sql = "select * from Users where Phone = ? and FullName = ?";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setString(1, tel);
             pt.setString(2, fullname);
             ResultSet rs = pt.executeQuery();
-            if(rs.next()) {
+            if (rs.next()) {
                 InspectionStation is = sd.findStationById(rs.getInt("StationID")) != null ? sd.findStationById(rs.getInt("StationID")) : new InspectionStation();
-                User user = new User(rs.getInt("UserID"), 
+                User user = new User(rs.getInt("UserID"),
                         rs.getString("FullName"),
-                        rs.getString("Email"), 
-                        rs.getString("Password"), 
-                        RoleEnums.valueOf(rs.getString("Role")), 
+                        rs.getString("Email"),
+                        rs.getString("Password"),
+                        RoleEnums.valueOf(rs.getString("Role")),
                         rs.getString("Phone"),
                         rs.getString("Address"),
+                        ProviderClass.valueOf(rs.getString("Provider")),
                         is
                 );
                 return user;
-            }       
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -204,17 +209,18 @@ public class UserDao implements Dao<User> {
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             ResultSet rs = pt.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 InspectionStation is = sd.findStationById(rs.getInt("StationID")) != null ? sd.findStationById(rs.getInt("StationID")) : new InspectionStation();
-                users.add( new User(rs.getInt("UserID"),
+                users.add(new User(rs.getInt("UserID"),
                         rs.getString("FullName"),
                         rs.getString("Email"),
                         rs.getString("Password"),
                         RoleEnums.valueOf(rs.getString("Role")),
                         rs.getString("Phone"),
                         rs.getString("Address"),
+                        ProviderClass.valueOf(rs.getString("Provider")),
                         is
-                        ));
+                ));
             }
             return users;
         } catch (SQLException e) {
@@ -235,14 +241,15 @@ public class UserDao implements Dao<User> {
                         ? sd.findStationById(rs.getInt("StationID"))
                         : new InspectionStation();
                 User user = new User(
-                    rs.getInt("UserID"),
-                    rs.getString("FullName"),
-                    rs.getString("Email"),
-                    rs.getString("Password"),
-                    RoleEnums.valueOf(rs.getString("Role")),
-                    rs.getString("Phone"),
-                    rs.getString("Address"),
-                    is
+                        rs.getInt("UserID"),
+                        rs.getString("FullName"),
+                        rs.getString("Email"),
+                        rs.getString("Password"),
+                        RoleEnums.valueOf(rs.getString("Role")),
+                        rs.getString("Phone"),
+                        rs.getString("Address"),
+                        ProviderClass.valueOf(rs.getString("Provider")),
+                        is
                 );
                 users.add(user);
             }
@@ -250,6 +257,34 @@ public class UserDao implements Dao<User> {
             e.printStackTrace();
         }
         return users;
+    }
+
+    public User findUserByEmail(String email) {
+        String sql = "select * from Users where Email = ?";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setString(1, email);
+            ResultSet rs = pt.executeQuery();
+            if (rs.next()) {
+                InspectionStation is = sd.findStationById(rs.getInt("StationID")) != null
+                        ? sd.findStationById(rs.getInt("StationID"))
+                        : new InspectionStation();
+                User user = new User(
+                        rs.getInt("UserID"),
+                        rs.getString("FullName"),
+                        rs.getString("Email"),
+                        rs.getString("Password"),
+                        RoleEnums.valueOf(rs.getString("Role")),
+                        rs.getString("Phone"),
+                        rs.getString("Address"),
+                        ProviderClass.valueOf(rs.getString("Provider")),
+                        is
+                );
+                return user;
+            }
+        } catch (SQLException e) {
+        }
+        return null;
     }
 
 }

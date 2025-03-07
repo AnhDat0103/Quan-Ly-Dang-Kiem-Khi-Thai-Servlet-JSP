@@ -14,7 +14,7 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>500 Error - Electro Store</title>
-        <link href="resources/admin/css/styles.css" rel="stylesheet" />
+        <link href="./resources/css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     </head>
     <body>
@@ -27,9 +27,9 @@
                                 <div class="text-center mt-4">
                                     <h1 class="display-1">500</h1>
                                     <p class="lead">Máy chủ hiện đang bảo trì. Hãy quay lại sau.</p>
-                                    <a href="/electro-store">
+                                    <a href="dang-nhap">
                                         <i class="fas fa-arrow-left me-1"></i>
-                                        Trang chủ
+                                        Quay lại
                                     </a>
                                 </div>
                             </div>
