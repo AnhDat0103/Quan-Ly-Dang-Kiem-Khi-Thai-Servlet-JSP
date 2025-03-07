@@ -503,5 +503,34 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
         }
         return null;
     }
+    
+    
+    
+    public List<InspectionRecords> getListInspectionRecordsByNotPendingAndInspectId(int inspectorId) {
+    List<InspectionRecords> recordses = new ArrayList<>();
+    String sql = "SELECT * FROM InspectionRecords WHERE InspectorID = ? AND Result <> 'Pending'";
+    try {
+        PreparedStatement pt = connect.prepareStatement(sql);
+        pt.setInt(1, inspectorId);
+        ResultSet rs = pt.executeQuery();
+        while (rs.next()) {
+            recordses.add(new InspectionRecords(
+                    rs.getInt("RecordID"),
+                    vd.getVehiclesById(rs.getInt("VehicleID")),
+                    rs.getInt("StationID"),
+                    rs.getInt("InspectorID"),
+                    rs.getDate("InspectionDate"),
+                    rs.getDate("NextInspectionDate"),
+                    rs.getString("Result"),
+                    rs.getDouble("CO2Emission"),
+                    rs.getDouble("HCEmission"),
+                    rs.getString("Comments")));
+        }
+        return recordses;
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return null;
+}
 
 }
