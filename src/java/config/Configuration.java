@@ -118,8 +118,4 @@ public class Configuration {
         return googlePojo;
 
     }
-    
-    public static void main(String[] args) {
-        System.out.println(hashPasswordByMD5(" 123"));
-    }
 }
