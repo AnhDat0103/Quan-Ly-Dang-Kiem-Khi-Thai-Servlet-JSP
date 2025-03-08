@@ -80,6 +80,14 @@
         <servlet-name>GetChooseRolePage</servlet-name>
         <servlet-class>controller.GetChooseRolePage</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GetInspectors</servlet-name>
+        <servlet-class>controller.admin.GetInspectors</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ResetPassword</servlet-name>
+        <servlet-class>controller.admin.ResetPassword</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GetProfilePage</servlet-name>
         <url-pattern>/thong-tin-ca-nhan</url-pattern>
@@ -159,6 +167,14 @@
     <servlet-mapping>
         <servlet-name>GetChooseRolePage</servlet-name>
         <url-pattern>/chon-vai-tro</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetInspectors</servlet-name>
+        <url-pattern>/danh-sach-nhan-vien-kiem-dinh</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ResetPassword</servlet-name>
+        <url-pattern>/lay-lai-mat-khau</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>dashboard/auth/login.jsp</welcome-file>

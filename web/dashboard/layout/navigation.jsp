@@ -9,14 +9,14 @@
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                     <div class="sb-sidenav-menu">
                         <div class="nav">
+                            <a class="nav-link collapsed" href="#">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-bell"></i></div>
+                                Logs hệ thống
+                            </a>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-gear"></i></div>
                                 Cấp quyền 
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <a class="nav-link collapsed" href="#">
-                                <div class="sb-nav-link-icon"><i class="fa-solid fa-bell"></i></div>
-                                Logs hệ thống
                             </a>
                             <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
                                 
@@ -24,7 +24,7 @@
                                     <a class="nav-link" href="dang-ky">
                                         Đăng ký
                                     </a>
-                                    <a class="nav-link" href="#">
+                                    <a class="nav-link" href="lay-lai-mat-khau">
                                         Lấy lại mật khẩu
                                     </a>
                                 </nav>
