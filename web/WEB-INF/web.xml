@@ -19,7 +19,7 @@
     <servlet>
         <servlet-name>SaveInspectionServlet</servlet-name>
         <servlet-class>controller.inspectController.SaveInspectionServlet</servlet-class>
-      </servlet>
+    </servlet>
     <servlet>
         <servlet-name>quanLyPhuongTien</servlet-name>
         <servlet-class>controller.vehicleController.quanLyPhuongTien</servlet-class>
@@ -51,6 +51,42 @@
     <servlet>
         <servlet-name>LoginAdminServlet</servlet-name>
         <servlet-class>controller.LoginAdminServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetVehicleOwner</servlet-name>
+        <servlet-class>controller.admin.GetVehicleOwner</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetInspectionStation</servlet-name>
+        <servlet-class>controller.admin.GetInspectionStation</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoginOauth2WithGoogle</servlet-name>
+        <servlet-class>controller.LoginOauth2WithGoogle</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Get500Page</servlet-name>
+        <servlet-class>controller.Get500Page</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Get401Page</servlet-name>
+        <servlet-class>controller.Get401Page</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Get404Page</servlet-name>
+        <servlet-class>controller.Get404Page</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetChooseRolePage</servlet-name>
+        <servlet-class>controller.GetChooseRolePage</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetInspectors</servlet-name>
+        <servlet-class>controller.admin.GetInspectors</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ResetPassword</servlet-name>
+        <servlet-class>controller.admin.ResetPassword</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>GetProfilePage</servlet-name>
@@ -103,6 +139,42 @@
     <servlet-mapping>
         <servlet-name>LoginAdminServlet</servlet-name>
         <url-pattern>/21.04.2000</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetVehicleOwner</servlet-name>
+        <url-pattern>/chi-tiet-chu-phuong-tien</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetInspectionStation</servlet-name>
+        <url-pattern>/chi-tiet-trung-tam-dang-kiem</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginOauth2WithGoogle</servlet-name>
+        <url-pattern>/dang-nhap/oauth2/google</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Get500Page</servlet-name>
+        <url-pattern>/500error</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Get401Page</servlet-name>
+        <url-pattern>/401error</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Get404Page</servlet-name>
+        <url-pattern>/404error</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetChooseRolePage</servlet-name>
+        <url-pattern>/chon-vai-tro</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetInspectors</servlet-name>
+        <url-pattern>/danh-sach-nhan-vien-kiem-dinh</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ResetPassword</servlet-name>
+        <url-pattern>/lay-lai-mat-khau</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>dashboard/auth/login.jsp</welcome-file>

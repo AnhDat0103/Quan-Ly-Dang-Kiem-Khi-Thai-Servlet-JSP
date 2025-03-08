@@ -1,13 +1,11 @@
 <%-- 
-    Document   : login
-    Created on : Jan 27, 2025, 9:11:06 PM
+    Document   : chooseRole
+    Created on : Mar 7, 2025, 8:48:56 PM
     Author     : DAT
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="config.Constant" %>
-
 <!DOCTYPE html>
 <html lang="vi">
     <head>
@@ -24,25 +22,15 @@
                 <div class="col-lg-5 d-none d-lg-block">
                     <%@include file="../layout/banner.jsp" %>
                 </div>
-                <div class="col-lg-4 col-md-7 col-sm-9">
+                <div class="col-lg-4 col-md-7 col-sm-9 mt-5">
                     <div class="card">
                         <div class="card-body">
-                            <h4 class="text-center mb-4">Đăng nhập hệ thống</h4>
-                            <div style="color:green; text-align: center"; >${requestScope.logoutSuccessMessage}</div>
-                            <form action="dang-nhap" method="POST">
+                            <h4 class="text-center mb-4">Hãy chọn vai trò của bạn</h4>
+                            <form action="dang-nhap/oauth2/google" method="POST">
                                 <div class="mb-4">
                                     <label for="email" class="form-label">Email</label>
-                                    <input type="email" class="form-control ${not empty emptyEmail ? 'is-invalid' : ''}" id="email" name="email">
-                                    <div class="invalid-feedback">
-                                        <c:out value="${emptyEmail}" />
-                                    </div>                      
-                                </div>
-                                <div class="mb-4">
-                                    <label for="password" class="form-label">Mật khẩu</label>
-                                    <input type="password" class="form-control ${not empty emptyPassword ? 'is-invalid' : ''}" id="password" name="password">
-                                    <div class="invalid-feedback">
-                                        <c:out value="${emptyPassword}" />
-                                    </div>
+                                    <input type="email" class="form-control" id="email" value="${sessionScope.googleAccount.email}" readonly="true">
+                                             
                                 </div>
                                 <div class="mb-4">
                                     <label for="role" class="form-label">Vai trò</label>
@@ -58,20 +46,8 @@
                                     <input type="checkbox" class="form-check-input" id="remember">
                                     <label class="form-check-label" for="remember">Ghi nhớ đăng nhập</label>
                                 </div>
-                                <div style="color:red"; >${requestScope.notFound}</div>
                                 <button type="submit" class="btn btn-primary w-100 mb-3">Đăng nhập</button>
-
-                                <div class="social-login text-center">
-                                    <p class="mb-4">_____Hoặc_____</p>
-                                    <a href="https://accounts.google.com/o/oauth2/auth?scope=email profile openid&redirect_uri=http://localhost:8080/dang-kiem-khi-thai/dang-nhap/oauth2/google&response_type=code&client_id=<%= Constant.CLIENT_ID %>&approval_prompt=force" 
-                                       class="btn btn-outline-danger w-100">
-                                        <i class="fab fa-google me-2"></i>Google
-                                    </a>
-                                </div>
                             </form>
-                            <div class="mt-3 text-center">
-                                <p>Chưa có tài khoản? <a href="dang-ky">Đăng ký ngay</a></p>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -81,3 +57,4 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html> 
+
