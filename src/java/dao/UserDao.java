@@ -27,7 +27,7 @@ public class UserDao implements Dao<User> {
 
     @Override
     public int save(User t) {
-        String sql = "INSERT INTO Users(FullName, Email, Password, Role, Phone, Address, Provider) VALUES(?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO Users(FullName, Email, Password, Role, Phone, Address,Avatar, Provider) VALUES(?,?,?,?,?,?,?,?)";
         try {
             PreparedStatement ps = connect.prepareStatement(sql);
             ps.setString(1, t.getFullName());
@@ -36,7 +36,8 @@ public class UserDao implements Dao<User> {
             ps.setString(4, t.getRole().toString());
             ps.setString(5, t.getPhone());
             ps.setString(6, t.getAddress());
-            ps.setString(7, t.getProvider().name());
+            ps.setString(7, t.getAvatar());
+            ps.setString(8, t.getProvider().name());
             int result = ps.executeUpdate();
             return result;
         } catch (SQLException e) {
@@ -98,6 +99,7 @@ public class UserDao implements Dao<User> {
                         RoleEnums.valueOf(rs.getString("Role")),
                         rs.getString("Phone"),
                         rs.getString("Address"),
+                        rs.getString("Avatar"),
                         ProviderClass.valueOf(rs.getString("Provider")),
                         is);
                 return user;
@@ -165,9 +167,9 @@ public class UserDao implements Dao<User> {
                         RoleEnums.valueOf(rs.getString("Role")),
                         rs.getString("Phone"),
                         rs.getString("Address"),
+                        rs.getString("Avatar"),
                         ProviderClass.valueOf(rs.getString("Provider")),
-                        is
-                );
+                        is);
                 return user;
             }
         } catch (SQLException e) {
@@ -192,9 +194,9 @@ public class UserDao implements Dao<User> {
                         RoleEnums.valueOf(rs.getString("Role")),
                         rs.getString("Phone"),
                         rs.getString("Address"),
+                        rs.getString("Avatar"),
                         ProviderClass.valueOf(rs.getString("Provider")),
-                        is
-                );
+                        is);
                 return user;
             }
         } catch (SQLException e) {
@@ -218,6 +220,7 @@ public class UserDao implements Dao<User> {
                         RoleEnums.valueOf(rs.getString("Role")),
                         rs.getString("Phone"),
                         rs.getString("Address"),
+                        rs.getString("Avatar"),
                         ProviderClass.valueOf(rs.getString("Provider")),
                         is
                 ));
@@ -248,6 +251,7 @@ public class UserDao implements Dao<User> {
                         RoleEnums.valueOf(rs.getString("Role")),
                         rs.getString("Phone"),
                         rs.getString("Address"),
+                        rs.getString("Avatar"),
                         ProviderClass.valueOf(rs.getString("Provider")),
                         is
                 );
@@ -277,6 +281,7 @@ public class UserDao implements Dao<User> {
                         RoleEnums.valueOf(rs.getString("Role")),
                         rs.getString("Phone"),
                         rs.getString("Address"),
+                        rs.getString("Avatar"),
                         ProviderClass.valueOf(rs.getString("Provider")),
                         is
                 );

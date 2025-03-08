@@ -152,6 +152,8 @@ public class UpdateProfile extends HttpServlet {
                 }
                 response.sendRedirect("thong-tin-ca-nhan?status=success");
             }
+        } else if(action.equals("change-avatar")) {
+            
         }
     }
 

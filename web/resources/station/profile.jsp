@@ -69,24 +69,28 @@
                         <div class="row">
                             <div class="col-lg-4">
                                 <!-- Profile Picture Card -->
-                                <div class="card shadow mb-4">
-                                    <div class="card-header py-3">
-                                        <h6 class="m-0 font-weight-bold text-primary">Ảnh đại diện</h6>
-                                    </div>
-                                    <div class="card-body text-center">
-                                        <img class="img-profile rounded-circle mb-3" src="resources/images/avatar.png" 
-                                             style="width: 150px; height: 150px;">
-                                        <div class="mb-3">
-                                            <button class="btn btn-primary btn-sm" id="changeAvatarBtn">
-                                                <i class="fas fa-camera mr-2"></i>Chọn ảnh
-                                            </button>
-                                            <button class="btn btn-success btn-sm" id="saveAvatarBtn" style="display: none;">
-                                                <i class="fas fa-save mr-2"></i>Lưu ảnh
-                                            </button>
+                                <form action="action" method="POST">
+                                    <input type="hidden" name="action" value="change-avatar">
+                                    <div class="card shadow mb-4">
+                                        <div class="card-header py-3">
+                                            <h6 class="m-0 font-weight-bold text-primary">Ảnh đại diện</h6>
                                         </div>
-                                        <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+                                        <div class="card-body text-center">
+                                            <img class="img-profile rounded-circle mb-3" src="resources/images/avatar.png" 
+                                                 style="width: 150px; height: 150px;">
+                                            <div class="mb-3">
+                                                <button class="btn btn-primary btn-sm" id="changeAvatarBtn">
+                                                    <i class="fas fa-camera mr-2"></i>Chọn ảnh
+                                                </button>
+                                                <button class="btn btn-success btn-sm" id="saveAvatarBtn" style="display: none;">
+                                                    <i class="fas fa-save mr-2"></i>Lưu ảnh
+                                                </button>
+                                            </div>
+                                            <input type="file" id="avatarInput" accept="image/*" style="display: none;" name="">
+                                        </div>
                                     </div>
-                                </div>
+                                </form>
+
 
                                 <!-- Account Settings Card -->
                                 <div class="card shadow mb-4">

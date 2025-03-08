@@ -99,6 +99,7 @@ public class RegisterServlet extends HttpServlet {
                 newUser.setPassword(password);
                 newUser.setRole(RoleEnums.valueOf(role));
                 newUser.setAddress(address);
+                newUser.setAvatar("avatar.png");
                 newUser.setPhone(phone);
                 newUser.setProvider(ProviderClass.LOCAL);
                 int result = ud.save(newUser);

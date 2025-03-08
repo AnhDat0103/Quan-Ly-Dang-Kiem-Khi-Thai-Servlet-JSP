@@ -106,6 +106,7 @@ public class LoginOauth2WithGoogle extends HttpServlet {
         user.setAddress(" ");
         user.setPassword("123");
         user.setPhone("0123456789");
+        user.setAvatar("avatar.png");
         user.setProvider(ProviderClass.GOOGLE);
         if (account.getFirstName() == null && account.getLastName() == null) {
             user.setFullName(getFullNameFromEmail(account.getEmail()));
@@ -132,6 +133,7 @@ public class LoginOauth2WithGoogle extends HttpServlet {
     private void loginService(User user, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (user.getRole().equals(RoleEnums.Station)) {
             response.sendRedirect(request.getContextPath() + "/trung-tam-dang-kiem");
+            return;
         }
         if (user.getRole().equals(RoleEnums.Owner)) {
             VehicleDao vehicleDao = new VehicleDao();
@@ -141,6 +143,7 @@ public class LoginOauth2WithGoogle extends HttpServlet {
             } else {
                 response.sendRedirect(request.getContextPath() + "/kiem-tra-tai-khoan");
             }
+            return;
         }
         if (user.getRole().equals(RoleEnums.Inspector)) {
             response.sendRedirect(request.getContextPath() + "/nguoi-kiem-dinh");
