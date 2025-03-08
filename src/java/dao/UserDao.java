@@ -292,4 +292,18 @@ public class UserDao implements Dao<User> {
         return null;
     }
 
+    public int updateAvatar(String newAvatar, int userId) {
+        int result = 0;
+        String sql  = "UPDATE Users SET Avatar = ? WHERE UserID = ?";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setString(1, newAvatar);
+            pt.setInt(2, userId);
+            result = pt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
 }
