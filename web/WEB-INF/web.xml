@@ -53,6 +53,18 @@
         <servlet-class>controller.LoginAdminServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>GetPoliceHomePage</servlet-name>
+        <servlet-class>controller.policeController.GetPoliceHomePage</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetHistoryHomePage</servlet-name>
+        <servlet-class>controller.ownerController.GetHistoryHomePage</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateProfileOwner</servlet-name>
+        <servlet-class>controller.vehicleController.UpdateProfileOwner</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>GetVehicleOwner</servlet-name>
         <servlet-class>controller.admin.GetVehicleOwner</servlet-class>
     </servlet>
@@ -81,6 +93,10 @@
         <servlet-class>controller.GetChooseRolePage</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>GetProfileOwnerPage</servlet-name>
+        <servlet-class>controller.ownerController.GetProfileOwnerPage</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>GetInspectors</servlet-name>
         <servlet-class>controller.admin.GetInspectors</servlet-class>
     </servlet>
@@ -92,6 +108,11 @@
         <servlet-name>GetProfilePage</servlet-name>
         <url-pattern>/thong-tin-ca-nhan</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetProfileOwnerPage</servlet-name>
+        <url-pattern>/ho-so-ca-nhan-1</url-pattern>
+    </servlet-mapping>
+    
     <servlet-mapping>
         <servlet-name>UpdateProfile</servlet-name>
         <url-pattern>/cap-nhat-thong-tin</url-pattern>
@@ -139,6 +160,18 @@
     <servlet-mapping>
         <servlet-name>LoginAdminServlet</servlet-name>
         <url-pattern>/21.04.2000</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetPoliceHomePage</servlet-name>
+        <url-pattern>/trung-tam-canh-sat</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetHistoryHomePage</servlet-name>
+        <url-pattern>/lich-su-trang-chu</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateProfileOwner</servlet-name>
+        <url-pattern>/update-profile</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>GetVehicleOwner</servlet-name>
