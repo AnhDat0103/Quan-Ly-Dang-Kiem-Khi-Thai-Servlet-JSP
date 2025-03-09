@@ -14,11 +14,11 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Trang chủ</a>
+                        <a class="nav-link active" href="nguoi-kiem-dinh">Trang chủ</a>
                     </li>
                    
                     <li class="nav-item">
-                        <a class="nav-link" href="inspection-history.jsp">Lịch sử kiểm định</a>
+                        <a class="nav-link" href="lich-su-kiem-dinh-cong-nhan">Lịch sử kiểm định</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">

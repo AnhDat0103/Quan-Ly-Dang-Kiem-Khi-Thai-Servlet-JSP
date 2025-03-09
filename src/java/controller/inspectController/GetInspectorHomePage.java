@@ -5,6 +5,7 @@
 package controller.inspectController;
 
 import dao.InspectionRecordDao;
+import dao.StationDao;
 import dao.VehicleDao;
 import java.io.IOException;
 import jakarta.servlet.ServletException;
@@ -55,9 +56,15 @@ public class GetInspectorHomePage extends HttpServlet {
       //  processRequest(request, response);
     HttpSession session = request.getSession();
         User user = (User) session.getAttribute("currentUser" );
+    //     StationDao sd = new StationDao();
+       // request.setAttribute("stations", sd.findAll());
+       
         List<InspectionRecords> is = vd.getListInspectionRecordsByPendingAndInspectId(user.getUserId());
         
-        
+       
+      
+
+       
         request.setAttribute("inspecrecord", is);
         request.getRequestDispatcher("resources/inspector/homepage.jsp").forward(request, response);
         
@@ -78,10 +85,12 @@ public class GetInspectorHomePage extends HttpServlet {
        
         String hcr = (request.getParameter("hc")) == null ? "" : (request.getParameter("hc")) ;
         String co2r = (request.getParameter("co2")) == null ? "" : (request.getParameter("co2")) ;
-        String comment = request.getParameter("comment");
+        String comment = request.getParameter("comment") == null ? "" : (request.getParameter("comment")) ;
         String recordId  = (request.getParameter("recordId")) == null ? "" : (request.getParameter("recordId")) ;
+       
         double hc , co2 ;
         int recordIdr = Integer.parseInt(recordId);
+      
         try{
             hc = Double.parseDouble(hcr);    
         }catch(Exception e){
@@ -102,7 +111,7 @@ public class GetInspectorHomePage extends HttpServlet {
                  result="Pass" ;
              }
              vd.updateEmissions(recordIdr, co2, hc , comment ,result);
-             
+           
         }catch(Exception e){
             e.printStackTrace();
         }    
