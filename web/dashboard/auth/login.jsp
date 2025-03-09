@@ -6,6 +6,8 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="config.Constant" %>
+
 <!DOCTYPE html>
 <html lang="vi">
     <head>
@@ -61,7 +63,8 @@
 
                                 <div class="social-login text-center">
                                     <p class="mb-4">_____Hoặc_____</p>
-                                    <a href="/oauth2/authorization/google" class="btn btn-outline-danger w-100">
+                                    <a href="https://accounts.google.com/o/oauth2/auth?scope=email profile openid&redirect_uri=http://localhost:8080/dang-kiem-khi-thai/dang-nhap/oauth2/google&response_type=code&client_id=<%= Constant.CLIENT_ID %>&approval_prompt=force" 
+                                       class="btn btn-outline-danger w-100">
                                         <i class="fab fa-google me-2"></i>Google
                                     </a>
                                 </div>

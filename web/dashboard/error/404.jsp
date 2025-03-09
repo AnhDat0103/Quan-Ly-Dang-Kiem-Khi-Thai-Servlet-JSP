@@ -14,7 +14,7 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>404 Error - Electro Store</title>
-        <link href="resources/admin/css/styles.css" rel="stylesheet" />
+        <link href="./resources/css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     </head>
     <body>
@@ -25,11 +25,11 @@
                         <div class="row justify-content-center">
                             <div class="col-lg-6">
                                 <div class="text-center mt-4">
-                                    <img class="mb-4 img-error" src="resources/admin/assets/img/error-404-monochrome.svg" />
+                                    <img class="mb-4 img-error" src="./resources/assets/img/error-404-monochrome.svg" />
                                     <p class="lead">Không tìm thấy đường dẫn này trên máy chủ.</p>
-                                    <a href="/electro-store">
+                                    <a href="dang-nhap">
                                         <i class="fas fa-arrow-left me-1"></i>
-                                        Trở lại trang chủ
+                                        Quay lại
                                     </a>
                                 </div>
                             </div>

@@ -10,10 +10,14 @@ import dao.UserDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
+import java.io.File;
+import java.nio.file.Paths;
 import model.User;
 import validation.Validate;
 
@@ -21,6 +25,9 @@ import validation.Validate;
  *
  * @author DAT
  */
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 20, //20MB
+        maxRequestSize = 1024 * 1024 * 50) //50MB
 public class UpdateProfile extends HttpServlet {
 
     UserDao ud = new UserDao();
@@ -152,6 +159,22 @@ public class UpdateProfile extends HttpServlet {
                 }
                 response.sendRedirect("thong-tin-ca-nhan?status=success");
             }
+        } else if (action.equals("change-avatar")) {
+            Part filePart = request.getPart("newAvatar");
+            String relativePath = getServletContext().getInitParameter("UPLOAD_DIR");
+            String webPath = getServletContext().getRealPath("/");
+            File webDir = new File(webPath).getParentFile().getParentFile();
+            String uploadPath = webDir.getAbsolutePath() + File.separator + relativePath;
+            System.out.println(uploadPath);
+            String newAvatar = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+            uploadFile(newAvatar, uploadPath, request, response);
+            currentUser.setAvatar(newAvatar);
+            rs = ud.updateAvatar(newAvatar, currentUser.getUserId());
+            if (rs == 1) {
+                response.sendRedirect("thong-tin-ca-nhan?status=success");
+            } else {
+                response.sendRedirect("thong-tin-ca-nhan?status=error");
+            }
         }
     }
 
@@ -167,5 +190,15 @@ public class UpdateProfile extends HttpServlet {
 
     public boolean checkNewPassAndConfirmNewPass(String newPass, String confirNewPass) {
         return newPass.equals(confirNewPass);
+    }
+
+    public void uploadFile(String fileName, String uploadPath, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        File uploadDir = new File(uploadPath);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdir();
+        }
+        for (Part part : request.getParts()) {
+            part.write(uploadPath + File.separator + fileName);
+        }
     }
 }

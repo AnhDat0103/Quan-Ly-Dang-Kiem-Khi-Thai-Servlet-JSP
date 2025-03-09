@@ -7,7 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="http://localhost:8080/electro-store/admin/trang-quan-tri">
+            <a class="navbar-brand ps-3" href="quan-tri-vien">
                 QUẢN TRỊ VIÊN
             </a>
             <!-- Sidebar Toggle-->

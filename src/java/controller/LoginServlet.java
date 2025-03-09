@@ -83,11 +83,9 @@ public class LoginServlet extends HttpServlet {
                     VehicleDao vehicleDao = new VehicleDao();
                     boolean checkVehicle = vehicleDao.checkVehicleExistByOwnerId(currentUser.getUserId());
                     if(checkVehicle){
-                        response.sendRedirect("chu-phuong-tien"); 
-                        
+                        response.sendRedirect("chu-phuong-tien");                   
                     }else{
-                        response.sendRedirect("kiem-tra-tai-khoan");
-                        
+                        response.sendRedirect("kiem-tra-tai-khoan");        
                     }
                 }                    
                 if(currentUser.getRole().equals(RoleEnums.Inspector)){
