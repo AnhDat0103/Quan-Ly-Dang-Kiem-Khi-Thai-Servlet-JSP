@@ -83,11 +83,9 @@ public class LoginServlet extends HttpServlet {
                     VehicleDao vehicleDao = new VehicleDao();
                     boolean checkVehicle = vehicleDao.checkVehicleExistByOwnerId(currentUser.getUserId());
                     if(checkVehicle){
-                        response.sendRedirect("chu-phuong-tien"); 
-                        
+                        response.sendRedirect("chu-phuong-tien");      
                     }else{
-                        response.sendRedirect("kiem-tra-tai-khoan");
-                        
+                        response.sendRedirect("kiem-tra-tai-khoan");                        
                     }
                 }                    
                 if(currentUser.getRole().equals(RoleEnums.Inspector)){
@@ -95,6 +93,8 @@ public class LoginServlet extends HttpServlet {
                 }
                 if(currentUser.getRole().equals(RoleEnums.Admin)) {
                     response.sendRedirect("quan-tri-vien");
+                }if(currentUser.getRole().equals(RoleEnums.Police)) {
+                    response.sendRedirect("trung-tam-canh-sat");
                 }
             } else {
                 request.setAttribute("notFound", "Tài khoản hoặc mật khẩu không chính xác.");

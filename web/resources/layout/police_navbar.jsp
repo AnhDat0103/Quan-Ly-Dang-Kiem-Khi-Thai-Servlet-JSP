@@ -41,23 +41,26 @@
         <!-- Navbar -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
             <div class="container">
-                <a class="navbar-brand" href="chu-phuong-tien">Quản lý Đăng kiểm</a>
+                <a class="navbar-brand" href="chu-phuong-tien">Cảnh Sát Giao Thông</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link active" href="chu-phuong-tien">Trang chủ</a>
+                            <a class="nav-link active" href="trung-tam-canh-sat">Trang chủ</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="quan-ly-phuong-tien">Phương tiện của tôi</a>
+                            <a class="nav-link" href="#">Tra Cứu Phương Tiện</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="dang-ky-kiem-dinh">Đặt lịch kiểm định</a>
+                            <a class="nav-link" href="#">Phương Tiện Vi Phạm</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="lich-su">Lịch sử kiểm định</a>
+                            <a class="nav-link" href="#">Xử Lý Vi Phạm</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Báo Cáo</a>
                         </li>
                     </ul>
                     <ul class="navbar-nav ms-auto">
@@ -67,7 +70,7 @@
                                 <span>${currentUser.fullName}</span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                <li><a class="dropdown-item" href="ho-so-ca-nhan-1">
+                                <li><a class="dropdown-item" href="profile.jsp">
                                     <i class="bi bi-person-fill me-2"></i>Hồ sơ cá nhân
                                 </a></li>
                                 <li><hr class="dropdown-divider"></li>
@@ -82,3 +85,4 @@
         </nav>
 </body>
 </html> 
+
