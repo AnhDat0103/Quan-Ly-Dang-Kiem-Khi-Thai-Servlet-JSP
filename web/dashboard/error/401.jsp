@@ -14,7 +14,7 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>401 Error - Electro Store</title>
-        <link href="resources/admin/css/styles.css" rel="stylesheet" />
+        <link href="./resources/css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     </head>
     <body>
@@ -28,7 +28,7 @@
                                     <h1 class="display-1">401</h1>
                                     <p class="lead">Trái phép</p>
                                     <p>Tài khoản của bạn không có quyền truy cập. Quyền truy cập bị từ chối.</p>
-                                    <a href="/electro-store/dang-nhap">
+                                    <a href="dang-nhap">
                                         <i class="fas fa-arrow-left me-1"></i>
                                         Đi tới trang đăng nhập
                                     </a>

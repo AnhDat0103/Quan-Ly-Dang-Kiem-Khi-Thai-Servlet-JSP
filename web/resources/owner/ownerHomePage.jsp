@@ -85,37 +85,40 @@
                         </div>
 
                         <!-- Lịch đăng kiểm -->
-                        <div class="card mt-4">
-                            <div class="card-header">
-                                <h5 class="card-title mb-0">Lịch đăng kiểm của tôi</h5>
+                         <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title mb-0">Lịch Sử Đăng Kiểm</h4>
+                                </div>
+
+                                <c:if test="${not empty historyList}"> <div class="card-body">
+                                        <table class="table table-bordered text-center">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Biển Số Xe</th>
+                                                    <th>Thời Gian Đăng Kiểm</th>
+                                                    <th>Kết Quả</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <c:forEach var="record" items="${historyList}" varStatus="loop">
+                                                    <tr style="background-color: ${record.result eq 'PENDING' ? 'yellow' : 'white'};">
+                                                        <td>${loop.index + 1}</td> 
+                                                        <td>${record.vehicle.plateNumber}</td>
+                                                        <td>${record.inspectionDate}</td>
+                                                        <td>${record.result}</td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </tbody>
+                                        </table>
+
+                                    </div></c:if>
+                                <c:if test="${empty historyList}">
+                                    <div class="alert text-center">
+                                        Bạn chưa đăng ký kiểm định
+                                    </div>  
+                                </c:if>
                             </div>
-                            <div class="card-body">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>Biển số xe</th>
-                                            <th>Ngày đăng kiểm</th>
-                                            <th>Trung tâm</th>
-                                            <th>Trạng thái</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>AB-12345</td>
-                                            <td>25/03/2024</td>
-                                            <td>Trung tâm Đăng kiểm 50-02V</td>
-                                            <td><span class="badge bg-warning">Chờ kiểm định</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>AB-12345</td>
-                                            <td>15/01/2024</td>
-                                            <td>Trung tâm Đăng kiểm 50-02V</td>
-                                            <td><span class="badge bg-success">Đã hoàn thành</span></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

@@ -27,7 +27,7 @@
             <ul class="navbar-nav">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
-                        <img class="sidebar-avatar rounded-circle" src="resources/images/avatar.png" 
+                        <img class="sidebar-avatar rounded-circle" src="resources/images/${currentUser.avatar}" 
                              style="width: 24px; height: 24px; margin-right: 4px;"> ${currentUser.fullName}
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">

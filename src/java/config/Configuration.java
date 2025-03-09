@@ -4,6 +4,11 @@
  */
 package config;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import jakarta.servlet.http.Part;
+import java.io.File;
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
@@ -13,6 +18,10 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.bind.DatatypeConverter;
+import model.dto.GoogleAccount;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.fluent.Form;
+import org.apache.http.client.fluent.Request;
 
 /**
  *
@@ -63,6 +72,7 @@ public class Configuration {
         }
         return true;
     }
+
     public static Date getNextInspectionDate(String inspectionDate) {
         SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
         sd.setLenient(false);
@@ -75,12 +85,39 @@ public class Configuration {
         }
         cal.add(Calendar.YEAR, 1);
         java.sql.Date nextInspectionDate = new java.sql.Date(cal.getTimeInMillis());
-        return  nextInspectionDate;
+        return nextInspectionDate;
+    }
+
+    public static String getCurrentTimeByFormat(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        sdf.setLenient(false);
+        return sdf.format(date);
+    }
+
+    public static String getAccessToken(String code) throws IOException {
+        String response = Request.Post(Constant.GOOGLE_LINK_GET_TOKEN).bodyForm(
+                Form.form()
+                        .add("client_id", Constant.CLIENT_ID)
+                        .add("client_secret", Constant.CLIENT_SECRET)
+                        .add("redirect_uri", Constant.REDIRECT_URL)
+                        .add("code", code)
+                        .add("grant_type", Constant.GOOGLE_GRANT_TYPE)
+                        .build()
+        ).execute().returnContent().asString();
+        JsonObject jobj = new Gson().fromJson(response, JsonObject.class);
+        String accessToken = jobj.get("access_token").toString().replaceAll("\"", "");
+        return accessToken;
     }
     
-    public static String getCurrentTimeByFormat(Date date) {
-       SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-       sdf.setLenient(false);
-       return sdf.format(date);
+    public static GoogleAccount getUserInfo(String accessToken) throws ClientProtocolException, IOException {
+
+        String link = Constant.GOOGLE_LINK_GET_USER_INFO + accessToken;
+
+        String response = Request.Get(link).execute().returnContent().asString();
+
+        GoogleAccount googlePojo = new Gson().fromJson(response, GoogleAccount.class);
+
+        return googlePojo;
+
     }
 }

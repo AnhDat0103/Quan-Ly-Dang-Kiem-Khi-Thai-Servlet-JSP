@@ -73,6 +73,9 @@ public class dangKyPT extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("currentUser"); 
+        System.out.println(user.getUserId());
         RequestDispatcher dispatcher = request.getRequestDispatcher("resources/vehicle/dangKyPT.jsp");
         dispatcher.forward(request, response); 
     }

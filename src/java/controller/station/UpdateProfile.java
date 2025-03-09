@@ -10,17 +10,25 @@ import dao.UserDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.Part;
+import java.io.File;
+import java.nio.file.Paths;
 import model.User;
+import model.enums.RoleEnums;
 import validation.Validate;
 
 /**
  *
  * @author DAT
  */
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 2, // 2MB
+        maxFileSize = 1024 * 1024 * 20, //20MB
+        maxRequestSize = 1024 * 1024 * 50) //50MB
 public class UpdateProfile extends HttpServlet {
 
     UserDao ud = new UserDao();
@@ -89,6 +97,7 @@ public class UpdateProfile extends HttpServlet {
         String confirm = request.getParameter("confirmNewPass") != null ? request.getParameter("confirmNewPass") : "";
         String inspecStaion = request.getParameter("inspecStation") != null ? request.getParameter("inspecStation") : "";
         String roleRequest = request.getParameter("role") != null ? request.getParameter("role") : "";
+        
         HttpSession session = request.getSession();
         User currentUser = (User) session.getAttribute("currentUser");
         int rs = 0;
@@ -99,15 +108,23 @@ public class UpdateProfile extends HttpServlet {
                 currentUser.setPhone(newPhone);
                 rs = ud.update(currentUser);
                 if (rs == 1) {
-                    if (roleRequest.equals("inspector")) {
+                    if (currentUser.getRole().compareTo(RoleEnums.Inspector) == 0) {
                         response.sendRedirect("thong-tin-nguoi-kiem-dinh?status=success");
+                        return;
+                    }
+                    if (currentUser.getRole().compareTo(RoleEnums.Owner) == 0) {
+                        response.sendRedirect("ho-so-ca-nhan-1?status=success");
                         return;
                     }
                     response.sendRedirect("thong-tin-ca-nhan?status=success");
                 }
             } else {
-                if (roleRequest.equals("inspector")) {
+                if (currentUser.getRole().compareTo(RoleEnums.Inspector) == 0) {
                     response.sendRedirect("thong-tin-nguoi-kiem-dinh?status=error");
+                    return;
+                }
+                if (currentUser.getRole().compareTo(RoleEnums.Owner) == 0) {
+                    response.sendRedirect("ho-so-ca-nhan-1?status=error");
                     return;
                 }
                 response.sendRedirect("thong-tin-ca-nhan?status=error");
@@ -118,22 +135,34 @@ public class UpdateProfile extends HttpServlet {
                     String hashNewPass = Configuration.hashPasswordByMD5(newPass);
                     rs = ud.updatePassword(hashNewPass, currentUser.getUserId());
                     if (rs == 1) {
-                        if (roleRequest.equals("inspector")) {
+                        if (currentUser.getRole().compareTo(RoleEnums.Inspector) == 0) {
                             response.sendRedirect("thong-tin-nguoi-kiem-dinh?status=success");
+                            return;
+                        }
+                        if (currentUser.getRole().compareTo(RoleEnums.Owner) == 0) {
+                            response.sendRedirect("ho-so-ca-nhan-1?status=success");
                             return;
                         }
                         response.sendRedirect("thong-tin-ca-nhan?status=success");
                     }
                 } else {
-                    if (roleRequest.equals("inspector")) {
+                    if (currentUser.getRole().compareTo(RoleEnums.Inspector) == 0) {
                         response.sendRedirect("thong-tin-nguoi-kiem-dinh?status=error");
+                        return;
+                    }
+                    if (currentUser.getRole().compareTo(RoleEnums.Owner) == 0) {
+                        response.sendRedirect("ho-so-ca-nhan-1?status=error");
                         return;
                     }
                     response.sendRedirect("thong-tin-ca-nhan?status=error");
                 }
             } else {
-                if (roleRequest.equals("inspector")) {
+                if (currentUser.getRole().compareTo(RoleEnums.Inspector) == 0) {
                     response.sendRedirect("thong-tin-nguoi-kiem-dinh?status=error");
+                    return;
+                }
+                if (currentUser.getRole().compareTo(RoleEnums.Owner) == 0) {
+                    response.sendRedirect("ho-so-ca-nhan-1?status=error");
                     return;
                 }
                 response.sendRedirect("thong-tin-ca-nhan?status=error");
@@ -146,11 +175,47 @@ public class UpdateProfile extends HttpServlet {
             currentUser.setInspectionStation(sd.findStationById(Integer.parseInt(inspecStaion)));
             rs = ud.updateInspecStationId(Integer.parseInt(inspecStaion), currentUser.getUserId());
             if (rs == 1) {
-                if (roleRequest.equals("inspector")) {
+                if (currentUser.getRole().compareTo(RoleEnums.Inspector) == 0) {
                     response.sendRedirect("thong-tin-nguoi-kiem-dinh?status=success");
                     return;
                 }
+                if (currentUser.getRole().compareTo(RoleEnums.Owner) == 0) {
+                    response.sendRedirect("ho-so-ca-nhan-1?status=success");
+                    return;
+                }
                 response.sendRedirect("thong-tin-ca-nhan?status=success");
+            }
+        } else if (action.equals("change-avatar")) {
+            Part filePart = request.getPart("newAvatar");
+            String relativePath = getServletContext().getInitParameter("UPLOAD_DIR");
+            String webPath = getServletContext().getRealPath("/");
+            File webDir = new File(webPath).getParentFile().getParentFile();
+            String uploadPath = webDir.getAbsolutePath() + File.separator + relativePath;
+            System.out.println(uploadPath);
+            String newAvatar = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+            uploadFile(newAvatar, uploadPath, request, response);
+            currentUser.setAvatar(newAvatar);
+            rs = ud.updateAvatar(newAvatar, currentUser.getUserId());
+            if (rs == 1) {
+                if (currentUser.getRole().compareTo(RoleEnums.Inspector) == 0) {
+                    response.sendRedirect("thong-tin-nguoi-kiem-dinh?status=success");
+                    return;
+                }
+                if (currentUser.getRole().compareTo(RoleEnums.Owner) == 0) {
+                    response.sendRedirect("ho-so-ca-nhan-1?status=success");
+                    return;
+                }
+                response.sendRedirect("thong-tin-ca-nhan?status=success");
+            } else {
+                if (currentUser.getRole().compareTo(RoleEnums.Inspector) == 0) {
+                    response.sendRedirect("thong-tin-nguoi-kiem-dinh?status=error");
+                    return;
+                }
+                if (currentUser.getRole().compareTo(RoleEnums.Owner) == 0) {
+                    response.sendRedirect("ho-so-ca-nhan-1?status=error");
+                    return;
+                }
+                response.sendRedirect("thong-tin-ca-nhan?status=error");
             }
         }
     }
@@ -167,5 +232,15 @@ public class UpdateProfile extends HttpServlet {
 
     public boolean checkNewPassAndConfirmNewPass(String newPass, String confirNewPass) {
         return newPass.equals(confirNewPass);
+    }
+
+    public void uploadFile(String fileName, String uploadPath, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        File uploadDir = new File(uploadPath);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdir();
+        }
+        for (Part part : request.getParts()) {
+            part.write(uploadPath + File.separator + fileName);
+        }
     }
 }

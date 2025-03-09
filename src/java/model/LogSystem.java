@@ -6,8 +6,8 @@ package model;
 
 /**
  *
- * @author DUYEN
+ * @author DAT
  */
-public class Inspector {
+public class LogSystem {
     
 }

@@ -63,11 +63,11 @@
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
-                                <img src="resources/images/avatar.png" class="rounded-circle me-2" width="32" height="32" alt="Avatar">
+                                <img src="resources/images/${currentUser.avatar}" class="rounded-circle me-2" width="32" height="32" alt="Avatar">
                                 <span>${currentUser.fullName}</span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                <li><a class="dropdown-item" href="profile.jsp">
+                                <li><a class="dropdown-item" href="ho-so-ca-nhan-1">
                                     <i class="bi bi-person-fill me-2"></i>Hồ sơ cá nhân
                                 </a></li>
                                 <li><hr class="dropdown-divider"></li>

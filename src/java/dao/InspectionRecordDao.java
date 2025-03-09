@@ -178,7 +178,7 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
 
     public List<InspectionRecords> getListInspectionRecordsPendingAtCurrentDate(int stationId, int startRecord, int recordsPerPage, String currentDate) {
         List<InspectionRecords> recordses = new ArrayList<>();
-        String sql = "SELECT * FROM InspectionRecords where StationID = ? and Result = 'Pending' and InspectionDate = ?  ORDER BY CAST(InspectionDate AS DATE), RecordID desc OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        String sql = "SELECT * FROM InspectionRecords where StationID = ? and Result = 'Pending' and InspectionDate = ?  ORDER BY CAST(InspectionDate AS DATE) desc, RecordID desc OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setInt(1, stationId);
@@ -208,7 +208,7 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
     public List<InspectionRecords> getListInspectionRecordsPendingBySearching(String searchDetails, int stationId, int startRecord, int recordPerPage) {
         List<InspectionRecords> recordses = new ArrayList<>();
         int id = vd.getVehicleIDByPlateNumber(searchDetails.trim().toUpperCase());
-        String sql = "SELECT * FROM InspectionRecords where StationID = ? and VehicleID = ?  ORDER BY CAST(InspectionDate AS DATE), RecordID desc OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        String sql = "SELECT * FROM InspectionRecords where StationID = ? and VehicleID = ?  ORDER BY CAST(InspectionDate AS DATE) desc, RecordID desc OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setInt(1, stationId);
@@ -252,7 +252,7 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
         }
         return noOfRecords;
     }
-  
+
     public void removeInspectionRecordsWithPlateNumber(String plateNumber) {
         int vehicleId = vd.getVehicleIDByPlateNumber(plateNumber);
         String sql = "DELETE FROM InspectionRecords Where VehicleID = ?";
@@ -264,6 +264,7 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
             e.printStackTrace();
         }
     }
+
 
     public boolean checkResultOfVehicleID(int vehicleID) {
         String sql = "SELECT TOP 1 Result FROM InspectionRecords WHERE VehicleID = ? ORDER BY InspectionDate DESC";
@@ -281,9 +282,10 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
         return false; // Nếu không tìm thấy bản ghi nào thì trả về false
     }
 
+
     public List<InspectionRecords> getListInspectionRecordsWithTime(String status, String startDate, String endDate, int stationId, int startRecord, int recordPerPage) {
         List<InspectionRecords> recordses = new ArrayList<>();
-        String sql = "SELECT * FROM InspectionRecords where StationID = ? " + status + " and InspectionDate BETWEEN ? AND ?  ORDER BY CAST(InspectionDate AS DATE), RecordID desc OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        String sql = "SELECT * FROM InspectionRecords where StationID = ? " + status + " and InspectionDate BETWEEN ? AND ?  ORDER BY CAST(InspectionDate AS DATE) desc, RecordID desc OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setInt(1, stationId);
@@ -332,6 +334,7 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
         return false;
     }
 
+
     public List<InspectionRecords> getListInspectionRecordsByPendingAndInspectId(int inspectorId) {
         List<InspectionRecords> recordses = new ArrayList<>();
 
@@ -361,7 +364,7 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
     }
 
     public boolean isVehicleInspectedToday(int vehicleID) {
-        String sql = "SELECT COUNT(*) FROM InspectionRecords WHERE VehicleID = ? AND CAST(InspectionDate AS DATE) = ?";
+            String sql = "SELECT COUNT(*) FROM InspectionRecords WHERE VehicleID = ? AND CAST(InspectionDate AS DATE) = ?";
         try {
             PreparedStatement ps = connect.prepareStatement(sql);
             ps.setInt(1, vehicleID);
@@ -373,7 +376,44 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false; 
+        return false;
+    }
+
+    public String getLatestInspectionResult(int vehicleID) {
+        String sql = "SELECT TOP 1 Result FROM InspectionRecords WHERE VehicleID = ? ORDER BY InspectionDate DESC";
+
+        try (PreparedStatement ps = connect.prepareStatement(sql)) {
+            ps.setInt(1, vehicleID);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getString("Result"); // Trả về kết quả mới nhất
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // Nếu không có dữ liệu thì trả về null
+    }
+
+    //check Fail
+    public boolean canInspectedAfterFail(int vehicleID, String newSpectionDate) {
+
+        String sql = "SELECT TOP 1 InspectionDate "
+                + "FROM InspectionRecords "
+                + "WHERE VehicleID = ? AND Result = 'FAIL' "
+                + "ORDER BY InspectionDate DESC";
+
+        try (PreparedStatement ps = connect.prepareStatement(sql)) {
+            ps.setInt(1, vehicleID);
+            ResultSet rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                Date lastInspectionDate = rs.getDate("InspectionDate");
+                return Configuration.convertStringToDate(newSpectionDate).after(lastInspectionDate);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false; // Nếu không có dữ liệu, không cho đăng kiểm lại
     }
 
     public int getNoOfRecordsWithTime(String status, String startDate, String endDate, int stationId) {

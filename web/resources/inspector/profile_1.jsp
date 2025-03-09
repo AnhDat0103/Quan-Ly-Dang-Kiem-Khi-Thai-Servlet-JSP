@@ -1,16 +1,12 @@
-<%-- 
-    Document   : profile
-    Created on : Feb 7, 2025, 11:21:35 PM
-    Author     : DAT
---%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="vi">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Thông tin cá nhân - Trung tâm đăng kiểm</title>
+        <title>Thông tin cá nhân - Công nhân kiểm định</title>
 
         <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -18,9 +14,6 @@
         <!-- Font Awesome -->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
-        <!-- Custom CSS -->
-        <link href="resources/css/sb-admin-2.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
         <style>
             .alert {
                 padding: 15px;
@@ -40,10 +33,15 @@
                 border: 1px solid #f5c6cb;
             }
         </style>
+
+        <!-- Custom CSS -->
+        <link href="resources/css/sb-admin-2.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
     </head>
     <body id="page-top">
         <%@include file="../layout/narbar_inspector.jsp"%>
         <div id="wrapper">
+
 
             <div id="content-wrapper" class="d-flex flex-column">
                 <% 
@@ -59,30 +57,39 @@
                     <!-- Begin Page Content -->
                     <div class="container-fluid" style="padding-left: 118px;
                          padding-right: 124px; margin-top: 24px;">
+
                         <!-- Page Heading -->
                         <h1 class="h3 mb-4 text-gray-800">Thông tin cá nhân</h1>
 
                         <div class="row">
                             <div class="col-lg-4">
-                                <!-- Profile Picture Card -->
+                                <!-- Profile Picture Card --> 
                                 <div class="card shadow mb-4">
                                     <div class="card-header py-3">
                                         <h6 class="m-0 font-weight-bold text-primary">Ảnh đại diện</h6>
                                     </div>
                                     <div class="card-body text-center">
-                                        <img class="img-profile rounded-circle mb-3" src="resources/images/avatar.png" 
+                                        <img class="img-profile rounded-circle mb-3" src="resources/images/${currentUser.avatar}" 
                                              style="width: 150px; height: 150px;">
-                                        <div class="mb-3">
+                                        <div class="mb-3 d-lg-flex justify-content-center">
                                             <button class="btn btn-primary btn-sm" id="changeAvatarBtn">
                                                 <i class="fas fa-camera mr-2"></i>Chọn ảnh
                                             </button>
-                                            <button class="btn btn-success btn-sm" id="saveAvatarBtn" style="display: none;">
-                                                <i class="fas fa-save mr-2"></i>Lưu ảnh
-                                            </button>
+                                            <div>
+                                                <form action="cap-nhat-thong-tin" method="POST" enctype="multipart/form-data">
+                                                    <input type="hidden" name="action" value="change-avatar">
+                                                    <input type="file" id="avatarInput" accept="image/*" style="display: none;" name="newAvatar">
+                                                    <button class="btn btn-success btn-sm" id="saveAvatarBtn" style="display: none;">
+                                                        <i class="fas fa-save mr-2"></i>Lưu ảnh
+                                                    </button>
+                                                </form> 
+                                            </div>
                                         </div>
-                                        <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+
                                     </div>
                                 </div>
+
+
 
                                 <!-- Account Settings Card -->
                                 <div class="card shadow mb-4">
@@ -122,7 +129,7 @@
                                         </button>
                                     </div>
                                     <div class="card-body">
-                                        <form id="profileForm" action="cap-nhat-thong-tin?role=inspector" method="POST">
+                                        <form id="profileForm" action="cap-nhat-thong-tin" method="POST">
                                             <div class="row mb-3">
                                                 <div class="col-md-6" style="display: none">
                                                     <input type="text" value="${requestScope.currentUser.userId}">
@@ -133,7 +140,7 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label class="form-label">Email</label>
-                                                    <input type="email" class="form-control" value="${sessionScope.currentUser.email}"  disabled readonly>
+                                                    <input type="email" class="form-control" value="${sessionScope.currentUser.email}" readonly>
                                                 </div>
                                             </div>
                                             <div class="row mb-3">
@@ -143,7 +150,7 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label class="form-label">Chức vụ</label>
-                                                    <input type="text" class="form-control" disabled readonly value="Kỹ sư kiểm định">
+                                                    <input type="text" class="form-control" disabled readonly value="Quản lý kỹ thuật">
                                                 </div>
                                             </div>
 
@@ -201,33 +208,32 @@
                         <h5 class="modal-title">Đổi mật khẩu</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
-
-                    <form id="changePasswordForm" action="cap-nhat-thong-tin?role=inspector" method="POST">
-                        <input type="hidden" name="action" value="change-pass">
+                    <form id="changePasswordForm" action="cap-nhat-thong-tin" method="POST">
                         <div class="modal-body">
+                            <input type="hidden" name="action" value="change-pass">
                             <div class="mb-3">
                                 <label class="form-label">Mật khẩu hiện tại</label>
-                                <input type="password" class="form-control" required name="oldPass">
+                                <input type="password" class="form-control" name="oldPass">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Mật khẩu mới</label>
-                                <input type="password" class="form-control" required name="newPass">
+                                <input type="password" class="form-control" name="newPass">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Xác nhận mật khẩu mới</label>
-                                <input type="password" class="form-control" required name="confirmNewPass">
+                                <input type="password" class="form-control" name="confirmNewPass">
                             </div>
+
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
                             <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
                         </div>
                     </form>
-
-
                 </div>
             </div>
         </div>
+
 
         <!-- Notification Settings Modal -->
         <!--            <div class="modal fade" id="notificationSettingsModal" tabindex="-1">
@@ -270,20 +276,24 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Xóa tài khoản</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+
                     </div>
-                    <div class="modal-body">
-                        <div class="form-check mb-3" style="padding-left: 0px;">
-                            <input type="text" name="userId" value="${sessionScope.currentUser.userId}" style="display: none">
-                            <div class="alert alert-danger" role="alert">
-                                Bạn có chắc chắn muốn xóa vĩnh viễn tài khoản này?
+                    <form action="cap-nhat-thong-tin" method="POST">
+                        <input type="hidden" name="action" value="delete-account">
+                        <div class="modal-body">
+                            <div class="form-check mb-3" style="padding-left: 0px;">
+                                <input type="text" name="userId" value="${sessionScope.currentUser.userId}" style="display: none">
+                                <div class="remove-acc" role="alert">
+                                    Bạn có chắc chắn muốn xóa vĩnh viễn tài khoản này?
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                        <button type="button" class="btn btn-danger" id="deleteAccountBtn">Xóa</button>
-                    </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                            <input type="submit" class="btn btn-primary" value="Xóa">
+                        </div>
+                    </form>
+
                 </div>
             </div>
         </div>
@@ -304,47 +314,23 @@
                         </div>
                     </div>
                 </div>-->
-        <script>
 
-            document.addEventListener("DOMContentLoaded", function () {
-
-                let stationId = "${currentUser.inspectionStation.stationId}";
-                console.log("Station ID:", stationId);
-                if (!stationId || stationId === "0") {
-                    let stationModal = new bootstrap.Modal(document.getElementById("stationModal"));
-                    stationModal.show();
-                }
-            });
-            setTimeout(function () {
-                let alertBox = document.querySelector(".alert");
-                if (alertBox) {
-                    alertBox.style.display = "none";
-                }
-            }, 5000);
-
-            document.getElementById("deleteAccountBtn").addEventListener("click", function () {
-                if (confirm("Bạn có chắc chắn muốn xóa tài khoản này không?")) {
-                    let userId = "${sessionScope.currentUser.userId}";
-
-                    fetch("DeleteAccountServlet", {
-                        method: "POST",
-                        headers: {"Content-Type": "application/x-www-form-urlencoded"},
-                        body: "userId=" + encodeURIComponent(userId)
-                    })
-                            .then(response => response.text())
-                            .then(data => {
-                                alert("Tài khoản đã được xóa!");
-                                window.location.href = "dang-nhap"; // Điều hướng về trang đăng nhập
-                            })
-                            .catch(error => console.error("Lỗi:", error));
-                }
-            });
-        </script>
-
-        <!-- Scripts -->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
         <script src="resources/js/sb-admin-2.min.js"></script>
         <script src="resources/js/profile.js"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                let alertBox = document.querySelector(".alert");
+
+                if (alertBox) {
+                    setTimeout(function () {
+                        alertBox.style.display = "none";
+                    }, 3000);
+                }
+            });
+
+        </script>
+
     </body>
 </html> 
