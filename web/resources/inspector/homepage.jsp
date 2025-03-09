@@ -161,7 +161,7 @@
         <!-- Footer -->
         <%@include file="../layout/footer.jsp" %>
         <script>
-            <script>
+            
             document.addEventListener("DOMContentLoaded", function () {
                     let stationId = "${currentUser.inspectionStation.stationId}";
             console.log("Station ID:", stationId);

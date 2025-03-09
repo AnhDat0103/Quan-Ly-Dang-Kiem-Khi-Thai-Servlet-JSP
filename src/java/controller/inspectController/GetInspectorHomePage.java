@@ -56,10 +56,10 @@ public class GetInspectorHomePage extends HttpServlet {
       //  processRequest(request, response);
     HttpSession session = request.getSession();
         User user = (User) session.getAttribute("currentUser" );
-    //     StationDao sd = new StationDao();
-       // request.setAttribute("stations", sd.findAll());
-       
-        List<InspectionRecords> is = vd.getListInspectionRecordsByPendingAndInspectId(user.getUserId());
+        StationDao sd = new StationDao();
+        request.setAttribute("stations", sd.findAll());
+        int stationId = user.getInspectionStation().getStationId();
+        List<InspectionRecords> is = vd.getListInspectionRecordsByPendingAndInspectId(user.getUserId(),stationId);
         
        
       
