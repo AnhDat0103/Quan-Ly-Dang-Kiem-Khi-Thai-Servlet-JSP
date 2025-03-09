@@ -65,7 +65,7 @@ public class GetHistoryPage extends HttpServlet {
        User user = (User) session.getAttribute("currentUser" );
        
         // Lấy danh sách bản ghi kiểm định với InspectorID = currentUser.getUserId() và Result khác Pending
-        
+       
        List<InspectionRecords> inspectionList = vd.getListInspectionRecordsByNotPendingAndInspectId(user.getUserId());
         
 
