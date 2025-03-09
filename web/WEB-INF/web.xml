@@ -278,4 +278,8 @@
     <welcome-file-list>
         <welcome-file>dashboard/auth/login.jsp</welcome-file>
     </welcome-file-list>
+    <context-param>
+        <param-name>UPLOAD_DIR</param-name>
+        <param-value>web/resources/images</param-value>
+    </context-param>
 </web-app>
