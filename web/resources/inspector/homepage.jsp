@@ -128,8 +128,6 @@
                     </div>
                 </div>
 
-
-
                 <!-- Modal nhập thông tin khi stationId null -->
 
                 <div class="modal fade" id="stationModal" tabindex="-1" aria-labelledby="stationModalLabel" aria-hidden="true">
@@ -158,8 +156,6 @@
                         </div>
                     </div>
                 </div>
-
-
             </div>
         </div>
         <!-- Footer -->
