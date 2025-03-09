@@ -335,13 +335,14 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
     }
 
 
-    public List<InspectionRecords> getListInspectionRecordsByPendingAndInspectId(int inspectorId) {
+    public List<InspectionRecords> getListInspectionRecordsByPendingAndInspectId(int inspectorId, int stationId) {
         List<InspectionRecords> recordses = new ArrayList<>();
 
-        String sql = "SELECT * FROM InspectionRecords WHERE InspectorID = ? and Result = 'Pending'";
+        String sql = "SELECT * FROM InspectionRecords WHERE InspectorID = ? and Result = 'Pending' AND StationID = ?";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setInt(1, inspectorId);
+            pt.setInt(2, stationId);
 
             ResultSet rs = pt.executeQuery();
             while (rs.next()) {
