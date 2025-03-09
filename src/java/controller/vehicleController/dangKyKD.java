@@ -109,7 +109,7 @@ public class dangKyKD extends HttpServlet {
             if (plateNumber == null || stationName == null || inspectionDate == null
                     || plateNumber.trim().isEmpty() || stationName.trim().isEmpty() || inspectionDate.trim().isEmpty()) {
                 request.setAttribute("message", "Vui lòng chọn đầy đủ thông tin!");
-                forwardToForm(request, response);
+                doGet(request, response);
                 return;
             }
 
@@ -121,77 +121,78 @@ public class dangKyKD extends HttpServlet {
             int vehicleID = vehicleDao.getVehicleIDByPlateNumber(plateNumber);
             int stationID = stationDao.getStationIDByName(stationName);
 
-            if (inspectionRecordDao.checkResultOfVehicleID(vehicleID)) {
-                request.setAttribute("message", "Phương tiện đã đạt kiểm định, không thể đăng ký lại!");
+//            if (inspectionRecordDao.checkResultOfVehicleID(vehicleID)) {
+//                request.setAttribute("message", "Phương tiện đã đạt kiểm định, không thể đăng ký lại!");
+// 
+            String lastResult = inspectionRecordDao.getLatestInspectionResult(vehicleID);
 
-                String lastResult = inspectionRecordDao.getLatestInspectionResult(vehicleID);
-
-                if ("Pass".equalsIgnoreCase(lastResult)) {
-                    request.setAttribute("message", "Phương tiện đã đạt đăng kiểm, không cần đăng kiểm lại.");
-                    forwardToForm(request, response);
-                    return;
-                }
-
-                if ("Pending".equalsIgnoreCase(lastResult)) {
-                    request.setAttribute("message", "Phương tiện đã được đăng ký đăng kiểm.");
-                    forwardToForm(request, response);
-                    return;
-                }
-
-                // Nếu lần kiểm định gần nhất là FAIL, kiểm tra điều kiện ngày tháng
-                if ("Fail".equalsIgnoreCase(lastResult)) {
-                    if (!inspectionRecordDao.canInspectedAfterFail(vehicleID, inspectionDate)) {
-                        request.setAttribute("message", "Phương tiện bị trượt đăng kiểm. Bạn chỉ có thể đăng kiểm lại từ ngày mai.");
-                        forwardToForm(request, response);
-                        return;
-                    }
-                }
-                // Kiểm tra ID có hợp lệ
-                if (vehicleID == 0 || stationID == 0) {
-                    request.setAttribute("message", "Không tìm thấy thông tin phương tiện hoặc trạm đăng kiểm!");
-                    forwardToForm(request, response);
-                    return;
-                }
-
-                // Kiểm tra ngày đăng kiểm
-                java.util.Date today = new java.util.Date();
-                SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
-                Date date = sd.parse(inspectionDate);
-                if (today.compareTo(date) > 0) {
-                    request.setAttribute("message", "Ngày đăng kiểm không thể là ngày trong quá khứ!");
-                    forwardToForm(request, response);
-                    return;
-                }
-
-                // Tạo bản ghi kiểm định mới
-                InspectionRecords record = new InspectionRecords();
-                record.setVehicle(vehicleDao.getVehiclesById(vehicleID));
-                record.setStationID(stationID);
-                record.setInspectionDate(sd.parse(inspectionDate));
-
-                // Tính nextInspectionDate (1 năm sau)
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(sd.parse(inspectionDate));
-                cal.add(Calendar.YEAR, 1);
-                java.sql.Date nextInspectionDate = new java.sql.Date(cal.getTimeInMillis());
-                record.setNextInspectionDate(nextInspectionDate);
-
-                // Thêm vào database
-                int result = inspectionRecordDao.save(record);
-
-                if (result > 0) {
-                    request.setAttribute("message", "Đăng ký kiểm định thành công!");
-                } else {
-                    request.setAttribute("message", "Đăng ký kiểm định thất bại. Vui lòng thử lại.");
-                }
-
-                // Refresh lại trang đăng ký kiểm định
-                forwardToForm(request, response);
+            if ("Pass".equalsIgnoreCase(lastResult)) {
+                request.setAttribute("message", "Phương tiện đã đạt đăng kiểm, không cần đăng kiểm lại.");
+                doGet(request, response);
+                return;
             }
+
+            if ("Pending".equalsIgnoreCase(lastResult)) {
+                request.setAttribute("message", "Phương tiện đã được đăng ký đăng kiểm.");
+                doGet(request, response);
+                return;
+            }
+
+            // Nếu lần kiểm định gần nhất là FAIL, kiểm tra điều kiện ngày tháng
+            if ("Fail".equalsIgnoreCase(lastResult)) {
+                if (!inspectionRecordDao.canInspectedAfterFail(vehicleID, inspectionDate)) {
+                    request.setAttribute("message", "Phương tiện bị trượt đăng kiểm. Bạn chỉ có thể đăng kiểm lại từ ngày mai.");
+                    doGet(request, response);
+                    return;
+                }
+            }
+
+            // Kiểm tra ID có hợp lệ
+            if (vehicleID == 0 || stationID == 0) {
+                request.setAttribute("message", "Không tìm thấy thông tin phương tiện hoặc trạm đăng kiểm!");
+                doGet(request, response);
+                return;
+            }
+
+            // Kiểm tra ngày đăng kiểm
+            java.util.Date today = new java.util.Date();
+            SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = sd.parse(inspectionDate);
+            if (today.compareTo(date) > 0) {
+                request.setAttribute("message", "Ngày đăng kiểm không thể là ngày trong quá khứ!");
+                doGet(request, response);
+                return;
+            }
+
+            // Tạo bản ghi kiểm định mới
+            InspectionRecords record = new InspectionRecords();
+            record.setVehicle(vehicleDao.getVehiclesById(vehicleID));
+            record.setStationID(stationID);
+            record.setInspectionDate(sd.parse(inspectionDate));
+
+            // Tính nextInspectionDate (1 năm sau)
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(sd.parse(inspectionDate));
+            cal.add(Calendar.YEAR, 1);
+            java.sql.Date nextInspectionDate = new java.sql.Date(cal.getTimeInMillis());
+            record.setNextInspectionDate(nextInspectionDate);
+
+            // Thêm vào database
+            int result = inspectionRecordDao.save(record);
+
+            if (result > 0) {
+                request.setAttribute("message", "Đăng ký kiểm định thành công!");
+            } else {
+                request.setAttribute("message", "Đăng ký kiểm định thất bại. Vui lòng thử lại.");
+            }
+
+            // Refresh lại trang đăng ký kiểm định
+            doGet(request, response);
+
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("message", "Có lỗi xảy ra: " + e.getMessage());
-            forwardToForm(request, response);
+            doGet(request, response);
         }
 
     }
@@ -206,9 +207,6 @@ public class dangKyKD extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private void forwardToForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher rs = request.getRequestDispatcher("resources/vehicle/dangKyKD.jsp");
-        rs.forward(request, response);
-    }
+    
 
 }

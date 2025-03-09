@@ -93,6 +93,10 @@
         <servlet-class>controller.GetChooseRolePage</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>GetProfileOwnerPage</servlet-name>
+        <servlet-class>controller.ownerController.GetProfileOwnerPage</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>GetInspectors</servlet-name>
         <servlet-class>controller.admin.GetInspectors</servlet-class>
     </servlet>
@@ -104,6 +108,11 @@
         <servlet-name>GetProfilePage</servlet-name>
         <url-pattern>/thong-tin-ca-nhan</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetProfileOwnerPage</servlet-name>
+        <url-pattern>/ho-so-ca-nhan-1</url-pattern>
+    </servlet-mapping>
+    
     <servlet-mapping>
         <servlet-name>UpdateProfile</servlet-name>
         <url-pattern>/cap-nhat-thong-tin</url-pattern>

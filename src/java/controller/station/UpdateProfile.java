@@ -19,6 +19,7 @@ import jakarta.servlet.http.Part;
 import java.io.File;
 import java.nio.file.Paths;
 import model.User;
+import model.enums.RoleEnums;
 import validation.Validate;
 
 /**
@@ -96,6 +97,7 @@ public class UpdateProfile extends HttpServlet {
         String confirm = request.getParameter("confirmNewPass") != null ? request.getParameter("confirmNewPass") : "";
         String inspecStaion = request.getParameter("inspecStation") != null ? request.getParameter("inspecStation") : "";
         String roleRequest = request.getParameter("role") != null ? request.getParameter("role") : "";
+        
         HttpSession session = request.getSession();
         User currentUser = (User) session.getAttribute("currentUser");
         int rs = 0;
@@ -106,15 +108,23 @@ public class UpdateProfile extends HttpServlet {
                 currentUser.setPhone(newPhone);
                 rs = ud.update(currentUser);
                 if (rs == 1) {
-                    if (roleRequest.equals("inspector")) {
+                    if (currentUser.getRole().compareTo(RoleEnums.Inspector) == 0) {
                         response.sendRedirect("thong-tin-nguoi-kiem-dinh?status=success");
+                        return;
+                    }
+                    if (currentUser.getRole().compareTo(RoleEnums.Owner) == 0) {
+                        response.sendRedirect("ho-so-ca-nhan-1?status=success");
                         return;
                     }
                     response.sendRedirect("thong-tin-ca-nhan?status=success");
                 }
             } else {
-                if (roleRequest.equals("inspector")) {
+                if (currentUser.getRole().compareTo(RoleEnums.Inspector) == 0) {
                     response.sendRedirect("thong-tin-nguoi-kiem-dinh?status=error");
+                    return;
+                }
+                if (currentUser.getRole().compareTo(RoleEnums.Owner) == 0) {
+                    response.sendRedirect("ho-so-ca-nhan-1?status=error");
                     return;
                 }
                 response.sendRedirect("thong-tin-ca-nhan?status=error");
@@ -125,22 +135,34 @@ public class UpdateProfile extends HttpServlet {
                     String hashNewPass = Configuration.hashPasswordByMD5(newPass);
                     rs = ud.updatePassword(hashNewPass, currentUser.getUserId());
                     if (rs == 1) {
-                        if (roleRequest.equals("inspector")) {
+                        if (currentUser.getRole().compareTo(RoleEnums.Inspector) == 0) {
                             response.sendRedirect("thong-tin-nguoi-kiem-dinh?status=success");
+                            return;
+                        }
+                        if (currentUser.getRole().compareTo(RoleEnums.Owner) == 0) {
+                            response.sendRedirect("ho-so-ca-nhan-1?status=success");
                             return;
                         }
                         response.sendRedirect("thong-tin-ca-nhan?status=success");
                     }
                 } else {
-                    if (roleRequest.equals("inspector")) {
+                    if (currentUser.getRole().compareTo(RoleEnums.Inspector) == 0) {
                         response.sendRedirect("thong-tin-nguoi-kiem-dinh?status=error");
+                        return;
+                    }
+                    if (currentUser.getRole().compareTo(RoleEnums.Owner) == 0) {
+                        response.sendRedirect("ho-so-ca-nhan-1?status=error");
                         return;
                     }
                     response.sendRedirect("thong-tin-ca-nhan?status=error");
                 }
             } else {
-                if (roleRequest.equals("inspector")) {
+                if (currentUser.getRole().compareTo(RoleEnums.Inspector) == 0) {
                     response.sendRedirect("thong-tin-nguoi-kiem-dinh?status=error");
+                    return;
+                }
+                if (currentUser.getRole().compareTo(RoleEnums.Owner) == 0) {
+                    response.sendRedirect("ho-so-ca-nhan-1?status=error");
                     return;
                 }
                 response.sendRedirect("thong-tin-ca-nhan?status=error");
@@ -153,8 +175,12 @@ public class UpdateProfile extends HttpServlet {
             currentUser.setInspectionStation(sd.findStationById(Integer.parseInt(inspecStaion)));
             rs = ud.updateInspecStationId(Integer.parseInt(inspecStaion), currentUser.getUserId());
             if (rs == 1) {
-                if (roleRequest.equals("inspector")) {
+                if (currentUser.getRole().compareTo(RoleEnums.Inspector) == 0) {
                     response.sendRedirect("thong-tin-nguoi-kiem-dinh?status=success");
+                    return;
+                }
+                if (currentUser.getRole().compareTo(RoleEnums.Owner) == 0) {
+                    response.sendRedirect("ho-so-ca-nhan-1?status=success");
                     return;
                 }
                 response.sendRedirect("thong-tin-ca-nhan?status=success");
@@ -171,8 +197,24 @@ public class UpdateProfile extends HttpServlet {
             currentUser.setAvatar(newAvatar);
             rs = ud.updateAvatar(newAvatar, currentUser.getUserId());
             if (rs == 1) {
+                if (currentUser.getRole().compareTo(RoleEnums.Inspector) == 0) {
+                    response.sendRedirect("thong-tin-nguoi-kiem-dinh?status=success");
+                    return;
+                }
+                if (currentUser.getRole().compareTo(RoleEnums.Owner) == 0) {
+                    response.sendRedirect("ho-so-ca-nhan-1?status=success");
+                    return;
+                }
                 response.sendRedirect("thong-tin-ca-nhan?status=success");
             } else {
+                if (currentUser.getRole().compareTo(RoleEnums.Inspector) == 0) {
+                    response.sendRedirect("thong-tin-nguoi-kiem-dinh?status=error");
+                    return;
+                }
+                if (currentUser.getRole().compareTo(RoleEnums.Owner) == 0) {
+                    response.sendRedirect("ho-so-ca-nhan-1?status=error");
+                    return;
+                }
                 response.sendRedirect("thong-tin-ca-nhan?status=error");
             }
         }
