@@ -147,15 +147,18 @@
                                 </div>
                             </div>
 
-                            <c:if test="${requestScope.records.size() > 0}">
+                            <c:if test="${sessionScope.records.size() > 0}">
                                 <!-- Bảng chi tiết -->
                                 <div class="card shadow mb-4">
-                                    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                                    <form action="bao-cao-kiem-dinh" method="POST">
+                                        <input type="hidden" name="action" value="exportExcel">
+                                        <div class="card-header py-3 d-flex justify-content-between align-items-center">
                                         <h6 class="m-0 font-weight-bold text-primary">Chi tiết báo cáo</h6>
-                                        <button class="btn btn-success">
+                                        <button class="btn btn-success" type="submit">
                                             <i class="fas fa-download fa-sm text-white-50"></i> Xuất Excel
                                         </button>
                                     </div>
+                                    </form>
                                     <div class="card-body">
                                         <div class="table-responsive">
                                             <table class="table table-bordered" width="100%" cellspacing="0">
@@ -170,7 +173,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <c:forEach items="${records}" var="r">
+                                                    <c:forEach items="${sessionScope.records}" var="r">
                                                         <tr>
                                                             <td>${r.inspectionDate}</td>
                                                             <td>${r.sumNumOfVehicle}</td>
@@ -186,7 +189,7 @@
                                     </div>
                                 </div>
                             </c:if>
-                            <c:if test="${requestScope.records.size() == 0}">
+                            <c:if test="${sessionScope.records.size() == 0}">
                                 <div class="alert alert-dark text-center" role="alert">
                                     Không có bản đăng kiểm nào được tìm thấy.
                                 </div>
