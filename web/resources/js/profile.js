@@ -42,10 +42,11 @@ document.addEventListener('DOMContentLoaded', function () {
             const reader = new FileReader();
             reader.onload = function (e) {
                 document.querySelector('.img-profile').src = e.target.result;
+                document.querySelector('input[name="newAvatar"]').value = e.target.result;
             };
             reader.readAsDataURL(selectedAvatarFile);
             // Hiển thị nút lưu
-            saveAvatarBtn.style.display = 'inline-block';
+            saveAvatarBtn.style.display = 'inline-block';   
         }
     });
 
@@ -116,31 +117,23 @@ document.addEventListener('DOMContentLoaded', function () {
         const formData = new FormData();
         formData.append('avatar', file);
 
-        // TODO: Gọi API để upload ảnh
-        // Ví dụ:
-        /*
-         fetch('/api/upload-avatar', {
-         method: 'POST',
-         body: formData
-         })
-         .then(response => response.json())
-         .then(data => {
-         showAlert('success', 'Cập nhật ảnh đại diện thành công!');
-         saveAvatarBtn.style.display = 'none';
-         selectedAvatarFile = null;
-         })
-         .catch(error => {
-         showAlert('danger', 'Có lỗi xảy ra khi cập nhật ảnh đại diện!');
-         });
-         */
-
-        // Demo cho test
-        console.log('Uploading avatar...', file);
-        setTimeout(() => {
-            showAlert('success', 'Cập nhật ảnh đại diện thành công!');
-            saveAvatarBtn.style.display = 'none';
-            selectedAvatarFile = null;
-        }, 1000);
+       fetch('cap-nhat-thong-tin', {
+            method: 'POST',
+            body: formData
+        })
+                .then(response => response.json()) // Đọc phản hồi từ Servlet
+                .then(data => {
+                    if (data.success) {
+                        toggleEditMode(false);
+                        showAlert('success', 'Cập nhật thông tin thành công!');
+                    } else {
+                        showAlert('danger', 'Cập nhật thất bại! Vui lòng thử lại.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Lỗi khi cập nhật thông tin:', error);
+                    showAlert('danger', 'Lỗi kết nối máy chủ!');
+                });
     }
 
     // Hàm hiển thị thông báo

@@ -63,6 +63,9 @@ public class GetStationHomePage extends HttpServlet {
         if(request.getParameter("trang-so") != null){
             page = Integer.parseInt(request.getParameter("trang-so"));
         }
+        if(currentUser.getInspectionStation() == null) {
+           currentUser.setInspectionStation(new InspectionStation());
+        }
         int stationId = currentUser.getInspectionStation().getStationId();
         int startRecord =  (page - 1) * recordsPerPage;
         int noOfRecords = ird.getNoOfRecord(stationId);

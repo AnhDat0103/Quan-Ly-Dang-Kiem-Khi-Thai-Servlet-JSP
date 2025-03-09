@@ -68,25 +68,33 @@
 
                         <div class="row">
                             <div class="col-lg-4">
-                                <!-- Profile Picture Card -->
+                                <!-- Profile Picture Card --> 
                                 <div class="card shadow mb-4">
                                     <div class="card-header py-3">
                                         <h6 class="m-0 font-weight-bold text-primary">Ảnh đại diện</h6>
                                     </div>
                                     <div class="card-body text-center">
-                                        <img class="img-profile rounded-circle mb-3" src="resources/images/avatar.png" 
+                                        <img class="img-profile rounded-circle mb-3" src="resources/images/${currentUser.avatar}" 
                                              style="width: 150px; height: 150px;">
-                                        <div class="mb-3">
+                                        <div class="mb-3 d-lg-flex justify-content-center">
                                             <button class="btn btn-primary btn-sm" id="changeAvatarBtn">
                                                 <i class="fas fa-camera mr-2"></i>Chọn ảnh
                                             </button>
-                                            <button class="btn btn-success btn-sm" id="saveAvatarBtn" style="display: none;">
-                                                <i class="fas fa-save mr-2"></i>Lưu ảnh
-                                            </button>
+                                            <div>
+                                                <form action="cap-nhat-thong-tin" method="POST" enctype="multipart/form-data">
+                                                    <input type="hidden" name="action" value="change-avatar">
+                                                    <input type="file" id="avatarInput" accept="image/*" style="display: none;" name="newAvatar">
+                                                    <button class="btn btn-success btn-sm" id="saveAvatarBtn" style="display: none;">
+                                                        <i class="fas fa-save mr-2"></i>Lưu ảnh
+                                                    </button>
+                                                </form> 
+                                            </div>
                                         </div>
-                                        <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+
                                     </div>
                                 </div>
+
+
 
                                 <!-- Account Settings Card -->
                                 <div class="card shadow mb-4">
@@ -316,5 +324,18 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
         <script src="resources/js/sb-admin-2.min.js"></script>
         <script src="resources/js/profile.js"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                let alertBox = document.querySelector(".alert");
+
+                if (alertBox) {
+                    setTimeout(function () {
+                        alertBox.style.display = "none";
+                    }, 3000);
+                }
+            });
+
+        </script>
+
     </body>
 </html> 
