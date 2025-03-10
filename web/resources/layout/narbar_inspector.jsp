@@ -14,17 +14,17 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Trang chủ</a>
+                        <a class="nav-link active" href="nguoi-kiem-dinh">Trang chủ</a>
                     </li>
                    
                     <li class="nav-item">
-                        <a class="nav-link" href="inspection-history.jsp">Lịch sử kiểm định</a>
+                        <a class="nav-link" href="lich-su-kiem-dinh-cong-nhan">Lịch sử kiểm định</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
-                            <img src="resources/images/avatar.png" class="rounded-circle me-2" alt="Avatar" style="width: 32px; height: 32px;">
+                            <img src="resources/images/${currentUser.avatar}" class="rounded-circle me-2" alt="Avatar" style="width: 32px; height: 32px;">
                             <span>${sessionScope.currentUser.fullName}</span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">

@@ -103,6 +103,10 @@
     <servlet>
         <servlet-name>ResetPassword</servlet-name>
         <servlet-class>controller.admin.ResetPassword</servlet-class>
+       </servlet>
+    <servlet>
+        <servlet-name>GetHistoryPage</servlet-name>
+        <servlet-class>controller.inspectController.GetHistoryPage</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>GetProfilePage</servlet-name>
@@ -208,6 +212,10 @@
     <servlet-mapping>
         <servlet-name>ResetPassword</servlet-name>
         <url-pattern>/lay-lai-mat-khau</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetHistoryPage</servlet-name>
+        <url-pattern>/lich-su-kiem-dinh-cong-nhan</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>dashboard/auth/login.jsp</welcome-file>
