@@ -19,10 +19,11 @@ import java.util.HashMap;
 import java.util.List;
 import model.User;
 import model.dto.Report;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 
 /**
  *
@@ -119,17 +120,18 @@ public class GetReportPage extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action");
         HttpSession session = request.getSession();
         List<Report> roReports = (List<Report>) session.getAttribute("records");
         if (action.equals("exportExcel")) {
             response.setContentType("application/vnd.ms-excel");
             response.setHeader("Content-Disposition", "attachment;filename=reportsList" + new Date().getTime() + ".xls");
-            XSSFWorkbook wb = new XSSFWorkbook();
-            XSSFSheet sheet = wb.createSheet("Reports");
+            Workbook wb = new HSSFWorkbook();
+            Sheet sheet = wb.createSheet("Reports");
             // header
             int rowNo = 0;
-            Row row = sheet.createRow(rowNo);
+            Row row = sheet.createRow(rowNo++);
             int cellNum = 0;
             Cell cell = row.createCell(cellNum++);
             cell.setCellValue("Ngày");
@@ -144,10 +146,10 @@ public class GetReportPage extends HttpServlet {
             cell.setCellValue("	Không đạt");
 
             cell = row.createCell(cellNum++);
-            cell.setCellValue("	Tỷ lệ đạt");
+            cell.setCellValue("	Tỷ lệ đạt(%)");
 
             cell = row.createCell(cellNum++);
-            cell.setCellValue("Doanh thu");
+            cell.setCellValue("Doanh thu(đ)");
 
             // detail
             for (Report r : roReports) {
