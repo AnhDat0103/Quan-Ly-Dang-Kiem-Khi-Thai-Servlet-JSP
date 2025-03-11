@@ -5,24 +5,21 @@
 
 package controller.admin;
 
-import config.Configuration;
 import dao.LogSystemDao;
-import dao.UserDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.RequestDispatcher;
+import java.util.List;
 import model.LogSystem;
-import model.User;
 
 /**
  *
  * @author DAT
  */
-public class ResetPassword extends HttpServlet {
+public class GetLogSystemPage extends HttpServlet {
     LogSystemDao ld = new LogSystemDao();
    
     /** 
@@ -40,10 +37,10 @@ public class ResetPassword extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet ResetPassword</title>");  
+            out.println("<title>Servlet GetLogSystemPage</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet ResetPassword at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet GetLogSystemPage at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -60,7 +57,11 @@ public class ResetPassword extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        request.getRequestDispatcher("dashboard/lay-lai-mat-khau.jsp").forward(request, response);
+        List<LogSystem> logSystem = ld.findAll();
+        if(!logSystem.isEmpty()){
+            request.setAttribute("logs", logSystem);
+        }
+        request.getRequestDispatcher("dashboard/systemLogs.jsp").forward(request, response);
     } 
 
     /** 
@@ -73,34 +74,7 @@ public class ResetPassword extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String email = request.getParameter("email");
-        String newPassword = request.getParameter("newPassword");
-        String confirmPassword = request.getParameter("confirmPassword");
-
-        UserDao userDAO = new UserDao();
-        User user = userDAO.findUserByEmail(email);
-
-        if (user == null) {
-            request.setAttribute("message", "Email không tồn tại.");
-        } else if (!newPassword.equals(confirmPassword)) {
-            request.setAttribute("message", "Mật khẩu không khớp.");
-        } else {
-            int userId = user.getUserId();
-            int isUpdated = userDAO.updatePassword(Configuration.hashPasswordByMD5(newPassword), userId);
-
-            if (isUpdated == 1) {
-                String ms = "Tài khoản với id = " + userId + " vừa được thay đổi password.";
-                LogSystem log = new LogSystem();
-                log.setUser(user);
-                log.setAction(ms);
-                request.setAttribute("message", "Mật khẩu đã thay đổi thành công.");
-            } else {
-                request.setAttribute("message", "Thay đổi mật khẩu thất bại. Hãy thử lại.");
-            }
-        }
-
-        RequestDispatcher dispatcher = request.getRequestDispatcher("dashboard/lay-lai-mat-khau.jsp");
-        dispatcher.forward(request, response);
+        processRequest(request, response);
     }
 
     /** 

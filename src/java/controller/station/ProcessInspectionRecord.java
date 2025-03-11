@@ -2,33 +2,29 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.vehicleController;
+package controller.station;
 
 import dao.InspectionRecordDao;
-import dao.LogSystemDao;
-import dao.VehicleDao;
-import jakarta.servlet.RequestDispatcher;
+import dao.UserDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.LogSystem;
+import java.util.List;
+import model.InspectionRecords;
 import model.User;
-import validation.Validate;
 
 /**
  *
- * @author Lenovo
+ * @author DAT
  */
-public class xoaPT extends HttpServlet {
+public class ProcessInspectionRecord extends HttpServlet {
 
-    VehicleDao vehicleDao = new VehicleDao();
-    InspectionRecordDao inspectionRecordDao = new InspectionRecordDao();
-    LogSystemDao ld = new LogSystemDao();
+    UserDao ud = new UserDao();
+    InspectionRecordDao ird = new InspectionRecordDao();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -47,10 +43,10 @@ public class xoaPT extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet xoaPT</title>");
+            out.println("<title>Servlet ProcessInspectionRecord</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet xoaPT at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet ProcessInspectionRecord at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -68,8 +64,27 @@ public class xoaPT extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("resources/vehicle/xoaPT.jsp");
-        dispatcher.forward(request, response);
+        response.setContentType("text/html;charset=UTF-8");
+        String recordIdRequest = request.getParameter("ban-dang-kiem");
+        int recordId;
+        try {
+            recordId = Integer.parseInt(recordIdRequest);
+        } catch (NumberFormatException e) {
+            recordId = 0;
+        }
+        if (recordId > 0) {
+            HttpSession session = request.getSession();
+            User currentUser = (User) session.getAttribute("currentUser");
+            int stationId = currentUser.getInspectionStation().getStationId();
+            List<User> inspectors = ud.getAllInspectors(stationId);
+            InspectionRecords inspectionRecord = ird.getInspectionRecordByID(recordId);
+            request.setAttribute("record", inspectionRecord);
+            session.setAttribute("inspectors", inspectors);
+            request.getRequestDispatcher("resources/station/processInspectionRecord.jsp").forward(request, response);
+        } else {
+            response.sendRedirect("500error");
+        }
+
     }
 
     /**
@@ -84,36 +99,28 @@ public class xoaPT extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String plateNumber = request.getParameter("plateNumber");
-        HttpSession session = request.getSession();
-        User currentUser = (User) session.getAttribute("currentUser");
+        try {
+            int recordId = Integer.parseInt(request.getParameter("recordId"));
+            int inspectorId = Integer.parseInt(request.getParameter("inspectorId"));
+            InspectionRecords record = ird.getInspectionRecordByID(recordId);
+            record.setInspectorID(inspectorId);
+            request.setAttribute("record", record);
+            boolean success = ird.updateInspectionRecord(record);
 
-        String message = "";
-        boolean isDeleted = false;
-
-        if (plateNumber == null || plateNumber.isEmpty() || !Validate.checkPlateNumber(plateNumber)) {
-            message = "Vui lòng nhập đúng thông tin!";
-        } else {
-            inspectionRecordDao.removeInspectionRecordsWithPlateNumber(plateNumber);
-            isDeleted = vehicleDao.deleteByPlateNumber(plateNumber);
-            if (!isDeleted) {
-                message = "Không tìm thấy phương tiện có biển số: " + plateNumber;
+            if (success) {
+                request.setAttribute("successMsg", "Bản kiểm định đã được duyệt.");
+                request.getRequestDispatcher("resources/station/processInspectionRecord.jsp").forward(request, response);
             } else {
-                LogSystem log = new LogSystem();
-                String ms = "Tài khoản với id = " + currentUser.getUserId() + " vừa xóa phương tiện mang biển số: " + plateNumber;
-                log.setUser(currentUser);
-                log.setAction(ms);
-                ld.save(log);
-                message = "Xóa phương tiện thành công!";
+                request.setAttribute("errorMsg", "Lỗi xử lý. Hãy thử lại!");
+                request.getRequestDispatcher("resources/station/processInspectionRecord.jsp").forward(request, response);
             }
+        } catch (NumberFormatException e) {
+            request.setAttribute("error", "Dữ liệu không hợp lệ");
+            doGet(request, response);
+        } catch (Exception e) {
+            request.setAttribute("error", "Đã xảy ra lỗi: " + e.getMessage());
+            doGet(request, response);
         }
-
-        // Đặt thông báo vào session để chuyển lại trang hiện tại
-        session.setAttribute("deleteMessage", message);
-        session.setAttribute("deleteSuccess", isDeleted);
-
-        // Chuyển hướng về trang chính
-        response.sendRedirect("quan-ly-phuong-tien");
     }
 
     /**

@@ -3,7 +3,6 @@
     Created on : Feb 4, 2025, 9:45:34 PM
     Author     : DAT
 --%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -100,6 +99,7 @@
                                             <option value="pending" ${statusFiltered == 'pending' ? 'selected' : ''}>Chờ xác nhận</option>
                                             <option value="pass" ${statusFiltered == 'pass' ? 'selected' : ''}>Đã Pass</option>
                                             <option value="not-pass" ${statusFiltered == 'not-pass' ? 'selected' : ''}>Chưa Pass</option>
+                                            <option value="accepted" ${statusFiltered == 'accepted' ? 'selected' : ''}>Đã xác nhận</option>
                                         </select>
                                     </div>
                                     <div class="col-md-3">
@@ -140,7 +140,7 @@
                                         <td><span class="badge modelResult">${r.result}</span></td>
                                         <td>
                                             <div class="btn-group">
-                                                <button class="btn btn-sm btn-info view-detail mr-2" data-bs-toggle="modal" 
+                                                <button class="btn btn-sm btn-primary view-detail mr-2" data-bs-toggle="modal" 
                                                         data-bs-target="#viewAppointmentModal"
                                                         data-inspectId="${r.recordId}"
                                                         data-plate="${r.vehicle.plateNumber}"
@@ -150,7 +150,14 @@
                                                         data-result="${r.result}">
                                                     <i class="bi bi-eye"></i>
                                                 </button>
-                                            </div>
+                                                <c:if test="${r.result != 'Accepted'}">
+                                                    <form action="xac-thuc-don-kiem-dinh" method="GET">
+                                                        <input type="hidden" name="ban-dang-kiem" value="${r.recordId}">
+                                                        <button class="btn btn-sm btn-warning update-appointment mr-2" type="submit">
+                                                            <i class="bi bi-pencil"></i>
+                                                        </button>
+                                                    </form>
+                                                </c:if>
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -308,6 +315,8 @@
                 element.innerText = status;
                 if (status === "Pending") {
                     element.className = "badge bg-warning modelResult";
+                } else if (status === "Accepted") {
+                    element.className = "badge bg-info text-dark modelResult";
                 } else {
                     element.className = "badge " + (status === "Pass" ? "bg-success" : "bg-danger") + " modelResult";
                 }

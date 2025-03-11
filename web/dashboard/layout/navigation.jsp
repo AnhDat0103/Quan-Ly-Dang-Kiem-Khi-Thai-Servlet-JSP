@@ -9,7 +9,7 @@
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                     <div class="sb-sidenav-menu">
                         <div class="nav">
-                            <a class="nav-link collapsed" href="#">
+                            <a class="nav-link collapsed" href="he-thong-logs">
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-bell"></i></div>
                                 Logs hệ thống
                             </a>
