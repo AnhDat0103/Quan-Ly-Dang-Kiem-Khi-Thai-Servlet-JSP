@@ -95,6 +95,7 @@
                                         <tr>
                                             <td>${v.vehicle.vehicleId}</td>
                                             <td>${v.vehicle.plateNumber}</td>
+                                            <input type="hidden" name="plateNum" value="${v.vehicle.plateNumber}">
                                             <td>
                                                 <input type="hidden" value="${v.recordId}" name="recordId" >
                                             </td>
@@ -115,7 +116,7 @@
                                                 </button>
                                             </td>
                                             <td>
-                                                <span class="badge ${v.result eq 'Pass' ? 'bg-success' : 'bg-danger'}">${v.result}
+                                                <span class="badge ${v.result eq 'Pass' ? 'bg-success' : 'bg-info text-dark'}">${v.result}
                                             </td>
                                         </tr>
                                     </form>

@@ -51,7 +51,7 @@
                                                 <td>${h.co2Emission}</td>
                                                 <td>${h.hcEmission}</td>
                                                 <td>${h.comments}</td>
-                                                <td>${h.result}</td>
+                                                <td><span class="badge resultStatus">${h.result}</span></td>
                                             </tr>
                                         </c:forEach>
                                     </tbody>
@@ -67,6 +67,23 @@
                 </div>
             </div>
         </div>
+        
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                document.querySelectorAll(".resultStatus").forEach(span => {
+                    setBadge1(span, span.innerText);
+                });
+            });
+
+            function setBadge1(element, status) {
+                element.innerText = status;
+                if (status === 'Accepted') {
+                    element.className = "badge bg-info text-dark modelResult";
+                } else {
+                    element.className = "badge " + (status === "Pass" ? "bg-success" : "bg-danger");
+                }
+            }
+        </script>
 
     </body>
 </html>

@@ -4,6 +4,7 @@
  */
 package controller.vehicleController;
 
+import dao.LogSystemDao;
 import dao.UserDao;
 import model.Vehicles;
 import dao.VehicleDao;
@@ -20,6 +21,7 @@ import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.LogSystem;
 import model.User;
 import model.enums.vehicleEnums.vehicleEnums;
 
@@ -28,8 +30,9 @@ import model.enums.vehicleEnums.vehicleEnums;
  * @author Lenovo
  */
 public class dangKyPT extends HttpServlet {
-    
+
     UserDao ud = new UserDao();
+    LogSystemDao ld = new LogSystemDao();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -74,10 +77,10 @@ public class dangKyPT extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("currentUser"); 
+        User user = (User) session.getAttribute("currentUser");
         System.out.println(user.getUserId());
         RequestDispatcher dispatcher = request.getRequestDispatcher("resources/vehicle/dangKyPT.jsp");
-        dispatcher.forward(request, response); 
+        dispatcher.forward(request, response);
     }
 
     /**
@@ -99,12 +102,11 @@ public class dangKyPT extends HttpServlet {
         String manufactureYeard = request.getParameter("manufactureYear");
         String engineNumber = request.getParameter("engineNumber");
         HttpSession session = request.getSession();
-        User currentUser =(User) session.getAttribute("currentUser");
-        
+        User currentUser = (User) session.getAttribute("currentUser");
 
         String bug = "";
 
-        if ( ownerIDr == null || plateNumber == null
+        if (ownerIDr == null || plateNumber == null
                 || brand == null || model == null || manufactureYeard == null || engineNumber == null
                 || ownerIDr.isEmpty() || plateNumber.isEmpty()
                 || brand.isEmpty() || model.isEmpty() || manufactureYeard.isEmpty() || engineNumber.isEmpty()) {
@@ -127,7 +129,7 @@ public class dangKyPT extends HttpServlet {
         }
 
         // Kiểm tra năm sản xuất
-        int  ownerID = 0, manufactureYear = 0;
+        int ownerID = 0, manufactureYear = 0;
         try {
             ownerID = Integer.parseInt(ownerIDr);
             manufactureYear = Integer.parseInt(manufactureYeard);
@@ -139,7 +141,7 @@ public class dangKyPT extends HttpServlet {
         } catch (NumberFormatException e) {
             bug += "Dữ liệu nhập vào không hợp lệ! Vui lòng kiểm tra lại.\n";
         }
-        
+
         if (!bug.isEmpty()) {
             request.setAttribute("bug", bug);
             request.getRequestDispatcher("resources/submit/Failed.jsp").forward(request, response);
@@ -161,8 +163,13 @@ public class dangKyPT extends HttpServlet {
         vh.setPlateNumber(plateNumber);
         vh.setStatus(vehicleEnums.Fail);
         vehicleDao.save(vh);
-        request.getRequestDispatcher("resources/submit/Successfully.jsp").forward(request, response);  
-         
+        LogSystem log = new LogSystem();
+        String ms = "Tài khoản với id = " + currentUser.getUserId() + " vừa cập nhật xe với biển số: " + plateNumber;
+        log.setUser(currentUser);
+        log.setAction(ms);
+        ld.save(log);
+        request.getRequestDispatcher("resources/submit/Successfully.jsp").forward(request, response);
+
     }
 
     /**

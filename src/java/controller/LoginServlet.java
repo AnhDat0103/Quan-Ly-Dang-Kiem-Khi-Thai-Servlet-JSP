@@ -53,7 +53,33 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.getRequestDispatcher("dashboard/auth/login.jsp").forward(request, response);
+        HttpSession session = request.getSession();
+        if (session != null) {
+            User currentUser = (User) session.getAttribute("currentUser");
+            if (currentUser.getRole().equals(RoleEnums.Station)) {
+                response.sendRedirect("trung-tam-dang-kiem");
+            }
+            if (currentUser.getRole().equals(RoleEnums.Owner)) {
+                VehicleDao vehicleDao = new VehicleDao();
+                boolean checkVehicle = vehicleDao.checkVehicleExistByOwnerId(currentUser.getUserId());
+                if (checkVehicle) {
+                    response.sendRedirect("chu-phuong-tien");
+                } else {
+                    response.sendRedirect("kiem-tra-tai-khoan");
+                }
+            }
+            if (currentUser.getRole().equals(RoleEnums.Inspector)) {
+                response.sendRedirect("nguoi-kiem-dinh");
+            }
+            if (currentUser.getRole().equals(RoleEnums.Admin)) {
+                response.sendRedirect("quan-tri-vien");
+            }
+            if (currentUser.getRole().equals(RoleEnums.Police)) {
+                response.sendRedirect("trung-tam-canh-sat");
+            }
+        } else {
+            request.getRequestDispatcher("dashboard/auth/login.jsp").forward(request, response);
+        }
     }
 
     /**
@@ -82,18 +108,19 @@ public class LoginServlet extends HttpServlet {
                 if (currentUser.getRole().equals(RoleEnums.Owner)) {
                     VehicleDao vehicleDao = new VehicleDao();
                     boolean checkVehicle = vehicleDao.checkVehicleExistByOwnerId(currentUser.getUserId());
-                    if(checkVehicle){
-                        response.sendRedirect("chu-phuong-tien");                   
-                    }else{
-                        response.sendRedirect("kiem-tra-tai-khoan");        
+                    if (checkVehicle) {
+                        response.sendRedirect("chu-phuong-tien");
+                    } else {
+                        response.sendRedirect("kiem-tra-tai-khoan");
                     }
-                }                    
-                if(currentUser.getRole().equals(RoleEnums.Inspector)){
-                     response.sendRedirect("nguoi-kiem-dinh");
                 }
-                if(currentUser.getRole().equals(RoleEnums.Admin)) {
+                if (currentUser.getRole().equals(RoleEnums.Inspector)) {
+                    response.sendRedirect("nguoi-kiem-dinh");
+                }
+                if (currentUser.getRole().equals(RoleEnums.Admin)) {
                     response.sendRedirect("quan-tri-vien");
-                }if(currentUser.getRole().equals(RoleEnums.Police)) {
+                }
+                if (currentUser.getRole().equals(RoleEnums.Police)) {
                     response.sendRedirect("trung-tam-canh-sat");
                 }
             } else {

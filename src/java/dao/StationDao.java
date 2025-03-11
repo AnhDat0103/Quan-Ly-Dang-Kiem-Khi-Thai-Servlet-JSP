@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+
 /**
  *
  * @author DAT
@@ -75,7 +76,6 @@ public class StationDao implements Dao<InspectionStation> {
         return null;
     }
 
-
     public List<InspectionStation> getAllStations() {
         List<InspectionStation> stations = new ArrayList<>();
         String sql = "SELECT * FROM InspectionStations";
@@ -94,7 +94,7 @@ public class StationDao implements Dao<InspectionStation> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-       return stations;
+        return stations;
     }
 
     public List<String> getAllStationNames() {
@@ -111,39 +111,38 @@ public class StationDao implements Dao<InspectionStation> {
         }
         return stationNames;
     }
-    
+
     public int getStationIDByName(String stationName) {
-    int stationID = 0;
-    String sql = "SELECT StationID FROM InspectionStations WHERE Name = ?";
-    try {
-        PreparedStatement st = connect.prepareStatement(sql);
-        st.setString(1, stationName);
-        ResultSet rs = st.executeQuery();
-        if (rs.next()) {
-            stationID = rs.getInt("StationID");
+        int stationID = 0;
+        String sql = "SELECT StationID FROM InspectionStations WHERE Name = ?";
+        try {
+            PreparedStatement st = connect.prepareStatement(sql);
+            st.setString(1, stationName);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                stationID = rs.getInt("StationID");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return stationID;
     }
-    return stationID;
-}
-    
-    public boolean updateStation(int stationId, String stationName, String address, String phoneNumber ,String email ) {
-    String sql = "UPDATE Stations SET Name = ?, Address = ?, PhoneNumber = ? , Email = ? WHERE StationID = ?";
-    
-    try{
-          PreparedStatement pt = connect.prepareStatement(sql);
-        pt.setString(1, stationName);
-        pt.setString(2, address);
-        pt.setString(3, phoneNumber);
-        pt.setInt(4, stationId);
 
-        int rowsUpdated = pt.executeUpdate();
-        return rowsUpdated > 0; // Trả về true nếu update thành công
-    } catch (SQLException e) {
-        e.printStackTrace();
+    public boolean updateStation(int stationId, String stationName, String address, String phoneNumber, String email) {
+        String sql = "UPDATE Stations SET Name = ?, Address = ?, PhoneNumber = ? , Email = ? WHERE StationID = ?";
+
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setString(1, stationName);
+            pt.setString(2, address);
+            pt.setString(3, phoneNumber);
+            pt.setInt(4, stationId);
+
+            int rowsUpdated = pt.executeUpdate();
+            return rowsUpdated > 0; // Trả về true nếu update thành công
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
-    return false;
-}
-
 }

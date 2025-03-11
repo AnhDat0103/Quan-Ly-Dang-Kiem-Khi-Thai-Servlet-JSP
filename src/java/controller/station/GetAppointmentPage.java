@@ -192,6 +192,7 @@ public class GetAppointmentPage extends HttpServlet {
                 "AND Result = 'Pass'";
             case "not-pass" ->
                 "AND Result = 'Fail'";
+            case "accepted" -> "AND Result = 'Accepted'";
             default ->
                 " ";
         };

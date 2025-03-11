@@ -5,6 +5,7 @@
 package controller.inspectController;
 
 import dao.DBContext;
+import dao.LogSystemDao;
 import dao.UserDao;
 import java.io.IOException;
 import java.sql.Connection;
@@ -14,6 +15,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.PrintWriter;
+import model.LogSystem;
+import model.User;
 
 /**
  *
@@ -22,6 +25,7 @@ import java.io.PrintWriter;
 public class DeleteAccountServlet extends HttpServlet {
 
     Connection connect = DBContext.getInstance().getConnection();
+    LogSystemDao ld = new LogSystemDao();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -77,6 +81,8 @@ public class DeleteAccountServlet extends HttpServlet {
             throws ServletException, IOException {
         try {
             int userId = Integer.parseInt(request.getParameter("userId"));
+            HttpSession session = request.getSession();
+            User currentUser = (User) session.getAttribute("currentUser");
 
             // Lấy kết nối CSDL
             // Tạo UserDao và gọi phương thức delete
@@ -87,7 +93,11 @@ public class DeleteAccountServlet extends HttpServlet {
             connect.close();
 
             if (rowsAffected > 0) {
-                HttpSession session = request.getSession();
+                LogSystem log = new LogSystem();
+                String ms = "Tài khoản với id = " + userId + " vừa được xóa khỏi hệ thống.";
+                log.setUser(currentUser);
+                log.setAction(ms);
+                ld.save(log);
                 session.invalidate(); // Xóa session sau khi xóa tài khoản
                 response.getWriter().write("Success");
             } else {
