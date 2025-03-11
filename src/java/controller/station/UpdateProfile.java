@@ -5,6 +5,7 @@
 package controller.station;
 
 import config.Configuration;
+import dao.LogSystemDao;
 import dao.StationDao;
 import dao.UserDao;
 import java.io.IOException;
@@ -18,6 +19,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import java.io.File;
 import java.nio.file.Paths;
+import model.LogSystem;
 import model.User;
 import model.enums.RoleEnums;
 import validation.Validate;
@@ -33,6 +35,7 @@ public class UpdateProfile extends HttpServlet {
 
     UserDao ud = new UserDao();
     StationDao sd = new StationDao();
+    LogSystemDao ld = new LogSystemDao();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -169,7 +172,12 @@ public class UpdateProfile extends HttpServlet {
             }
         } else if (action.equals("delete-account")) {
             ud.delete(currentUser.getUserId());
-            session.removeAttribute("currentUser");
+                 LogSystem log = new LogSystem();
+                String ms = "Tài khoản với id = " + currentUser.getUserId() + " vừa được xóa khỏi hệ thống.";
+                log.setUser(currentUser);
+                log.setAction(ms);
+                ld.save(log);
+            session.invalidate();
             response.sendRedirect("dang-nhap");
         } else if (action.equals("change-location")) {
             currentUser.setInspectionStation(sd.findStationById(Integer.parseInt(inspecStaion)));

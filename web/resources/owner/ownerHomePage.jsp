@@ -16,22 +16,22 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
         <style>
-        body {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .content-wrapper {
-            flex: 1 0 auto;
-            margin-bottom: 2rem;
-        }
-        
-        .footer {
-            flex-shrink: 0;
-            padding: 1rem 0;
-        }
-    </style>
+            body {
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .content-wrapper {
+                flex: 1 0 auto;
+                margin-bottom: 2rem;
+            }
+
+            .footer {
+                flex-shrink: 0;
+                padding: 1rem 0;
+            }
+        </style>
     </head>
     <body>
         <!-- Wrap all content except footer in a div -->
@@ -85,50 +85,46 @@
                         </div>
 
                         <!-- Lịch đăng kiểm -->
-                         <div class="card">
-                                <div class="card-header">
-                                    <h4 class="card-title mb-0">Lịch Sử Đăng Kiểm</h4>
-                                </div>
-
-                                <c:if test="${not empty historyList}"> <div class="card-body">
-                                        <table class="table table-bordered text-center">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th>Biển Số Xe</th>
-                                                    <th>Thời Gian Đăng Kiểm</th>
-                                                    <th>Kết Quả</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <c:forEach var="record" items="${historyList}" varStatus="loop">
-                                                    <tr style="background-color: ${record.result eq 'PENDING' ? 'yellow' : 'white'};">
-                                                        <td>${loop.index + 1}</td> 
-                                                        <td>${record.vehicle.plateNumber}</td>
-                                                        <td>${record.inspectionDate}</td>
-                                                        <td>${record.result}</td>
-                                                    </tr>
-                                                </c:forEach>
-                                            </tbody>
-                                        </table>
-
-                                    </div></c:if>
-                                <c:if test="${empty historyList}">
-                                    <div class="alert text-center">
-                                        Bạn chưa đăng ký kiểm định
-                                    </div>  
-                                </c:if>
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title mb-0">Lịch Sử Đăng Kiểm</h4>
                             </div>
+
+                            <c:if test="${not empty historyList}"> <div class="card-body">
+                                    <table class="table table-bordered text-center">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Biển Số Xe</th>
+                                                <th>Thời Gian Đăng Kiểm</th>
+                                                <th>Kết Quả</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <c:forEach var="record" items="${historyList}" varStatus="loop">
+                                                <tr style="background-color: ${record.result eq 'PENDING' ? 'yellow' : 'white'};">
+                                                    <td>${loop.index + 1}</td> 
+                                                    <td>${record.vehicle.plateNumber}</td>
+                                                    <td>${record.inspectionDate}</td>
+                                                    <td>${record.result}</td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+
+                                </div></c:if>
+                            <c:if test="${empty historyList}">
+                                <div class="alert text-center">
+                                    Bạn chưa đăng ký kiểm định
+                                </div>  
+                            </c:if>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
         <%@include file="../layout/owner_footer.jsp" %>
-        <!-- Thêm Bootstrap Icons -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
-        <!-- Thêm Bootstrap JS và Popper.js -->
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+
     </body>
 </html> 

@@ -4,6 +4,7 @@
  */
 package controller;
 
+import dao.LogSystemDao;
 import dao.UserDao;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,6 +12,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.LogSystem;
 import model.User;
 import model.dto.RegisterForm;
 import model.enums.ProviderClass;
@@ -24,6 +26,7 @@ import validation.Validate;
 public class RegisterServlet extends HttpServlet {
 
     UserDao ud = new UserDao();
+    LogSystemDao ld = new LogSystemDao();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -104,6 +107,12 @@ public class RegisterServlet extends HttpServlet {
                 newUser.setProvider(ProviderClass.LOCAL);
                 int result = ud.save(newUser);
                 if (result == 1) {
+                    String msg = "Tài khoản với email: " + newUser.getEmail() + " vừa được thêm mới.";
+                    User userLog = ud.findUserByEmail(newUser.getEmail());
+                    LogSystem logSystem = new LogSystem();
+                    logSystem.setUser(userLog);
+                    logSystem.setAction(msg);
+                    ld.save(logSystem);
                     response.sendRedirect("dang-nhap");
                 }
             } else {
