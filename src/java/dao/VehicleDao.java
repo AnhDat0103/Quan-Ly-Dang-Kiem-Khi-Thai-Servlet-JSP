@@ -11,7 +11,6 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.util.List;
 import java.util.ArrayList;
-import model.InspectionRecords;
 import model.User;
 import model.enums.vehicleEnums.vehicleEnums;
 

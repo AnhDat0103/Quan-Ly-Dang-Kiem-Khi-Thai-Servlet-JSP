@@ -4,7 +4,6 @@
  */
 package dao;
 
-
 import config.Configuration;
 
 import java.sql.Connection;
@@ -18,7 +17,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import model.Vehicles;
 import java.util.HashMap;
-
 /**
  *
  * @author Lenovo
@@ -178,7 +176,7 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
 
     public List<InspectionRecords> getListInspectionRecordsPendingAtCurrentDate(int stationId, int startRecord, int recordsPerPage, String currentDate) {
         List<InspectionRecords> recordses = new ArrayList<>();
-        String sql = "SELECT * FROM InspectionRecords where StationID = ? and Result = 'Pending' and InspectionDate = ?  ORDER BY CAST(InspectionDate AS DATE) desc, RecordID desc OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        String sql = "SELECT * FROM InspectionRecords where StationID = ? and Result = 'Pending' and InspectionDate = ?  ORDER BY CAST(InspectionDate AS DATE) desc, RecordID asc OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setInt(1, stationId);
@@ -265,23 +263,21 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
         }
     }
 
-
     public boolean checkResultOfVehicleID(int vehicleID) {
         String sql = "SELECT TOP 1 Result FROM InspectionRecords WHERE VehicleID = ? ORDER BY InspectionDate DESC";
 
         try (PreparedStatement ps = connect.prepareStatement(sql)) {
             ps.setInt(1, vehicleID);
-             ResultSet rs = ps.executeQuery() ;
-                if (rs.next()) {
-                    String result = rs.getString("Result");
-                    return "Pass".equalsIgnoreCase(result); // Nếu result là "Pass" thì return true
-                }
-            } catch (SQLException e) {
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                String result = rs.getString("Result");
+                return "Pass".equalsIgnoreCase(result); // Nếu result là "Pass" thì return true
+            }
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return false; // Nếu không tìm thấy bản ghi nào thì trả về false
     }
-
 
     public List<InspectionRecords> getListInspectionRecordsWithTime(String status, String startDate, String endDate, int stationId, int startRecord, int recordPerPage) {
         List<InspectionRecords> recordses = new ArrayList<>();
@@ -306,13 +302,13 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
                         rs.getDouble("HCEmission"),
                         rs.getString("Comments")));
             }
-               return recordses;
+            return recordses;
         } catch (SQLException e) {
             e.printStackTrace();
-         }      
-        return null ;
+        }
+        return null;
     }
-  
+
     public boolean updateEmissions(int recordId, double co2Emission, double hcEmission, String comment, String result) {
         try {
             String sql = "UPDATE InspectionRecords SET CO2Emission = ?, HCEmission = ? , Comments = ? , Result = ?  WHERE RecordID = ?";
@@ -322,9 +318,8 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
             st.setDouble(1, co2Emission);
             st.setDouble(2, hcEmission);
             st.setString(3, comment);
-             st.setString(4, result);
+            st.setString(4, result);
             st.setInt(5, recordId);
-            
 
             int rowsUpdated = st.executeUpdate();
             return rowsUpdated > 0;
@@ -334,11 +329,10 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
         return false;
     }
 
-
     public List<InspectionRecords> getListInspectionRecordsByPendingAndInspectId(int inspectorId, int stationId) {
         List<InspectionRecords> recordses = new ArrayList<>();
 
-        String sql = "SELECT * FROM InspectionRecords WHERE InspectorID = ? and Result = 'Pending' AND StationID = ?";
+        String sql = "SELECT * FROM InspectionRecords WHERE InspectorID = ? and Result = 'Accepted' AND StationID = ?";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setInt(1, inspectorId);
@@ -365,7 +359,7 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
     }
 
     public boolean isVehicleInspectedToday(int vehicleID) {
-            String sql = "SELECT COUNT(*) FROM InspectionRecords WHERE VehicleID = ? AND CAST(InspectionDate AS DATE) = ?";
+        String sql = "SELECT COUNT(*) FROM InspectionRecords WHERE VehicleID = ? AND CAST(InspectionDate AS DATE) = ?";
         try {
             PreparedStatement ps = connect.prepareStatement(sql);
             ps.setInt(1, vehicleID);
@@ -373,7 +367,7 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
             if (rs.next()) {
                 int count = rs.getInt(1);
                 return count > 0; // true neu phuong tien da duoc dang kiem 
-           }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -406,7 +400,7 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
         try (PreparedStatement ps = connect.prepareStatement(sql)) {
             ps.setInt(1, vehicleID);
             ResultSet rs = ps.executeQuery();
-            
+
             if (rs.next()) {
                 Date lastInspectionDate = rs.getDate("InspectionDate");
                 return Configuration.convertStringToDate(newSpectionDate).after(lastInspectionDate);
@@ -486,19 +480,19 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
     }
 
     public HashMap<String, Integer> getNoRecordsWithThoughtPendingByADay(String startDate, String endDate, int stationId) {
-        HashMap<String, Integer> records =  new HashMap<>();
-        String sql  = "select CAST(InspectionDate AS DATE), count(*) from InspectionRecords where StationID = ? and Result <> 'Pending' and InspectionDate between ? and ?\n" + " group by CAST(InspectionDate AS DATE)";
+        HashMap<String, Integer> records = new HashMap<>();
+        String sql = "select CAST(InspectionDate AS DATE), count(*) from InspectionRecords where StationID = ? and Result <> 'Pending' and InspectionDate between ? and ?\n" + " group by CAST(InspectionDate AS DATE)";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setInt(1, stationId);
             pt.setDate(2, new java.sql.Date(Configuration.convertStringToDate(startDate).getTime()));
             pt.setDate(3, new java.sql.Date(Configuration.convertStringToDate(endDate).getTime()));
             ResultSet rs = pt.executeQuery();
-            while(rs.next()) {
+            while (rs.next()) {
                 records.put(rs.getDate(1).toString(), rs.getInt(2));
             }
             return records;
-            
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -506,19 +500,19 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
     }
 
     public HashMap<String, Integer> getNoRecordsPassByADay(String startDate, String endDate, int stationId) {
-        HashMap<String, Integer> records =  new HashMap<>();
-        String sql  = "select CAST(InspectionDate AS DATE), count(*) from InspectionRecords where StationID = ? and Result = 'Pass' and InspectionDate between ? and ?\n" + " group by CAST(InspectionDate AS DATE)";
+        HashMap<String, Integer> records = new HashMap<>();
+        String sql = "select CAST(InspectionDate AS DATE), count(*) from InspectionRecords where StationID = ? and Result = 'Pass' and InspectionDate between ? and ?\n" + " group by CAST(InspectionDate AS DATE)";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setInt(1, stationId);
             pt.setDate(2, new java.sql.Date(Configuration.convertStringToDate(startDate).getTime()));
             pt.setDate(3, new java.sql.Date(Configuration.convertStringToDate(endDate).getTime()));
             ResultSet rs = pt.executeQuery();
-            while(rs.next()) {
+            while (rs.next()) {
                 records.put(rs.getDate(1).toString(), rs.getInt(2));
             }
             return records;
-            
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -526,52 +520,89 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
     }
 
     public HashMap<String, Integer> getNoRecordsFailByADay(String startDate, String endDate, int stationId) {
-        HashMap<String, Integer> records =  new HashMap<>();
-        String sql  = "select CAST(InspectionDate AS DATE), count(*) from InspectionRecords where StationID = ? and Result = 'Fail' and InspectionDate between ? and ?\n" + " group by CAST(InspectionDate AS DATE)";
+        HashMap<String, Integer> records = new HashMap<>();
+        String sql = "select CAST(InspectionDate AS DATE), count(*) from InspectionRecords where StationID = ? and Result = 'Fail' and InspectionDate between ? and ?\n" + " group by CAST(InspectionDate AS DATE)";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setInt(1, stationId);
             pt.setDate(2, new java.sql.Date(Configuration.convertStringToDate(startDate).getTime()));
             pt.setDate(3, new java.sql.Date(Configuration.convertStringToDate(endDate).getTime()));
             ResultSet rs = pt.executeQuery();
-            while(rs.next()) {
+            while (rs.next()) {
                 records.put(rs.getDate(1).toString(), rs.getInt(2));
             }
             return records;
-            
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
-    
-    
-    
+
     public List<InspectionRecords> getListInspectionRecordsByNotPendingAndInspectId(int inspectorId) {
-    List<InspectionRecords> recordses = new ArrayList<>();
-    String sql = "SELECT * FROM InspectionRecords WHERE InspectorID = ? AND Result <> 'Pending'";
-    try {
-        PreparedStatement pt = connect.prepareStatement(sql);
-        pt.setInt(1, inspectorId);
-        ResultSet rs = pt.executeQuery();
-        while (rs.next()) {
-            recordses.add(new InspectionRecords(
-                    rs.getInt("RecordID"),
-                    vd.getVehiclesById(rs.getInt("VehicleID")),
-                    rs.getInt("StationID"),
-                    rs.getInt("InspectorID"),
-                    rs.getDate("InspectionDate"),
-                    rs.getDate("NextInspectionDate"),
-                    rs.getString("Result"),
-                    rs.getDouble("CO2Emission"),
-                    rs.getDouble("HCEmission"),
-                    rs.getString("Comments")));
+        List<InspectionRecords> recordses = new ArrayList<>();
+        String sql = "SELECT * FROM InspectionRecords WHERE InspectorID = ? AND Result <> 'Pending'";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setInt(1, inspectorId);
+            ResultSet rs = pt.executeQuery();
+            while (rs.next()) {
+                recordses.add(new InspectionRecords(
+                        rs.getInt("RecordID"),
+                        vd.getVehiclesById(rs.getInt("VehicleID")),
+                        rs.getInt("StationID"),
+                        rs.getInt("InspectorID"),
+                        rs.getDate("InspectionDate"),
+                        rs.getDate("NextInspectionDate"),
+                        rs.getString("Result"),
+                        rs.getDouble("CO2Emission"),
+                        rs.getDouble("HCEmission"),
+                        rs.getString("Comments")));
+            }
+            return recordses;
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return recordses;
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return null;
     }
-    return null;
-}
+
+    public InspectionRecords getInspectionRecordByID(int recordId) {
+        String sql = "select * from InspectionRecords WHERE RecordID = ?";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setInt(1, recordId);
+            ResultSet rs = pt.executeQuery();
+            if(rs.next()){
+                InspectionRecords inspectionRecords = new InspectionRecords(
+                        rs.getInt("RecordID"),
+                        vd.getVehiclesById(rs.getInt("VehicleID")),
+                        rs.getInt("StationID"),
+                        rs.getInt("InspectorID"),
+                        rs.getDate("InspectionDate"),
+                        rs.getDate("NextInspectionDate"),
+                        rs.getString("Result"),
+                        rs.getDouble("CO2Emission"),
+                        rs.getDouble("HCEmission"),
+                        rs.getString("Comments"));
+                return inspectionRecords;
+            }
+        } catch (SQLException e) {
+        }
+        return null;
+    }
+
+    public boolean updateInspectionRecord(InspectionRecords record) {
+        String sql = "update InspectionRecords set InspectorID = ?, Result = ? where RecordID = ?";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setInt(1, record.getInspectorID());
+            pt.setString(2, "Accepted");
+            pt.setInt(3, record.getRecordId());
+            return pt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 }

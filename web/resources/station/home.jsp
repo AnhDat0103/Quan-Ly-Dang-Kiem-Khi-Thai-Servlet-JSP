@@ -100,7 +100,7 @@
                                                     <td>${record.inspectionDate}</td>
                                                     <td>${record.vehicle.plateNumber}</td>
                                                     <td>${record.vehicle.owner.fullName}</td>
-                                                    <td><span class="badge ${record.result eq 'Pass' ? 'bg-success' : 'bg-danger'}">${record.result}</span></td>
+                                                    <td><span class="badge resultStatus">${record.result}</span></td>
                                                     <td><span class="badge bg-success">Đã kiểm định</span></td>
                                                     <td>
                                                         <button class="btn btn-sm btn-info view-detail" data-bs-toggle="modal" 
@@ -269,6 +269,9 @@
                         setBadge("modelResult", this.getAttribute("data-result"));
                     });
                 });
+                document.querySelectorAll(".resultStatus").forEach(span => {
+                    setBadge1(span, span.innerText);
+                });
                 let stationId = "${currentUser.inspectionStation.stationId}";
                 console.log("Station ID:", stationId);
                 if (!stationId || stationId === "0") {
@@ -281,7 +284,19 @@
             function setBadge(elementId, status) {
                 const element = document.getElementById(elementId);
                 element.innerText = status;
-                element.className = "badge " + (status === "Pass" ? "bg-success" : "bg-danger");
+                if (status === 'Accepted') {
+                    element.className = "badge bg-info text-dark modelResult";
+                } else {
+                    element.className = "badge " + (status === "Pass" ? "bg-success" : "bg-danger");
+                }
+            }
+            function setBadge1(element, status) {
+                element.innerText = status;
+                if (status === 'Accepted') {
+                    element.className = "badge bg-info text-dark modelResult";
+                } else {
+                    element.className = "badge " + (status === "Pass" ? "bg-success" : "bg-danger");
+                }
             }
         </script>
     </body>

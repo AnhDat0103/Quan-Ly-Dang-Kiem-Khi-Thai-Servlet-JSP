@@ -63,6 +63,10 @@ public class Configuration {
             SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
             sd.setLenient(false);
             Date date = sd.parse(inspectionDate);
+            today = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z").parse(today.toString());
+            System.out.println("today"+  today);
+            System.out.println(date);
+            System.out.println(today.compareTo(date));
             if (today.compareTo(date) > 0) {
                 return false;
             }

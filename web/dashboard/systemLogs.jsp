@@ -20,7 +20,7 @@
                     <div class="container-fluid px-4">
                         <h1 class="mt-4">Logs hệ thống</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item"><a href="dashboard.jsp">Bảng điều khiển</a></li>
+                            <li class="breadcrumb-item"><a href="#">Bảng điều khiển</a></li>
                             <li class="breadcrumb-item active">Logs hệ thống</li>
                         </ol>
                         <div class="card mb-4">
@@ -33,18 +33,16 @@
                                     <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Thời gian</th>
-                                            <th>Mức độ</th>
                                             <th>Thông điệp</th>
+                                            <th>Thời gian</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <c:forEach var="log" items="${logs}">
                                             <tr>
-                                                <td>${log.id}</td>
+                                                <td>${log.logId}</td>
+                                                <td>${log.action}</td>
                                                 <td>${log.timestamp}</td>
-                                                <td>${log.level}</td>
-                                                <td>${log.message}</td>
                                             </tr>
                                         </c:forEach>
                                     </tbody>
