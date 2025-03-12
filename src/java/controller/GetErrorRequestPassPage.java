@@ -5,7 +5,6 @@
 
 package controller;
 
-import dao.UserDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -13,14 +12,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.User;
-import model.enums.RoleEnums;
 
 /**
  *
  * @author DAT
  */
-public class LoginAdminServlet extends HttpServlet {
+public class GetErrorRequestPassPage extends HttpServlet {
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -37,10 +34,10 @@ public class LoginAdminServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginAdminServlet</title>");  
+            out.println("<title>Servlet GetErrorRequestPassPage</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoginAdminServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet GetErrorRequestPassPage at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,7 +54,7 @@ public class LoginAdminServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-       request.getRequestDispatcher("dashboard/auth/loginAdmin.jsp").forward(request, response);
+        request.getRequestDispatcher("dashboard/error/errorResetPasswordPage.jsp").forward(request, response);
     } 
 
     /** 
@@ -70,30 +67,7 @@ public class LoginAdminServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        UserDao ud = new UserDao();
-        User currentUser = ud.findUserByEmail(email);
-         HttpSession session = request.getSession();
-        if (!email.isEmpty() && !password.isEmpty()) {
-            if (currentUser != null) {
-                session.setAttribute("currentUser", currentUser);
-                if (currentUser.getRole().equals(RoleEnums.Admin)) {
-                    response.sendRedirect("quan-tri-vien");
-                }
-            } else {
-                request.setAttribute("notFound", "Tài khoản hoặc mật khẩu không chính xác.");
-                request.getRequestDispatcher("dashboard/auth/loginAdmin.jsp").forward(request, response);
-            }
-        } else {
-            if (email.isEmpty()) {
-                request.setAttribute("emptyEmail", "Email không thể để trống.");
-            }
-            if (password.isEmpty()) {
-                request.setAttribute("emptyPassword", "Mật khẩu không thể để trống.");
-            }
-            request.getRequestDispatcher("dashboard/auth/loginAdmin.jsp").forward(request, response);
-        }     
+        processRequest(request, response);
     }
 
     /** 

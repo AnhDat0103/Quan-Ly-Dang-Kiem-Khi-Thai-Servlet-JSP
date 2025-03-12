@@ -54,10 +54,6 @@
                                         <option value="Police">Cảnh sát giao thông</option>
                                     </select>
                                 </div>
-                                <div class="mb-4 form-check">
-                                    <input type="checkbox" class="form-check-input" id="remember">
-                                    <label class="form-check-label" for="remember">Ghi nhớ đăng nhập</label>
-                                </div>
                                 <div style="color:red"; >${requestScope.notFound}</div>
                                 <button type="submit" class="btn btn-primary w-100 mb-3">Đăng nhập</button>
 
@@ -71,6 +67,9 @@
                             </form>
                             <div class="mt-3 text-center">
                                 <p>Chưa có tài khoản? <a href="dang-ky">Đăng ký ngay</a></p>
+                            </div>
+                            <div class="mt-3 text-center">
+                                <p>Bạn quên mật khẩu của chính mình ư? <a href="cap-lai-mat-khau">Lấy lại</a></p>
                             </div>
                         </div>
                     </div>
