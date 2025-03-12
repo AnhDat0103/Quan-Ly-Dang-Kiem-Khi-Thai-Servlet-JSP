@@ -1,5 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
+    <filter>
+        <filter-name>AuthenAndAuthoFilter</filter-name>
+        <filter-class>controller.filter.AuthenAndAuthoFilter</filter-class>
+    </filter>
+    <filter>
+        <filter-name>JSPBlockFilter</filter-name>
+        <filter-class>controller.filter.JSPBlockFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>JSPBlockFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>AuthenAndAuthoFilter</filter-name>
+        <url-pattern>/quan-tri-vien</url-pattern>
+        <url-pattern>/danh-sach-nhan-vien-kiem-dinh</url-pattern>
+        <url-pattern>/chi-tiet-trung-tam-dang-kiem</url-pattern>
+        <url-pattern>/he-thong-logs</url-pattern>
+        <url-pattern>/chi-tiet-chu-phuong-tien</url-pattern>
+        <url-pattern>/lay-lai-mat-khau</url-pattern>
+        
+        <url-pattern>/quan-ly-lich-hen</url-pattern>
+        <url-pattern>/thong-tin-ca-nhan</url-pattern>
+        <url-pattern>/bao-cao-kiem-dinh</url-pattern>
+        <url-pattern>/trung-tam-dang-kiem</url-pattern>
+        <url-pattern>/xac-thuc-don-kiem-dinh</url-pattern>
+        
+        <url-pattern>/chu-phuong-tien</url-pattern>
+        <url-pattern>/ho-so-ca-nhan-1</url-pattern>
+        <url-pattern>/kiem-tra-tai-khoan</url-pattern>
+        <url-pattern>/that-bai</url-pattern>
+        <url-pattern>/thanh-cong</url-pattern>
+        <url-pattern>/update-profile</url-pattern>
+        <url-pattern>/chinh-sua-phuong-tien</url-pattern>
+        <url-pattern>/dang-ky-kiem-dinh</url-pattern>
+        <url-pattern>/dang-ky-phuong-tien</url-pattern>
+        <url-pattern>/lich-su</url-pattern>
+        <url-pattern>/quan-ly-phuong-tien</url-pattern>
+        <url-pattern>/timKiemPT1</url-pattern>
+        <url-pattern>/xoa-phuong-tien</url-pattern>
+        
+        <url-pattern>/DeleteAccountServlet</url-pattern>
+        <url-pattern>/lich-su-trang-chu</url-pattern>
+        <url-pattern>/nguoi-kiem-dinh</url-pattern>
+        <url-pattern>/thong-tin-nguoi-kiem-dinh</url-pattern>
+    </filter-mapping>
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>controller.LoginServlet</servlet-class>
@@ -364,6 +410,6 @@
     </context-param>
     <error-page>
         <error-code>404</error-code>
-        <location>/404error</location>
+        <location>/dashboard/error/404.jsp</location>
     </error-page>
 </web-app>
