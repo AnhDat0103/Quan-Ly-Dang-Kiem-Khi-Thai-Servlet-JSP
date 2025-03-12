@@ -541,7 +541,7 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
 
     public List<InspectionRecords> getListInspectionRecordsByNotPendingAndInspectId(int inspectorId) {
         List<InspectionRecords> recordses = new ArrayList<>();
-        String sql = "SELECT * FROM InspectionRecords WHERE InspectorID = ? AND Result <> 'Pending'";
+        String sql = "SELECT * FROM InspectionRecords WHERE InspectorID = ? AND Result in ('Pass', 'Fail')";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setInt(1, inspectorId);
@@ -604,5 +604,46 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
         }
         return false;
     }
+//    
+//    public List<InspectionRecords> getListInspectionRecordsByCompletedAndInspectId(int recordId, int stationId) {
+//    List<InspectionRecords> result = new ArrayList<>();
+//    String sql = "SELECT * FROM InspectionRecords WHERE InspectorID = ? AND StationID = ? AND Result IS NOT NULL";
+//    try ( PreparedStatement ps = connect.prepareStatement(sql)) {
+//        ps.setInt(1, recordId);
+//        ps.setInt(2, stationId);
+//        ResultSet rs = ps.executeQuery();
+//        while (rs.next()) {
+//            InspectionRecords record = new InspectionRecords();
+//            record.setRecordId(rs.getInt("recordId"));
+//            record.setResult(rs.getString("result"));
+//            // Thêm các trường khác nếu cần (plateNumber, hc, co2, v.v.)
+//            result.add(record);
+//        }
+//    } catch (SQLException e) {
+//        e.printStackTrace();
+//    }
+//    return result;
+//}
 
+    public int getInspectedRecord(int userId, int stationId) {
+       int count = 0 ;
+
+        String sql = "SELECT  COUNT(*) FROM InspectionRecords WHERE InspectorID = ? and Result in ('Pass' , 'Fail') AND StationID = ?";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setInt(1, userId);
+            pt.setInt(2, stationId);
+
+            ResultSet rs = pt.executeQuery();
+            if (rs.next()) {
+               count = rs.getInt(1);
+            }
+           
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
+       
+
+}
 }
