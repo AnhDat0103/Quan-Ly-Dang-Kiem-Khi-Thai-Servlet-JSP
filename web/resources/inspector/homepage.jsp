@@ -57,11 +57,11 @@
                         <div class="row">
                             <div class="col">
                                 <div class="text-muted">Đã kiểm định</div>
-                                <h3 id="checked-count">0</h3>
+                                <h3 id="checked-count">${checkedCount}</h3>
                             </div>
                             <div class="col">
                                 <div class="text-muted">Còn lại</div>
-                                <h3 id="remaining-count">${lv.size()}</h3>
+                                <h3 id="remaining-count">${remainingCount}</h3>
                             </div>
                         </div>
                     </div>
@@ -88,8 +88,9 @@
                                         <th>Kết quả</th>
                                     </tr>
                                 </thead>
-
-                                <tbody>
+                                
+                                <c:if test="${not empty inspecrecord }">
+                                    <tbody>
                                     <c:forEach items="${inspecrecord}" var="v">
                                     <form action="nguoi-kiem-dinh" method="POST">
                                         <tr>
@@ -122,9 +123,15 @@
                                     </form>
                                 </c:forEach>
                                 </tbody>
+                                </c:if>
+                                
+                                
+                                
 
                             </table>
-
+                            <c:if test="${ empty inspecrecord }">
+                                <div class="text-center">  Chưa có bản kiểm định </div>
+                            </c:if>
                         </div>
                     </div>
                 </div>
