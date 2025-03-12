@@ -202,7 +202,7 @@
                         </div>
 
                         <!-- Footer -->
-                        <%@include file="../layout/footer.jsp" %>
+                        <%@include file="../layout/owner_footer.jsp" %>
                     </div>
                 </div>
 

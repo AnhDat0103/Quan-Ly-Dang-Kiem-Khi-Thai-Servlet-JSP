@@ -1,9 +1,3 @@
-<%-- 
-    Document   : ownerHomePage
-    Created on : Feb 5, 2025, 4:44:16 PM
-    Author     : Lenovo
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -30,55 +24,74 @@
             .footer {
                 flex-shrink: 0;
                 padding: 1rem 0;
+                margin: 0;
+            }
+
+            .navbar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                z-index: 1030;
+            }
+
+            .content-wrapper {
+                flex: 1;
+                padding-top: 0px; /* Đảm bảo nội dung không bị navbar che */
+                padding-bottom: 0px; /* Tránh bị footer che */
+            }
+
+            /* Footer nhỏ gọn hơn */
+            .footer {
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+                background-color: #f8f9fa;
+                padding: 0.5rem 0; /* Giảm padding để footer nhỏ hơn */
+                box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+                font-size: 0.9rem; /* Chữ nhỏ hơn */
             }
         </style>
     </head>
     <body>
-        <!-- Wrap all content except footer in a div -->
         <div class="content-wrapper">
-            <!-- Navbar -->
             <%@include file="../layout/owner_navbar.jsp" %>
-
-            <!-- Main content -->
             <div class="container mt-4">
                 <div class="row">
-                    <!-- Thông báo -->
                     <div class="col-md-4">
                         <div class="card mb-4">
                             <div class="card-header">
                                 <h5 class="card-title mb-0">Thông báo</h5>
                             </div>
                             <div class="card-body">
-                                <div class="alert alert-warning">
-                                    Xe máy AB-12345 sắp đến hạn kiểm định (còn 7 ngày)
-                                </div>
+                                <div class="alert alert-warning">Không có thông báo mới.</div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Phương tiện -->
                     <div class="col-md-8">
                         <div class="card mb-4">
                             <div class="card-header">
                                 <h5 class="card-title mb-0">Phương tiện của tôi</h5>
                             </div>
                             <div class="card-body">
-                                <table class="table">
+                                <table class="table table-bordered text-center">
                                     <thead>
                                         <tr>
-                                            <th>Biển số</th>
-                                            <th>Loại xe</th>
-                                            <th>Trạng thái</th>
-                                            <th>Hạn kiểm định</th>
+                                            <th>STT</th>
+                                            <th>Biển Số Xe</th>
+                                            <th>Hãng Xe</th>
+                                            <th>Loại Xe</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>AB-12345</td>
-                                            <td>Honda Wave</td>
-                                            <td><span class="badge bg-success">Đã đăng kiểm</span></td>
-                                            <td>20/12/2024</td>
-                                        </tr>
+                                        <c:forEach var="vehicle" items="${vehicleList}" varStatus="loop">
+                                            <tr>
+                                                <td>${loop.index + 1}</td> 
+                                                <td>${vehicle.plateNumber}</td>
+                                                <td>${vehicle.brand}</td>
+                                                <td>${vehicle.model}</td>
+                                            </tr>
+                                        </c:forEach>
                                     </tbody>
                                 </table>
                             </div>
@@ -118,13 +131,46 @@
                                     Bạn chưa đăng ký kiểm định
                                 </div>  
                             </c:if>
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title mb-0">Lịch Sử Đăng Kiểm</h4>
+                            </div>
+                            <div class="card-body">
+                                <c:choose>
+                                    <c:when test="${not empty historyList}">
+                                        <table class="table table-bordered text-center">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th>STT</th>
+                                                    <th>Biển Số Xe</th>
+                                                    <th>Thời Gian Đăng Kiểm</th>
+                                                    <th>Kết Quả</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <c:forEach var="record" items="${historyList}" varStatus="loop">
+                                                    <tr style="background-color: ${record.result eq 'PENDING' ? 'yellow' : 'white'};">
+                                                        <td>${loop.index + 1}</td> 
+                                                        <td>${record.vehicle.plateNumber}</td>
+                                                        <td>${record.inspectionDate}</td>
+                                                        <td>${record.result}</td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </tbody>
+                                        </table>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="alert alert-warning text-center">Bạn chưa đăng ký kiểm định</div>
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
         <%@include file="../layout/owner_footer.jsp" %>
-
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
     </body>
-</html> 
+</html>
