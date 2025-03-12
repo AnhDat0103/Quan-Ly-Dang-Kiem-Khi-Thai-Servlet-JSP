@@ -75,7 +75,7 @@ public class GetHistoryPage extends HttpServlet {
         } else {
             request.setAttribute("message", "Không có bản ghi kiểm định nào đã hoàn thành.");
         }
-         
+        
          request.getRequestDispatcher("resources/inspector/inspector_history.jsp").forward(request, response);
     } 
 

@@ -63,6 +63,16 @@ public class GetInspectorHomePage extends HttpServlet {
         int stationId = user.getInspectionStation().getStationId();
         List<InspectionRecords> is = vd.getListInspectionRecordsByPendingAndInspectId(user.getUserId(), stationId);
         request.setAttribute("inspecrecord", is);
+        
+        // Tính "Còn lại" từ danh sách pendingRecords
+        int remainingCount = is.size();
+        request.setAttribute("remainingCount", remainingCount);
+
+       // Giả sử "Đã kiểm định" là một giá trị tạm thời (hoặc bạn có cách lấy riêng)
+        int checkedCount = vd.getInspectedRecord(user.getUserId(), stationId); 
+        request.setAttribute("checkedCount", checkedCount);
+        
+        
         request.getRequestDispatcher("resources/inspector/homepage.jsp").forward(request, response);
     }
 
