@@ -54,8 +54,8 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        if (session != null) {
-            User currentUser = (User) session.getAttribute("currentUser");
+         User currentUser = (User) session.getAttribute("currentUser");
+        if (currentUser != null) {
             if (currentUser.getRole().equals(RoleEnums.Station)) {
                 response.sendRedirect("trung-tam-dang-kiem");
             }

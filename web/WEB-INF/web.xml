@@ -116,6 +116,18 @@
         <servlet-name>GetLogSystemPage</servlet-name>
         <servlet-class>controller.admin.GetLogSystemPage</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ResetPasswordPage</servlet-name>
+        <servlet-class>controller.ResetPasswordPage</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProcessResetPassword</servlet-name>
+        <servlet-class>controller.ProcessResetPassword</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetErrorRequestPassPage</servlet-name>
+        <servlet-class>controller.GetErrorRequestPassPage</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GetProfilePage</servlet-name>
         <url-pattern>/thong-tin-ca-nhan</url-pattern>
@@ -232,6 +244,18 @@
         <servlet-name>GetLogSystemPage</servlet-name>
         <url-pattern>/he-thong-logs</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ResetPasswordPage</servlet-name>
+        <url-pattern>/cap-lai-mat-khau</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProcessResetPassword</servlet-name>
+        <url-pattern>/nhap-mat-khau-moi-nao</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetErrorRequestPassPage</servlet-name>
+        <url-pattern>/loi-cap-nhat-mat-khau</url-pattern>
+    </servlet-mapping>
     <welcome-file-list>
         <welcome-file>dashboard/auth/login.jsp</welcome-file>
     </welcome-file-list>
@@ -338,4 +362,8 @@
         <param-name>UPLOAD_DIR</param-name>
         <param-value>web/resources/images</param-value>
     </context-param>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/404error</location>
+    </error-page>
 </web-app>
