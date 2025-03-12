@@ -5,6 +5,8 @@
 
 package controller;
 
+import config.EmailService;
+import dao.ResetPasswordDao;
 import dao.UserDao;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -12,15 +14,17 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
+import java.util.UUID;
+import java.time.LocalDateTime;
 import model.User;
-import model.enums.RoleEnums;
 
 /**
  *
  * @author DAT
  */
-public class LoginAdminServlet extends HttpServlet {
+public class ResetPasswordPage extends HttpServlet {
+    UserDao userDAO = new UserDao();
+    ResetPasswordDao pd = new ResetPasswordDao();
    
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -37,10 +41,10 @@ public class LoginAdminServlet extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LoginAdminServlet</title>");  
+            out.println("<title>Servlet ResetPasswordPage</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet LoginAdminServlet at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet ResetPasswordPage at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -57,7 +61,7 @@ public class LoginAdminServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-       request.getRequestDispatcher("dashboard/auth/loginAdmin.jsp").forward(request, response);
+        request.getRequestDispatcher("dashboard/resetPassPage.jsp").forward(request, response);
     } 
 
     /** 
@@ -71,29 +75,33 @@ public class LoginAdminServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        UserDao ud = new UserDao();
-        User currentUser = ud.findUserByEmail(email);
-         HttpSession session = request.getSession();
-        if (!email.isEmpty() && !password.isEmpty()) {
-            if (currentUser != null) {
-                session.setAttribute("currentUser", currentUser);
-                if (currentUser.getRole().equals(RoleEnums.Admin)) {
-                    response.sendRedirect("quan-tri-vien");
-                }
-            } else {
-                request.setAttribute("notFound", "Tài khoản hoặc mật khẩu không chính xác.");
-                request.getRequestDispatcher("dashboard/auth/loginAdmin.jsp").forward(request, response);
-            }
+        
+        User user = userDAO.findUserByEmail(email);
+        
+        if (user != null) {
+            
+            String token = UUID.randomUUID().toString();
+            
+            String resetLink = "http://localhost:8080/dang-kiem-khi-thai/nhap-mat-khau-moi-nao?token=" + token +"&email=" + email;
+            pd.saveResetToken(user.getUserId(), token, LocalDateTime.now().plusMinutes(5));
+            
+            EmailService emailService = new EmailService();
+            String subject = "Yêu cầu đặt lại mật khẩu";
+            String content = "Xin chào,"+ user.getFullName() +"<br>"
+                    + "Bạn đã yêu cầu đặt lại mật khẩu. Vui lòng click vào đường link sau để đặt lại mật khẩu:" +"<br>"
+                    + resetLink + "<br>"
+                    + "Link này sẽ hết hạn sau 2 phút." +"<br>"
+                    + "Nếu bạn không yêu cầu đặt lại mật khẩu, vui lòng bỏ qua email này." + "<br>"
+                    + "Trân trọng," + "<br>"
+                    + "Đăng kiểm khí thải";
+            
+            emailService.sendEmail(email, subject, content);
+            
+            request.setAttribute("message", "Chúng tôi đã gửi hướng dẫn đặt lại mật khẩu đến email của bạn.");
         } else {
-            if (email.isEmpty()) {
-                request.setAttribute("emptyEmail", "Email không thể để trống.");
-            }
-            if (password.isEmpty()) {
-                request.setAttribute("emptyPassword", "Mật khẩu không thể để trống.");
-            }
-            request.getRequestDispatcher("dashboard/auth/loginAdmin.jsp").forward(request, response);
-        }     
+            request.setAttribute("error", "Email không tồn tại trong hệ thống.");
+        }       
+        request.getRequestDispatcher("dashboard/resetPassPage.jsp").forward(request, response);
     }
 
     /** 
