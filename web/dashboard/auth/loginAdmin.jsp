@@ -27,7 +27,7 @@
                         <div class="card-body">
                             <h4 class="text-center mb-4">Đăng nhập cho quản trị viên</h4>
                             <div style="color:green; text-align: center"; >${requestScope.logoutSuccessMessage}</div>
-                            <form action="dang-nhap" method="POST">
+                            <form action="21.04.2000" method="POST">
                                 <div class="mb-4">
                                     <label for="email" class="form-label">Email</label>
                                     <input type="email" class="form-control ${not empty emptyEmail ? 'is-invalid' : ''}" id="email" name="email">
@@ -41,13 +41,6 @@
                                     <div class="invalid-feedback">
                                         <c:out value="${emptyPassword}" />
                                     </div>
-                                </div>
-                               <div class="mb-4" hidden="">
-                                    <label for="role" class="form-label">Vai trò</label>
-                                    <select class="form-select" id="role" name="role" required>
-                                        <option value="Admin"></option>
-                                        
-                                    </select>
                                 </div>
                                 <div style="color:red"; >${requestScope.notFound}</div>
                                 <button type="submit" class="btn btn-primary w-100 mb-3">Đăng nhập</button>
