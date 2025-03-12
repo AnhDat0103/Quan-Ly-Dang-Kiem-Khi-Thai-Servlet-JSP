@@ -92,7 +92,7 @@ public class ProcessResetPassword extends HttpServlet {
         String token = request.getParameter("token");
         String email = request.getParameter("email");
         String newPassword = request.getParameter("password");
-          User user = ud.findUserByEmail(email);
+        User user = ud.findUserByEmail(email);
         if (user == null) {
             response.sendRedirect("500error");
             return;
@@ -100,13 +100,13 @@ public class ProcessResetPassword extends HttpServlet {
             user.setPassword(newPassword);
             String passHash = Configuration.hashPasswordByMD5(newPassword);
             int result = ud.updatePassword(passHash, user.getUserId());
-            if(result > 0) {
+            if (result > 0) {
                 pd.delete(token);
-                            request.getRequestDispatcher("dashboard/resetPasswordSuccess.jsp").forward(request, response);
-            }else {
+                request.getRequestDispatcher("dashboard/resetPasswordSuccess.jsp").forward(request, response);
+            } else {
                 response.sendRedirect("loi-cap-nhat-mat-khau");
-            } 
-        }  
+            }
+        }
     }
 
     /**

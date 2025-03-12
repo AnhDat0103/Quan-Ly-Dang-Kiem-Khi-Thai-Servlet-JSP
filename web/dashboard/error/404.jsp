@@ -14,7 +14,7 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>404 Error - Electro Store</title>
-        <link href="./resources/css/styles.css" rel="stylesheet" />
+        <link href="resources/css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     </head>
     <body>
@@ -25,7 +25,7 @@
                         <div class="row justify-content-center">
                             <div class="col-lg-6">
                                 <div class="text-center mt-4">
-                                    <img class="mb-4 img-error" src="./resources/assets/img/error-404-monochrome.svg" />
+                                    <img class="mb-4 img-error" src="resources/assets/img/error-404-monochrome.svg" />
                                     <p class="lead">Không tìm thấy đường dẫn này trên máy chủ.</p>
                                     <a href="dang-nhap">
                                         <i class="fas fa-arrow-left me-1"></i>
@@ -53,6 +53,6 @@
             </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="resources/admin/js/scripts.js"></script>
+        <script src="resources/js/scripts.js"></script>
     </body>
 </html>
