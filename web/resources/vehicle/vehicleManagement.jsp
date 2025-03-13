@@ -63,7 +63,7 @@
                         <a href="dang-ky-phuong-tien" class="btn btn-success">
                             <i class="bi bi-plus-lg"></i> Đăng ký phương tiện
                         </a>
-                        <input type="text" class="form-control w-25" placeholder="Tìm kiếm phương tiện...">
+                        
                     </div>
                     <div class="card">
                         <div class="card-header">
@@ -85,8 +85,8 @@
                                     <tr>
                                         <th>#</th>
                                         <th>Biển số xe</th>
-                                        <th>Loại xe</th>
                                         <th>Hãng xe</th>
+                                        <th>Loại xe</th>
                                         <th>Hành động</th>
                                     </tr>
                                 </thead>
@@ -99,9 +99,6 @@
                                             <td>${vehicle.model}</td>
                                             <td style="width: 120px;" class="text-center">
                                                 <div class="d-flex justify-content-center gap-2">
-                                                    <button class="btn btn-warning btn-sm">
-                                                        <i class="bi bi-pencil-square"></i>
-                                                    </button>
                                                     <form action="xoa-phuong-tien" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xóa phương tiện này không?');">
                                                         <input type="hidden" name="plateNumber" value="${vehicle.plateNumber}">
                                                         <button type="submit" class="btn btn-danger btn-sm">
