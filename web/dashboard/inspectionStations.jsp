@@ -55,7 +55,7 @@
                                                 <td>${station.email}</td>
                                                 <td>
                                                     <a class="btn btn-warning btn-sm" href="danh-sach-nhan-vien-kiem-dinh?stationId=${station.stationId}">Danh sách nhân viên</a>
-                                                    <a class="btn btn-primary btn-sm" href="StationServlet?action=update&?stationId=${station.stationId}">Cập nhật</a>
+                                                    <a class="btn btn-primary btn-sm" href="StationServlet?action=update&stationId=${station.stationId}">Cập nhật</a>
                                                     <a class="btn btn-danger btn-sm" href="#?stationId=${station.stationId}">Xóa</a>
                                                 </td>
                                             </tr>

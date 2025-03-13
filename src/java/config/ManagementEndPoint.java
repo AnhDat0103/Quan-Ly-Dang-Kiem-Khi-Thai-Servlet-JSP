@@ -23,7 +23,7 @@ public class ManagementEndPoint {
         // admin enpoint
         roleMap.put(RoleEnums.Admin, new HashSet<>(Arrays.asList("/quan-tri-vien", "/danh-sach-nhan-vien-kiem-dinh",
                 "/chi-tiet-trung-tam-dang-kiem", "/he-thong-logs",
-                "/chi-tiet-chu-phuong-tien", "/lay-lai-mat-khau"
+                "/chi-tiet-chu-phuong-tien", "/lay-lai-mat-khau","/StationServlet"
         )));
 
         // station endpoint
