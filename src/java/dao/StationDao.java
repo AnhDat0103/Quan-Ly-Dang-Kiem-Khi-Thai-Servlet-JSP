@@ -51,8 +51,16 @@ public class StationDao implements Dao<InspectionStation> {
     }
 
     @Override
-    public int delete(int t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public int delete(int stationId) {
+       String sql = "DELETE FROM InspectionStations WHERE StationID = ?";
+    try {
+        PreparedStatement ps = connect.prepareStatement(sql);
+        ps.setInt(1, stationId);
+        return ps.executeUpdate();
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return 0;
+    }
     }
 
     public InspectionStation findStationById(int stationId) {
@@ -161,5 +169,6 @@ public class StationDao implements Dao<InspectionStation> {
         }
         return false;
     }
+    
 
 }

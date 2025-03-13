@@ -708,17 +708,17 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
         return historyList;
     }
 
+    public void setStationIdToNull(int stationId) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 }
 
-    public void killExpiredInspectionRecord(java.util.Date currentTime) {
-        String sql = "Update InspectionRecords set Result = 'Fail' where InspectionDate < ? and Result = 'Pending'";
-        try {
-            PreparedStatement pt = connect.prepareStatement(sql);
-            pt.setDate(1, new java.sql.Date(currentTime.getTime()));
-            pt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-}
+    
+
+
+
+
+
+
 
