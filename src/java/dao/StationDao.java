@@ -51,8 +51,20 @@ public class StationDao implements Dao<InspectionStation> {
     }
 
     @Override
-    public int delete(int t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public int delete(int stationId) {
+
+       String sql = "DELETE FROM InspectionStations WHERE StationID = ?";
+
+ 
+
+    try {
+        PreparedStatement ps = connect.prepareStatement(sql);
+        ps.setInt(1, stationId);
+        return ps.executeUpdate();
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return 0;
+    }
     }
 
     public InspectionStation findStationById(int stationId) {
@@ -144,15 +156,14 @@ public class StationDao implements Dao<InspectionStation> {
 
     }
 
-    public boolean updateStation(int stationId, String stationName, String address, String phoneNumber, String email) {
-        String sql = "UPDATE Stations SET Name = ?, Address = ?, PhoneNumber = ? , Email = ? WHERE StationID = ?";
-
+    public boolean updateStation(InspectionStation inspectionStation) {
+        String sql = "UPDATE InspectionStations SET Name = ?, Address = ?, Phone = ? WHERE StationID = ?";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
-            pt.setString(1, stationName);
-            pt.setString(2, address);
-            pt.setString(3, phoneNumber);
-            pt.setInt(4, stationId);
+            pt.setString(1, inspectionStation.getName());
+            pt.setString(2, inspectionStation.getAddress());
+            pt.setString(3, inspectionStation.getPhone());
+            pt.setInt(4, inspectionStation.getStationId());
 
             int rowsUpdated = pt.executeUpdate();
             return rowsUpdated > 0; // Trả về true nếu update thành công
@@ -161,5 +172,6 @@ public class StationDao implements Dao<InspectionStation> {
         }
         return false;
     }
+    
 
 }

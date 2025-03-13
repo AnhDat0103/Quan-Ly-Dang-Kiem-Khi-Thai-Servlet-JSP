@@ -4,29 +4,28 @@
         <filter-name>AuthenAndAuthoFilter</filter-name>
         <filter-class>controller.filter.AuthenAndAuthoFilter</filter-class>
     </filter>
-    <filter>
+<!--    <filter>
         <filter-name>JSPBlockFilter</filter-name>
         <filter-class>controller.filter.JSPBlockFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>JSPBlockFilter</filter-name>
         <url-pattern>/*</url-pattern>
-    </filter-mapping>
+    </filter-mapping>-->
     <filter-mapping>
         <filter-name>AuthenAndAuthoFilter</filter-name>
         <url-pattern>/quan-tri-vien</url-pattern>
+        <url-pattern>/StationServlet</url-pattern>
         <url-pattern>/danh-sach-nhan-vien-kiem-dinh</url-pattern>
         <url-pattern>/chi-tiet-trung-tam-dang-kiem</url-pattern>
         <url-pattern>/he-thong-logs</url-pattern>
         <url-pattern>/chi-tiet-chu-phuong-tien</url-pattern>
         <url-pattern>/lay-lai-mat-khau</url-pattern>
-        
         <url-pattern>/quan-ly-lich-hen</url-pattern>
         <url-pattern>/thong-tin-ca-nhan</url-pattern>
         <url-pattern>/bao-cao-kiem-dinh</url-pattern>
         <url-pattern>/trung-tam-dang-kiem</url-pattern>
         <url-pattern>/xac-thuc-don-kiem-dinh</url-pattern>
-        
         <url-pattern>/chu-phuong-tien</url-pattern>
         <url-pattern>/ho-so-ca-nhan-1</url-pattern>
         <url-pattern>/kiem-tra-tai-khoan</url-pattern>
@@ -40,7 +39,6 @@
         <url-pattern>/quan-ly-phuong-tien</url-pattern>
         <url-pattern>/timKiemPT1</url-pattern>
         <url-pattern>/xoa-phuong-tien</url-pattern>
-        
         <url-pattern>/DeleteAccountServlet</url-pattern>
         <url-pattern>/lich-su-trang-chu</url-pattern>
         <url-pattern>/nguoi-kiem-dinh</url-pattern>
@@ -174,6 +172,10 @@
         <servlet-name>GetErrorRequestPassPage</servlet-name>
         <servlet-class>controller.GetErrorRequestPassPage</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>StationServlet</servlet-name>
+        <servlet-class>controller.station.StationServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GetProfilePage</servlet-name>
         <url-pattern>/thong-tin-ca-nhan</url-pattern>
@@ -301,6 +303,10 @@
     <servlet-mapping>
         <servlet-name>GetErrorRequestPassPage</servlet-name>
         <url-pattern>/loi-cap-nhat-mat-khau</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StationServlet</servlet-name>
+        <url-pattern>/StationServlet</url-pattern> 
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>dashboard/auth/login.jsp</welcome-file>
