@@ -212,7 +212,7 @@
                                 <i class="fas fa-save"></i>
                                 Lưu Thay Đổi
                             </button>
-                            <a href="station" class="btn btn-secondary">
+                            <a href="chi-tiet-trung-tam-dang-kiem" class="btn btn-secondary">
                                 <i class="fas fa-times"></i>
                                 Hủy
                             </a>
