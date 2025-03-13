@@ -708,17 +708,28 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
         return historyList;
     }
 
-    public void setStationIdToNull(int stationId) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+   
+    
+     public boolean setStationIdToNull(int stationId) {
+    String sql = "UPDATE InspectionRecords SET StationID = NULL WHERE StationID = ?";
+    try {
+        PreparedStatement ps = connect.prepareStatement(sql);
+        ps.setInt(1, stationId);
+        int rows = ps.executeUpdate();
+        return rows >= 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
     }
+}
+    
 
 }
 
+
+  
     
-
-
-
-
-
+    
+    
 
 

@@ -21,10 +21,17 @@ import model.InspectionStation;
  * @author DUYEN
  */
 public class StationServlet extends HttpServlet {
-    private StationDao stationDao = new StationDao();
-    private InspectionRecordDao inspectionRecordDao = new InspectionRecordDao();
-    
+
+
+    private boolean deleteStation(int stationId) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
    
+
+   private StationDao stationDao = new StationDao();
+   private InspectionRecordDao inspectionRecordDao = new InspectionRecordDao();
+
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -64,16 +71,16 @@ public class StationServlet extends HttpServlet {
        
        String action = request.getParameter("action");
         if (action == null) {
-            // Hiển thị danh sách trung tâm đăng kiểm
+
             List<InspectionStation> stations = stationDao.getAllStations();
             request.setAttribute("stations", stations);
-            request.getRequestDispatcher("dashbord/inspecStation.jsp").forward(request, response);
+            request.getRequestDispatcher("dashbord/inspectionStation.jsp").forward(request, response);
         } else if (action.equals("update")) {
-            // Lấy thông tin trung tâm để cập nhật
             int stationId = Integer.parseInt(request.getParameter("stationId"));
             InspectionStation station = stationDao.findStationById(stationId);
             request.setAttribute("station", station);
-            request.getRequestDispatcher("dashbord/inspecStation.jsp").forward(request, response);
+            request.getRequestDispatcher("dashbord/inspectionStation.jsp").forward(request, response);
+
         }
     } 
 
@@ -87,31 +94,40 @@ public class StationServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+
      //   processRequest(request, response);
        String action = request.getParameter("action");
+      
+    
 
         if (action.equals("update")) {
-            // Cập nhật trung tâm đăng kiểm
+
             int stationId = Integer.parseInt(request.getParameter("stationId"));
             String name = request.getParameter("name");
             String address = request.getParameter("address");
             String phone = request.getParameter("phone");
             String email = request.getParameter("email");
 
+
             // Gọi phương thức updateStation từ StationDao
             boolean updated = stationDao.updateStation(stationId, name, address, phone, email);
+
+
 
             if (updated) {
                 request.setAttribute("message", "Cập nhật trung tâm thành công!");
             } else {
                 request.setAttribute("error", "Cập nhật trung tâm thất bại!");
             }
+
             // Quay lại danh sách
+
             List<InspectionStation> stations = stationDao.getAllStations();
             request.setAttribute("stations", stations);
-            request.getRequestDispatcher("resources/admin/station_list.jsp").forward(request, response);
+            request.getRequestDispatcher("dashbord/inspectionStation.jsp").forward(request, response);
 
         } else if (action.equals("delete")) {
+
             // Xóa trung tâm đăng kiểm
             int stationId = Integer.parseInt(request.getParameter("stationId"));
 
@@ -120,18 +136,23 @@ public class StationServlet extends HttpServlet {
 
             // Bước 2: Xóa trung tâm (vì StationDao chưa có delete, thêm tạm phương thức này)
             boolean deleted = deleteStation(stationId);
+          int rowsDeleted = stationDao.delete(stationId);
+  
 
             if (deleted) {
                 request.setAttribute("message", "Xóa trung tâm thành công!");
             } else {
                 request.setAttribute("error", "Xóa trung tâm thất bại!");
             }
+
             // Quay lại danh sách
+
             List<InspectionStation> stations = stationDao.getAllStations();
             request.setAttribute("stations", stations);
-            request.getRequestDispatcher("resources/admin/station_list.jsp").forward(request, response);
+            request.getRequestDispatcher("dashbord/inspectionStation.jsp").forward(request, response);
         }
     }
+
 
     
     
@@ -146,8 +167,7 @@ public class StationServlet extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    private boolean deleteStation(int stationId) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+
+   
 
 }

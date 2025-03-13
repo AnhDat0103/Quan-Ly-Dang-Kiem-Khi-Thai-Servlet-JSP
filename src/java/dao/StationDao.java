@@ -52,7 +52,11 @@ public class StationDao implements Dao<InspectionStation> {
 
     @Override
     public int delete(int stationId) {
+
        String sql = "DELETE FROM InspectionStations WHERE StationID = ?";
+
+ 
+
     try {
         PreparedStatement ps = connect.prepareStatement(sql);
         ps.setInt(1, stationId);

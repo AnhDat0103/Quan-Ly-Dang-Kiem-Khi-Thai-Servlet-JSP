@@ -305,7 +305,9 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>StationServlet</servlet-name>
+
         <url-pattern>/StationServlet</url-pattern>
+       
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>dashboard/auth/login.jsp</welcome-file>
