@@ -94,7 +94,7 @@ public class StationServlet extends HttpServlet {
             String address = request.getParameter("address") != null ? request.getParameter("address") : "";
             String phone = request.getParameter("phone") != null ? request.getParameter("phone") : "";
             InspectionStation inspectionStation = stationDao.findStationById(stationId);
-            if (inspectionStation == null) {
+            if (inspectionStation != null) {
                 inspectionStation.setPhone(phone);
                 inspectionStation.setAddress(address);
                 inspectionStation.setName(name);
