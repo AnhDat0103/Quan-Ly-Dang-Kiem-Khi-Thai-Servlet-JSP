@@ -682,7 +682,6 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
         return count;
 
     }
-    
 
     public List<InspectionRecords> getInspectionHistoryByOwnerID(int ownerID) {
         List<InspectionRecords> historyList = new ArrayList<>();
@@ -707,8 +706,6 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
         }
         return historyList;
     }
-
-}
 
     public void killExpiredInspectionRecord(java.util.Date currentTime) {
         String sql = "Update InspectionRecords set Result = 'Fail' where InspectionDate < ? and Result = 'Pending'";
