@@ -76,8 +76,8 @@ public class GetAppointmentPage extends HttpServlet {
         int stationId = currentUser.getInspectionStation().getStationId();
         request.setAttribute("stationID", stationId);
         String keyWord = request.getParameter("tu-khoa-tim-kiem") != null ? request.getParameter("tu-khoa-tim-kiem") : "";
-        String startDate = request.getParameter("start-date") != null ? request.getParameter("start-date") : "";
-        String endDate = request.getParameter("end-date") != null ? request.getParameter("end-date") : "";
+        String startDate = request.getParameter("start-date") != null ? request.getParameter("start-date") : Configuration.getCurrentTimeByFormat(new Date());
+        String endDate = request.getParameter("end-date") != null ? request.getParameter("end-date") : Configuration.getCurrentTimeByFormat(new Date());
         String statusReq = request.getParameter("trang-thai") != null ? request.getParameter("trang-thai") : "";
         request.setAttribute("statusFiltered", statusReq);
         int page = 1;
@@ -98,8 +98,6 @@ public class GetAppointmentPage extends HttpServlet {
         if (action.equals("loc-theo-thoi-gian")) {
             String status = getStatus(statusReq);
             inspectionRecordses = ird.getListInspectionRecordsWithTime(status, startDate, endDate, stationId, startRecord, recordPerPage);
-            request.setAttribute("startDateKey", startDate);
-            request.setAttribute("endDateKey", endDate);
             noOfRecords = ird.getNoOfRecordsWithTime(status, startDate, endDate, stationId);
         } else if (action.equals("tim-kiem")) {
             inspectionRecordses = ird.getListInspectionRecordsPendingBySearching(keyWord, stationId, startRecord, recordPerPage);
@@ -113,6 +111,8 @@ public class GetAppointmentPage extends HttpServlet {
             request.setAttribute("listEmpty", "Không tìm thấy đăng kiểm nào.");
         }
         int noOfPage = (int) Math.ceil(noOfRecords * 1.0 / recordPerPage);
+        request.setAttribute("startDateKey", startDate);
+        request.setAttribute("endDateKey", endDate);
         request.setAttribute("inspectionPedding", inspectionRecordses);
         request.setAttribute("currentPage", page);
         request.setAttribute("noOfPage", noOfPage);
@@ -192,7 +192,8 @@ public class GetAppointmentPage extends HttpServlet {
                 "AND Result = 'Pass'";
             case "not-pass" ->
                 "AND Result = 'Fail'";
-            case "accepted" -> "AND Result = 'Accepted'";
+            case "accepted" ->
+                "AND Result = 'Accepted'";
             default ->
                 " ";
         };
