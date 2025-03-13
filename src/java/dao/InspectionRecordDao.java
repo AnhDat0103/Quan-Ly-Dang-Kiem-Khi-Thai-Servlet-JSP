@@ -646,4 +646,15 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
        
 
 }
+
+    public void killExpiredInspectionRecord(java.util.Date currentTime) {
+        String sql = "Update InspectionRecords set Result = 'Fail' where InspectionDate < ? and Result = 'Pending'";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setDate(1, new java.sql.Date(currentTime.getTime()));
+            pt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
