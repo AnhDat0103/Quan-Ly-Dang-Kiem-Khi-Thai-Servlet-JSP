@@ -6,8 +6,7 @@ package config;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import jakarta.servlet.http.Part;
-import java.io.File;
+import dao.InspectionRecordDao;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -28,6 +27,8 @@ import org.apache.http.client.fluent.Request;
  * @author DAT
  */
 public class Configuration {
+
+    static InspectionRecordDao ird = new InspectionRecordDao();
 
     public static String hashPasswordByMD5(String pass) {
         try {
@@ -64,7 +65,7 @@ public class Configuration {
             sd.setLenient(false);
             Date date = sd.parse(inspectionDate);
             today = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z").parse(today.toString());
-            System.out.println("today"+  today);
+            System.out.println("today" + today);
             System.out.println(date);
             System.out.println(today.compareTo(date));
             if (today.compareTo(date) > 0) {
@@ -112,7 +113,7 @@ public class Configuration {
         String accessToken = jobj.get("access_token").toString().replaceAll("\"", "");
         return accessToken;
     }
-    
+
     public static GoogleAccount getUserInfo(String accessToken) throws ClientProtocolException, IOException {
 
         String link = Constant.GOOGLE_LINK_GET_USER_INFO + accessToken;
@@ -123,5 +124,10 @@ public class Configuration {
 
         return googlePojo;
 
+    }
+
+    public static void killExpiredInspectionRecord() {
+        Date currentTime = new Date();
+        ird.killExpiredInspectionRecord(currentTime);
     }
 }
