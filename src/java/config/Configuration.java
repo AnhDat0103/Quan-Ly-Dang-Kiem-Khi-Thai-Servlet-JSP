@@ -126,10 +126,10 @@ public class Configuration {
 
     }
 
-//    public static void killExpiredInspectionRecord() {
-//        Date currentTime = new Date();
-//        ird.killExpiredInspectionRecord(currentTime);
-//    }
+    public static void killExpiredInspectionRecord() {
+        Date currentTime = new Date();
+        ird.killExpiredInspectionRecord(currentTime);
+    }
     
     
 }
