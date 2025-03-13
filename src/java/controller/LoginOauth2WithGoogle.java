@@ -131,6 +131,7 @@ public class LoginOauth2WithGoogle extends HttpServlet {
     }// </editor-fold>
 
     private void loginService(User user, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Configuration.killExpiredInspectionRecord();
         if (user.getRole().equals(RoleEnums.Station)) {
             response.sendRedirect(request.getContextPath() + "/trung-tam-dang-kiem");
             return;
