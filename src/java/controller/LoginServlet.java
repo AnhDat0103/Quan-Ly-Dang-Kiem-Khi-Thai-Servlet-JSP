@@ -4,6 +4,8 @@ package controller;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
+import config.Configuration;
+import dao.InspectionRecordDao;
 import dao.UserDao;
 import dao.VehicleDao;
 import java.io.IOException;
@@ -13,6 +15,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.util.Date;
 import model.User;
 import model.enums.RoleEnums;
 
@@ -94,6 +97,7 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        Configuration.killExpiredInspectionRecord();
         String email = request.getParameter("email") != null ? request.getParameter("email") : "";
         String password = request.getParameter("password") != null ? request.getParameter("password") : "";
         String role = request.getParameter("role") != null ? request.getParameter("role") : "";
@@ -147,5 +151,7 @@ public class LoginServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+    
+
 
 }

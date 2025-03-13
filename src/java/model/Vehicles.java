@@ -24,12 +24,21 @@ public class Vehicles {
     public Vehicles() {
     }
     
+    public Vehicles(String plateNumber){
+        this.plateNumber = plateNumber;
+    }
+    
     public Vehicles(String plateNumber, String brand, String model){
         this.plateNumber = plateNumber;
         this.brand = brand;
         this.model = model;
     }
     
+    public Vehicles(String plateNumber, String brand){
+        this.plateNumber = plateNumber;
+        this.brand = brand;
+   
+    }
 
     public Vehicles(int vehicleId, User owner, String plateNumber, String brand, String model, int manufactureYear, String engineNumber, vehicleEnums status) {
         this.vehicleId = vehicleId;

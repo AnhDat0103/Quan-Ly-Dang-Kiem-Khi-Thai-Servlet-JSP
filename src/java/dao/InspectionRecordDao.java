@@ -17,6 +17,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import model.Vehicles;
 import java.util.HashMap;
+import java.util.Map;
+import model.InspectionStation;
+
 /**
  *
  * @author Lenovo
@@ -461,6 +464,41 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
         return listhistory;
     }
 
+    public List<InspectionRecords> getFullHistoryVehicleInspected(int vehicleID) {
+        List<InspectionRecords> listhistoryfull = new ArrayList<>();
+
+        String sql = "SELECT ve.Brand, ve.PlateNumber, id.InspectionDate, "
+                + "id.Result, id.CO2Emission, id.HCEmission, id.Comments, id.NextInspectionDate "
+                + "FROM InspectionRecords id "
+                + "INNER JOIN Vehicles ve ON id.VehicleID = ve.VehicleID "
+                + "INNER JOIN InspectionStations it ON id.StationID = it.StationID "
+                + "WHERE ve.VehicleID = ?";
+        try {
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.setInt(1, vehicleID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Vehicles vehicle = new Vehicles(
+                        rs.getString("Brand"),
+                        rs.getString("PlateNumber")
+                );
+                InspectionRecords record = new InspectionRecords(
+                        rs.getDate("InspectionDate"),
+                        rs.getDate("NextInspectionDate"),
+                        rs.getString("Result"),
+                        rs.getDouble("CO2Emission"),
+                        rs.getDouble("HCEmission"),
+                        rs.getString("Comments"),
+                        vehicle
+                );
+                listhistoryfull.add(record);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listhistoryfull;
+    }
+
     public int getNoOfRecordsWithTime(String startDate, String endDate, int stationId) {
         int noOfRecords = 0;
         String sql = "select count(*) from InspectionRecords where StationID = ? and Result <> 'Pending' and InspectionDate between ? and ?";
@@ -532,7 +570,6 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
                 records.put(rs.getDate(1).toString(), rs.getInt(2));
             }
             return records;
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -572,7 +609,7 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setInt(1, recordId);
             ResultSet rs = pt.executeQuery();
-            if(rs.next()){
+            if (rs.next()) {
                 InspectionRecords inspectionRecords = new InspectionRecords(
                         rs.getInt("RecordID"),
                         vd.getVehiclesById(rs.getInt("VehicleID")),
@@ -626,7 +663,7 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
 //}
 
     public int getInspectedRecord(int userId, int stationId) {
-       int count = 0 ;
+        int count = 0;
 
         String sql = "SELECT  COUNT(*) FROM InspectionRecords WHERE InspectorID = ? and Result in ('Pass' , 'Fail') AND StationID = ?";
         try {
@@ -636,14 +673,52 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
 
             ResultSet rs = pt.executeQuery();
             if (rs.next()) {
-               count = rs.getInt(1);
+                count = rs.getInt(1);
             }
-           
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return count;
-       
+
+    }
+    
+
+    public List<InspectionRecords> getInspectionHistoryByOwnerID(int ownerID) {
+        List<InspectionRecords> historyList = new ArrayList<>();
+        String sql = "SELECT v.PlateNumber, i.InspectionDate, i.Result "
+                + "FROM Vehicles v "
+                + "INNER JOIN InspectionRecords i ON v.VehicleID = i.VehicleID "
+                + "WHERE v.OwnerID = ?";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setInt(1, ownerID);
+            ResultSet rs = pt.executeQuery();
+            while (rs.next()) {
+                InspectionRecords record = new InspectionRecords(
+                        new Vehicles(rs.getString("PlateNumber")), // Tạo vehicle object
+                        rs.getDate("InspectionDate"),
+                        rs.getString("Result")
+                );
+                historyList.add(record);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return historyList;
+    }
 
 }
+
+    public void killExpiredInspectionRecord(java.util.Date currentTime) {
+        String sql = "Update InspectionRecords set Result = 'Fail' where InspectionDate < ? and Result = 'Pending'";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setDate(1, new java.sql.Date(currentTime.getTime()));
+            pt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
+

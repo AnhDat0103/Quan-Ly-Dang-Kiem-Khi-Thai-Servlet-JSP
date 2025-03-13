@@ -4,19 +4,28 @@
  */
 package controller.ownerController;
 
+import dao.InspectionRecordDao;
+import dao.VehicleDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta .servlet.ServletException;
 import jakarta .servlet.http.HttpServlet;
 import jakarta .servlet.http.HttpServletRequest;
 import jakarta .servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.util.List;
+import model.InspectionRecords;
+import model.User;
+import model.Vehicles;
 
 /**
  *
  * @author Lenovo
  */
 public class GetOwnerHomePage extends HttpServlet {
-
+    VehicleDao vehicleDao = new VehicleDao();
+    InspectionRecordDao inspectionRecordDao= new InspectionRecordDao();
+        
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -29,6 +38,8 @@ public class GetOwnerHomePage extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        
+        
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
@@ -55,6 +66,21 @@ public class GetOwnerHomePage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        User currentUser = (User) session.getAttribute("currentUser"); // Lấy user từ session
+
+        if (currentUser != null) {
+            int ownerID = currentUser.getUserId(); // Lấy ownerID từ user object
+            List<Vehicles> vehicleList = vehicleDao.getAllVehiclesByUserID(ownerID); // Lấy danh sách xe
+            request.setAttribute("vehicleList", vehicleList); // Gửi danh sách xe lên JSP
+
+            List<InspectionRecords> historyList = inspectionRecordDao.getInspectionHistoryByOwnerID(ownerID); // Lấy lịch sử đăng kiểm
+            request.setAttribute("historyList", historyList); // Gửi lịch sử lên JSP
+        } else {
+            response.sendRedirect("login.jsp"); // Chuyển hướng về trang đăng nhập nếu chưa đăng nhập
+            return;
+        }
+
         request.getRequestDispatcher("resources/owner/ownerHomePage.jsp").forward(request, response);
     }
 

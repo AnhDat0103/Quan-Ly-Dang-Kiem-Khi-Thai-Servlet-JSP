@@ -12,7 +12,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-
 /**
  *
  * @author DAT
@@ -128,6 +127,23 @@ public class StationDao implements Dao<InspectionStation> {
         return stationID;
     }
 
+    public String getNameByStationID(int stationID) {
+        String name = "";
+        String sql = "SELECT Name FROM InspectionStations Where StationID = ?";
+        try {
+            PreparedStatement st = connect.prepareStatement(sql);
+            st.setInt(1, stationID);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                name = rs.getString("Name");
+            }
+        } catch (SQLException E) {
+            E.printStackTrace();
+        }
+        return name;
+
+    }
+
     public boolean updateStation(int stationId, String stationName, String address, String phoneNumber, String email) {
         String sql = "UPDATE Stations SET Name = ?, Address = ?, PhoneNumber = ? , Email = ? WHERE StationID = ?";
 
@@ -145,4 +161,5 @@ public class StationDao implements Dao<InspectionStation> {
         }
         return false;
     }
+
 }
