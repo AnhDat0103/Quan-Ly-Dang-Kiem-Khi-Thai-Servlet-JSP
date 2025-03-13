@@ -99,7 +99,7 @@ public class StationServlet extends HttpServlet {
                 inspectionStation.setAddress(address);
                 inspectionStation.setName(name);
                 boolean updated = stationDao.updateStation(inspectionStation);
-                if (updated != false) {
+                if (updated == false) {
                      request.setAttribute("error", "Cập nhật trung tâm thất bại!");
                     request.getRequestDispatcher("dashboard/InspectionStationDetail.jsp").forward(request, response);
                     return;
