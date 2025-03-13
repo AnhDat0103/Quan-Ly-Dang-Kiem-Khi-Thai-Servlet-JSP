@@ -15,7 +15,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.util.Date;
 import model.User;
 import model.enums.RoleEnums;
 
@@ -97,7 +96,7 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-     
+        Configuration.killExpiredInspectionRecord();
         String email = request.getParameter("email") != null ? request.getParameter("email") : "";
         String password = request.getParameter("password") != null ? request.getParameter("password") : "";
         String role = request.getParameter("role") != null ? request.getParameter("role") : "";
