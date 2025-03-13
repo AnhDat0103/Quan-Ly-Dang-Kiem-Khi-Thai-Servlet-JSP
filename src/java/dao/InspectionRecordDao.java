@@ -717,5 +717,27 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
             e.printStackTrace();
         }
     }
+   
+    
+     public boolean setStationIdToNull(int stationId) {
+    String sql = "UPDATE InspectionRecords SET StationID = NULL WHERE StationID = ?";
+    try {
+        PreparedStatement ps = connect.prepareStatement(sql);
+        ps.setInt(1, stationId);
+        int rows = ps.executeUpdate();
+        return rows >= 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    }
 }
+    
+}
+
+
+  
+    
+    
+    
+
 
