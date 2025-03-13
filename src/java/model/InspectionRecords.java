@@ -26,7 +26,14 @@ public class InspectionRecords {
     // Constructor không tham số
     public InspectionRecords() {
     }
-
+    
+    public InspectionRecords(Vehicles vehicle ,Date inspectionDate, String result){
+        this.inspectionDate = inspectionDate;
+        this.result = result;
+        this.vehicle = vehicle;
+        
+    } 
+     
     public InspectionRecords(Date inspectionDate, String result, Date nextInspectionDate, Vehicles vehicle){
         this.inspectionDate = inspectionDate;
         this.nextInspectionDate = nextInspectionDate;
@@ -34,6 +41,16 @@ public class InspectionRecords {
         this.vehicle = vehicle;
         
     } 
+    
+    public InspectionRecords(Date inspectionDate, Date nextInspectionDate, String result, Double co2Emission, Double hcEmission, String comments, Vehicles vehicle) {
+        this.vehicle = vehicle;
+        this.inspectionDate = inspectionDate;
+        this.nextInspectionDate = nextInspectionDate;
+        this.result = result;
+        this.co2Emission = co2Emission;
+        this.hcEmission = hcEmission;
+        this.comments = comments;
+    }
     
     // Constructor đầy đủ tham số (không có recordID)
     public InspectionRecords(int recordId, Vehicles vehicle, int stationID, Integer inspectorID, Date inspectionDate, Date nextInspectionDate, String result, Double co2Emission, Double hcEmission, String comments) {

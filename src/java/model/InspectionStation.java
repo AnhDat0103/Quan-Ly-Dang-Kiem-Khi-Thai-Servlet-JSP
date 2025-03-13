@@ -21,6 +21,11 @@ public class InspectionStation {
     public InspectionStation() {
     }
 
+    public InspectionStation(int stationId, String name) {
+        this.stationId = stationId;
+        this.name = name;  
+    } 
+    
     public InspectionStation(int stationId, String name, String address, String phone, String email) {
         this.stationId = stationId;
         this.name = name;
