@@ -150,7 +150,7 @@
                                                         data-result="${r.result}">
                                                     <i class="bi bi-eye"></i>
                                                 </button>
-                                                <c:if test="${r.result != 'Accepted'}">
+                                                <c:if test="${r.result == 'Pending'}">
                                                     <form action="xac-thuc-don-kiem-dinh" method="GET">
                                                         <input type="hidden" name="ban-dang-kiem" value="${r.recordId}">
                                                         <button class="btn btn-sm btn-warning update-appointment mr-2" type="submit">

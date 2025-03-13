@@ -132,10 +132,10 @@
                                         <i class="fas fa-check me-2"></i>
                                         Xác nhận
                                     </button>
-                                    <button type="button" class="btn btn-secondary" onclick="window.history.back();">
+                                    <a type="button" class="btn btn-secondary" href="quan-ly-lich-hen">
                                         <i class="fas fa-arrow-left me-2"></i>
                                         Quay lại
-                                    </button>
+                                    </a>
                                 </div>
                             </form>
                         </div>
