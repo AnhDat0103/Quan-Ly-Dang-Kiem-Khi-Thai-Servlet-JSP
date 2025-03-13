@@ -130,6 +130,4 @@ public class Configuration {
         Date currentTime = new Date();
         ird.killExpiredInspectionRecord(currentTime);
     }
-    
-    
 }
