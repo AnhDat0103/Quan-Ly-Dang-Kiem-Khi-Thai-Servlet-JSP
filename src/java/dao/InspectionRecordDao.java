@@ -682,7 +682,6 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
         return count;
 
     }
-    
 
     public List<InspectionRecords> getInspectionHistoryByOwnerID(int ownerID) {
         List<InspectionRecords> historyList = new ArrayList<>();
@@ -708,5 +707,37 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
         return historyList;
     }
 
+    public void killExpiredInspectionRecord(java.util.Date currentTime) {
+        String sql = "Update InspectionRecords set Result = 'Fail' where InspectionDate < ? and Result = 'Pending'";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setDate(1, new java.sql.Date(currentTime.getTime()));
+            pt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+   
+    
+     public boolean setStationIdToNull(int stationId) {
+    String sql = "UPDATE InspectionRecords SET StationID = NULL WHERE StationID = ?";
+    try {
+        PreparedStatement ps = connect.prepareStatement(sql);
+        ps.setInt(1, stationId);
+        int rows = ps.executeUpdate();
+        return rows >= 0;
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return false;
+    }
 }
+    
+}
+
+
+  
+    
+    
+    
+
 

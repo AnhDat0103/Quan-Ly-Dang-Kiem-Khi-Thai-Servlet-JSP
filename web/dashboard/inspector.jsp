@@ -26,9 +26,9 @@
                             <li class="breadcrumb-item active">Danh sách nhân viên đăng kiểm</li>
                         </ol>
                         <div class="mb-3">
-                            <button class="btn btn-secondary" onclick="history.back()">
+                            <a class="btn btn-secondary" href="chi-tiet-trung-tam-dang-kiem">
                                 <i class="fas fa-arrow-left me-1"></i>Quay lại
-                            </button>
+                            </a>
                         </div>
                         <div class="card mb-4">
                             <div class="card-header">

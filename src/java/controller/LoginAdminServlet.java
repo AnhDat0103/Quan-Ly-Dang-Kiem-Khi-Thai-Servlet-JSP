@@ -4,6 +4,7 @@
  */
 package controller;
 
+import config.Configuration;
 import dao.UserDao;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -59,6 +60,7 @@ public class LoginAdminServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+       Configuration.killExpiredInspectionRecord();
         request.getRequestDispatcher("dashboard/auth/loginAdmin.jsp").forward(request, response);
     }
 
