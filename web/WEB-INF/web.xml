@@ -176,6 +176,10 @@
         <servlet-name>StationServlet</servlet-name>
         <servlet-class>controller.station.StationServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UpdateAndDeleteInspector</servlet-name>
+        <servlet-class>controller.admin.UpdateAndDeleteInspector</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GetProfilePage</servlet-name>
         <url-pattern>/thong-tin-ca-nhan</url-pattern>
@@ -306,7 +310,11 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>StationServlet</servlet-name>
-        <url-pattern>/StationServlet</url-pattern> 
+        <url-pattern>/StationServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateAndDeleteInspector</servlet-name>
+        <url-pattern>/cap-nhat-inspector</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>dashboard/auth/login.jsp</welcome-file>
