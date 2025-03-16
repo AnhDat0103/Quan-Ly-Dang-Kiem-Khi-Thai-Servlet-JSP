@@ -118,6 +118,10 @@ public class GetInspectorHomePage extends HttpServlet {
             } else {
                 result = "Pass";
             }
+            
+            vhd.update(result , plateNumber);
+            
+            
             vd.updateEmissions(recordIdr, co2, hc, comment, result);
             if (onwer != null) {
                 String msg = "Xe mang biển số" + plateNumber + "đã được đăng kểm khí thải. Kết quả đăng kiểm: " + result;
