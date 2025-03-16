@@ -23,12 +23,7 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import java.io.File;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-import model.InspectionRecords;
 import model.LogSystem;
 import model.Notification;
 import model.ResetPassword;
@@ -107,7 +102,6 @@ public class UpdateProfile extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setCharacterEncoding("UTF-8");
-
         String action = request.getParameter("action");
         String newFullName = request.getParameter("fullName") != null ? request.getParameter("fullName") : "";
         String newPhone = request.getParameter("phone") != null ? request.getParameter("phone") : "";
@@ -202,6 +196,7 @@ public class UpdateProfile extends HttpServlet {
             if (!notifications.isEmpty()) {
                 notifications.stream().forEach(n -> nd.delete(n.getNotificationId()));
             }
+            ld.updateLogsBeforeDelete(currentUser.getUserId());
             LogSystem log = new LogSystem();
             String ms = "Tài khoản với id = " + currentUser.getUserId() + " vừa được xóa khỏi hệ thống.";
             log.setUser(currentUser);

@@ -75,7 +75,7 @@ public class UserDao implements Dao<User> {
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setInt(1, t);
-            pt.executeUpdate();
+            result =  pt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

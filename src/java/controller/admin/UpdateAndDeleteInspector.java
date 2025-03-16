@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
+import model.InspectionRecords;
 import model.InspectionStation;
 import model.LogSystem;
 import model.User;
@@ -96,6 +97,7 @@ public class UpdateAndDeleteInspector extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action") != null ? request.getParameter("action") : "";
         String inspectorId = request.getParameter("inspectorId") != null ? request.getParameter("inspectorId") : "";
         String name = request.getParameter("name") != null ? request.getParameter("name") : "";
@@ -116,14 +118,15 @@ public class UpdateAndDeleteInspector extends HttpServlet {
             }
         } else if (action.equals("delete")) {
             List<LogSystem> logSystems = lsd.findAllByUserId(currentInspector.getUserId());
+            ird.UpdateInspectionRecordBeforeDeleteInspector(currentInspector.getUserId());
             if(!logSystems.isEmpty()) {
                 logSystems.stream().forEach(l -> lsd.delete(l.getLogId()));
             }
             int result = ud.delete(currentInspector.getUserId());
             if (result > 0) {
-                response.sendRedirect("danh-sach-nhan-vien-kiem-dinh?stationId=" + stationId);
+                response.sendRedirect("danh-sach-nhan-vien-kiem-dinh?stationId=" + currentInspector.getInspectionStation().getStationId());
             } else {
-                request.setAttribute("error", "Xóa thất bại. Hãy thử lại!");
+                response.sendRedirect("500error");
             }
         }
     }

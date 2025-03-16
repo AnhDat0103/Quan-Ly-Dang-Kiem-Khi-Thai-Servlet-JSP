@@ -732,17 +732,16 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
     }
 }
 
-    public int UpdateInspectionRecordBeforeDeleteInspector(int userId) {
+    public void UpdateInspectionRecordBeforeDeleteInspector(int userId) {
         int result = 0;
         String sql = "update InspectionRecords set InspectorID = null where InspectorID = ?";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setInt(1, userId);
-            result = pt.executeUpdate();
+            pt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return result;
     }
     
 }
