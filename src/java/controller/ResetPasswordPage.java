@@ -90,7 +90,7 @@ public class ResetPasswordPage extends HttpServlet {
             String content = "Xin chào,"+ user.getFullName() +"<br>"
                     + "Bạn đã yêu cầu đặt lại mật khẩu. Vui lòng click vào đường link sau để đặt lại mật khẩu:" +"<br>"
                     + resetLink + "<br>"
-                    + "Link này sẽ hết hạn sau 2 phút." +"<br>"
+                    + "Link này sẽ hết hạn sau 5 phút." +"<br>"
                     + "Nếu bạn không yêu cầu đặt lại mật khẩu, vui lòng bỏ qua email này." + "<br>"
                     + "Trân trọng," + "<br>"
                     + "Đăng kiểm khí thải";
