@@ -78,21 +78,10 @@ public class GetReportPage extends HttpServlet {
         int stationId = currentUser.getInspectionStation().getStationId();
         request.setAttribute("startDate", startDate);
         request.setAttribute("endDate", endDate);
-//        int page = 1;
-//        int noPerPage = 6;
-//        try {
-//            if (request.getParameter("page") != null) {
-//                page = Integer.parseInt(request.getParameter("page"));
-//            }
-//        } catch (Exception e) {
-//            page = 1;
-//        }
-//        int NoStartRecord = (page - 1) * noPerPage;
         HashMap<String, Integer> totalRecordByDateForEachDay = ird.getNoRecordsWithThoughtPendingByADay(startDate, endDate, stationId);
         HashMap<String, Integer> totalRecordPassByDateForEachDay = ird.getNoRecordsPassByADay(startDate, endDate, stationId);
         HashMap<String, Integer> totalRecordFailByDateForEachDay = ird.getNoRecordsFailByADay(startDate, endDate, stationId);
         int totalRecord = ird.getNoOfRecordsWithTime(startDate, endDate, stationId);
-//        int totalPage = (int) Math.ceil(totalRecord * 1.0 / noPerPage);
         List<Report> reports = getReportListWithTotalRecordByDate(totalRecordByDateForEachDay);
         setReportListWithTotalRecordPassByDate(reports, totalRecordPassByDateForEachDay);
         setReportListWithTotalRecordFailByDate(reports, totalRecordFailByDateForEachDay);

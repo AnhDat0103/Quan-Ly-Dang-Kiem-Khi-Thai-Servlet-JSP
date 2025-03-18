@@ -22,7 +22,20 @@ public class StationDao implements Dao<InspectionStation> {
 
     @Override
     public int save(InspectionStation t) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        int result = 0;
+        String sql = "insert into InspectionStations(Name,Address,Phone,Email)values(?,?,?,?)";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setString(1, t.getName());
+            pt.setString(2, t.getAddress());
+            pt.setString(3, t.getPhone());
+            pt.setString(4, t.getEmail());
+            result = pt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     @Override
@@ -54,9 +67,6 @@ public class StationDao implements Dao<InspectionStation> {
     public int delete(int stationId) {
 
        String sql = "DELETE FROM InspectionStations WHERE StationID = ?";
-
- 
-
     try {
         PreparedStatement ps = connect.prepareStatement(sql);
         ps.setInt(1, stationId);
@@ -167,6 +177,24 @@ public class StationDao implements Dao<InspectionStation> {
 
             int rowsUpdated = pt.executeUpdate();
             return rowsUpdated > 0; // Trả về true nếu update thành công
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    
+    public boolean existedUserWithEmail(String emailRequest) {
+        List<InspectionStation> is = new ArrayList<>();
+        String sql = "SELECT * FROM InspectionStations WHERE Email = ?";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setString(1, emailRequest);
+            ResultSet rs = pt.executeQuery();
+            if(rs.next()) {
+                is.add(new InspectionStation(rs.getInt("StationID"), rs.getString("Name"), rs.getString("Address"), rs.getString("Phone"), rs.getString("Email")));
+            }
+            return !is.isEmpty();
         } catch (SQLException e) {
             e.printStackTrace();
         }

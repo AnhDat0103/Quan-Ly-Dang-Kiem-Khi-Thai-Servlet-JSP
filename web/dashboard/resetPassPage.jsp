@@ -32,7 +32,7 @@
                                     <div class="form-text">
                                         <p>Nhập email đã đăng ký của bạn để nhận link đặt lại mật khẩu.</p>
                                        
-                                        <p>Link lấy lại mật khẩu sẽ có hiệu lực trong vòng 2 phút.</p>
+                                        <p>Link lấy lại mật khẩu sẽ có hiệu lực trong vòng 5 phút.</p>
                                       
                                         <p>Nếu không nhận được mail, vui lòng liên hệ quản trị viên để biết thêm chi tiết.</p>
                                     </div>
