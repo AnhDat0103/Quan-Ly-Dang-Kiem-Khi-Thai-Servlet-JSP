@@ -180,6 +180,10 @@
         <servlet-name>UpdateAndDeleteInspector</servlet-name>
         <servlet-class>controller.admin.UpdateAndDeleteInspector</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CreateNewStation</servlet-name>
+        <servlet-class>controller.admin.CreateNewStation</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GetProfilePage</servlet-name>
         <url-pattern>/thong-tin-ca-nhan</url-pattern>
@@ -315,6 +319,10 @@
     <servlet-mapping>
         <servlet-name>UpdateAndDeleteInspector</servlet-name>
         <url-pattern>/cap-nhat-inspector</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateNewStation</servlet-name>
+        <url-pattern>/tao-moi-trung-tam-kiem-dinh</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>dashboard/auth/login.jsp</welcome-file>

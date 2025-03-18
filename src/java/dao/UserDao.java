@@ -110,18 +110,32 @@ public class UserDao implements Dao<User> {
         return null;
     }
 
-    public int existedUserWithEmail(String emailRequest) {
+    public boolean existedUserWithEmail(String emailRequest) {
+        List<User> users = new ArrayList<>();
         String sql = "SELECT * FROM Users WHERE Email = ?";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setString(1, emailRequest);
             ResultSet rs = pt.executeQuery();
             if (rs.next()) {
-                return 1;
+                InspectionStation is = sd.findStationById(rs.getInt("StationID")) != null ? sd.findStationById(rs.getInt("StationID")) : new InspectionStation();
+                users.add(new User(rs.getInt("UserID"),
+                        rs.getString("FullName"),
+                        rs.getString("Email"),
+                        rs.getString("Password"),
+                        RoleEnums.valueOf(rs.getString("Role")),
+                        rs.getString("Phone"),
+                        rs.getString("Address"),
+                        rs.getString("Avatar"),
+                        ProviderClass.valueOf(rs.getString("Provider")),
+                        is
+                ));
+                return !users.isEmpty();
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return 0;
+        return false;
     }
 
     public int updatePassword(String newPassword, int userId) {

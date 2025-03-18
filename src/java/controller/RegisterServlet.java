@@ -94,7 +94,7 @@ public class RegisterServlet extends HttpServlet {
                 && !role.isEmpty() && !address.isEmpty()) {
             RegisterForm rf = new RegisterForm(fullName, email, password, confirmPassword, RoleEnums.valueOf(role), phone, address);
             request.setAttribute("rf", rf);
-            if (Validate.checkEmail(email) && Validate.checkConfirmPassword(password, confirmPassword)
+            if (Validate.checkEmail(email) && Validate.checkPassword(password) && Validate.checkConfirmPassword(password, confirmPassword)
                     && Validate.checkTele(phone) && !Validate.emailIsExist(email)) {
                 User newUser = new User();
                 newUser.setEmail(email);
@@ -121,6 +121,9 @@ public class RegisterServlet extends HttpServlet {
                 }
                 if (!Validate.checkTele(phone)) {
                     request.setAttribute("phoneFormatError", "Số điện thoại không hợp lệ.");
+                }
+                if(!Validate.checkPassword(password)){
+                    request.setAttribute("PassError", "Mật khuẩn phải có ít nhất 5 ký tự.");
                 }
                 if (!Validate.checkConfirmPassword(password, confirmPassword)) {
                     request.setAttribute("confirmPassError", "Mật khẩu không chính xác.");

@@ -145,7 +145,7 @@ public class UpdateProfile extends HttpServlet {
             }
         } else if (action.equals("change-pass")) {
             if (!oldPass.isEmpty() && !newPass.isEmpty() && !confirm.isEmpty()) {
-                if (checkNewPassAndConfirmNewPass(newPass, confirm) && Configuration.verifyPasswordAfterHashed(oldPass, currentUser.getPassword())) {
+                if (Validate.checkPassword(newPass) && checkNewPassAndConfirmNewPass(newPass, confirm) && Configuration.verifyPasswordAfterHashed(oldPass, currentUser.getPassword())) {
                     String hashNewPass = Configuration.hashPasswordByMD5(newPass);
                     rs = ud.updatePassword(hashNewPass, currentUser.getUserId());
                     if (rs == 1) {

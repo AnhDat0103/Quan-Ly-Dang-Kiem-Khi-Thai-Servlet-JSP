@@ -103,9 +103,10 @@
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="password" class="form-label">Mật khẩu</label>
-                                    <input type="password" class="form-control ${not empty emptyPass ? 'is-invalid' : ''}" id="password" name="password">
+                                    <input type="password" class="form-control ${not empty emptyPass ? 'is-invalid' : ''} ${not empty PassError ?  'is-invalid' : ''}" id="password" name="password">
                                     <div class="invalid-feedback">
                                         <c:out value="${emptyPass}" />
+                                        <c:out value="${PassError}"/>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
