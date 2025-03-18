@@ -12,6 +12,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.LogSystem;
 import model.User;
 import model.dto.RegisterForm;
@@ -66,6 +67,10 @@ public class RegisterServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        if(session != null) {
+            session.invalidate();
+        }
         request.getRequestDispatcher("dashboard/auth/register.jsp").forward(request, response);
     }
 

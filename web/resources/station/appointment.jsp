@@ -307,7 +307,7 @@
                 if (alertBox) {
                     setTimeout(function () {
                         alertBox.style.display = "none";
-                    }, 5000);
+                    }, 3000);
                 }
             });
 
