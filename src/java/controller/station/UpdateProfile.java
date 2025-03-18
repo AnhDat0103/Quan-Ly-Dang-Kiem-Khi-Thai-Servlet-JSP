@@ -206,7 +206,7 @@ public class UpdateProfile extends HttpServlet {
             response.sendRedirect("dang-xuat");
         } else if (action.equals("change-location")) {
             currentUser.setInspectionStation(sd.findStationById(Integer.parseInt(inspecStaion)));
-            rs = ud.updateInspecStationId(Integer.parseInt(inspecStaion), currentUser.getUserId());
+            rs = ud.updateInspecStationId(currentUser.getInspectionStation().getStationId(), currentUser.getEmail());
             if (rs == 1) {
                 if (currentUser.getRole().compareTo(RoleEnums.Inspector) == 0) {
                     response.sendRedirect("thong-tin-nguoi-kiem-dinh?status=success");

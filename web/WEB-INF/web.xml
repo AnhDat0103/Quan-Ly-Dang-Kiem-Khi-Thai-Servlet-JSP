@@ -43,6 +43,8 @@
         <url-pattern>/lich-su-trang-chu</url-pattern>
         <url-pattern>/nguoi-kiem-dinh</url-pattern>
         <url-pattern>/thong-tin-nguoi-kiem-dinh</url-pattern>
+        <url-pattern>/tao-moi-trung-tam-kiem-dinh</url-pattern>
+        <url-pattern>/cap-nhat-inspector</url-pattern>
     </filter-mapping>
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
