@@ -125,4 +125,15 @@ public class LogSystemDao implements Dao<LogSystem> {
         return logs;
     }
 
+    public void updateLogsBeforeDelete(int userId) {
+        try {
+            String sql = "update Logs set UserID = NULL where UserID = ?";
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setInt(1, userId);
+            pt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

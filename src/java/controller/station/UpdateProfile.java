@@ -5,9 +5,13 @@
 package controller.station;
 
 import config.Configuration;
+import dao.InspectionRecordDao;
 import dao.LogSystemDao;
+import dao.NotificationDao;
+import dao.ResetPasswordDao;
 import dao.StationDao;
 import dao.UserDao;
+import dao.VehicleDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -19,8 +23,12 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.Part;
 import java.io.File;
 import java.nio.file.Paths;
+import java.util.List;
 import model.LogSystem;
+import model.Notification;
+import model.ResetPassword;
 import model.User;
+import model.Vehicles;
 import model.enums.RoleEnums;
 import validation.Validate;
 
@@ -36,6 +44,10 @@ public class UpdateProfile extends HttpServlet {
     UserDao ud = new UserDao();
     StationDao sd = new StationDao();
     LogSystemDao ld = new LogSystemDao();
+    VehicleDao vd = new VehicleDao();
+    InspectionRecordDao ird = new InspectionRecordDao();
+    NotificationDao nd = new NotificationDao();
+    ResetPasswordDao rd = new ResetPasswordDao();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -90,7 +102,6 @@ public class UpdateProfile extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setCharacterEncoding("UTF-8");
-
         String action = request.getParameter("action");
         String newFullName = request.getParameter("fullName") != null ? request.getParameter("fullName") : "";
         String newPhone = request.getParameter("phone") != null ? request.getParameter("phone") : "";
@@ -100,7 +111,7 @@ public class UpdateProfile extends HttpServlet {
         String confirm = request.getParameter("confirmNewPass") != null ? request.getParameter("confirmNewPass") : "";
         String inspecStaion = request.getParameter("inspecStation") != null ? request.getParameter("inspecStation") : "";
         String roleRequest = request.getParameter("role") != null ? request.getParameter("role") : "";
-        
+
         HttpSession session = request.getSession();
         User currentUser = (User) session.getAttribute("currentUser");
         int rs = 0;
@@ -142,7 +153,7 @@ public class UpdateProfile extends HttpServlet {
             }
         } else if (action.equals("change-pass")) {
             if (!oldPass.isEmpty() && !newPass.isEmpty() && !confirm.isEmpty()) {
-                if (checkNewPassAndConfirmNewPass(newPass, confirm) && Configuration.verifyPasswordAfterHashed(oldPass, currentUser.getPassword())) {
+                if (Validate.checkPassword(newPass) && checkNewPassAndConfirmNewPass(newPass, confirm) && Configuration.verifyPasswordAfterHashed(oldPass, currentUser.getPassword())) {
                     String hashNewPass = Configuration.hashPasswordByMD5(newPass);
                     rs = ud.updatePassword(hashNewPass, currentUser.getUserId());
                     if (rs == 1) {
@@ -191,17 +202,31 @@ public class UpdateProfile extends HttpServlet {
                 response.sendRedirect("thong-tin-ca-nhan?status=error");
             }
         } else if (action.equals("delete-account")) {
+            List<Notification> notifications = nd.findAllByUserId(currentUser.getUserId());
+            List<ResetPassword> resetPasswords = rd.findAllByUserId(currentUser.getUserId());
+            if (currentUser.getRole().compareTo(RoleEnums.Owner) == 0) {
+                List<Vehicles> vehicleses = vd.getAllVehiclesByUserID(currentUser.getUserId());
+                vehicleses.stream().forEach(v -> ird.removeInspectionRecordsWithPlateNumber(v.getPlateNumber()));
+
+                vehicleses.stream().forEach(v -> vd.deleteByPlateNumber(v.getPlateNumber()));
+            }
+            if (!resetPasswords.isEmpty()) {
+                resetPasswords.stream().forEach(r -> rd.delete(r.getToken()));
+            }
+            if (!notifications.isEmpty()) {
+                notifications.stream().forEach(n -> nd.delete(n.getNotificationId()));
+            }
+            ld.updateLogsBeforeDelete(currentUser.getUserId());
+            LogSystem log = new LogSystem();
+            String ms = "Tài khoản với id = " + currentUser.getUserId() + " vừa được xóa khỏi hệ thống.";
+            log.setUser(currentUser);
+            log.setAction(ms);
+            ld.save(log);
             ud.delete(currentUser.getUserId());
-                 LogSystem log = new LogSystem();
-                String ms = "Tài khoản với id = " + currentUser.getUserId() + " vừa được xóa khỏi hệ thống.";
-                log.setUser(currentUser);
-                log.setAction(ms);
-                ld.save(log);
-            session.invalidate();
-            response.sendRedirect("dang-nhap");
+            response.sendRedirect("dang-xuat");
         } else if (action.equals("change-location")) {
             currentUser.setInspectionStation(sd.findStationById(Integer.parseInt(inspecStaion)));
-            rs = ud.updateInspecStationId(Integer.parseInt(inspecStaion), currentUser.getUserId());
+            rs = ud.updateInspecStationId(currentUser.getInspectionStation().getStationId(), currentUser.getEmail());
             if (rs == 1) {
                 if (currentUser.getRole().compareTo(RoleEnums.Inspector) == 0) {
                     response.sendRedirect("thong-tin-nguoi-kiem-dinh?status=success");

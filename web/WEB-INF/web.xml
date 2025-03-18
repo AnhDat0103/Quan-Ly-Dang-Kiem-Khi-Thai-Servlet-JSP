@@ -15,6 +15,7 @@
     <filter-mapping>
         <filter-name>AuthenAndAuthoFilter</filter-name>
         <url-pattern>/quan-tri-vien</url-pattern>
+        <url-pattern>/StationServlet</url-pattern>
         <url-pattern>/danh-sach-nhan-vien-kiem-dinh</url-pattern>
         <url-pattern>/chi-tiet-trung-tam-dang-kiem</url-pattern>
         <url-pattern>/he-thong-logs</url-pattern>
@@ -42,6 +43,8 @@
         <url-pattern>/lich-su-trang-chu</url-pattern>
         <url-pattern>/nguoi-kiem-dinh</url-pattern>
         <url-pattern>/thong-tin-nguoi-kiem-dinh</url-pattern>
+        <url-pattern>/tao-moi-trung-tam-kiem-dinh</url-pattern>
+        <url-pattern>/cap-nhat-inspector</url-pattern>
     </filter-mapping>
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
@@ -203,6 +206,18 @@
         <servlet-name>GetNotificationPolice</servlet-name>
         <servlet-class>controller.policeController.GetNotificationPolice</servlet-class>
     </servlet>
+    <servlet>    
+        <servlet-name>StationServlet</servlet-name>
+        <servlet-class>controller.station.StationServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateAndDeleteInspector</servlet-name>
+        <servlet-class>controller.admin.UpdateAndDeleteInspector</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateNewStation</servlet-name>
+        <servlet-class>controller.admin.CreateNewStation</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GetProfilePage</servlet-name>
         <url-pattern>/thong-tin-ca-nhan</url-pattern>
@@ -362,6 +377,18 @@
     <servlet-mapping>
         <servlet-name>GetNotificationPolice</servlet-name>
         <url-pattern>/thong-bao-canh-sat</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>    
+        <servlet-name>StationServlet</servlet-name>
+        <url-pattern>/StationServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateAndDeleteInspector</servlet-name>
+        <url-pattern>/cap-nhat-inspector</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateNewStation</servlet-name>
+        <url-pattern>/tao-moi-trung-tam-kiem-dinh</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>dashboard/auth/login.jsp</welcome-file>

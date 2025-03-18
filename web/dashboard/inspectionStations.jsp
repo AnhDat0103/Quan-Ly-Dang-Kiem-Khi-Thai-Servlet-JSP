@@ -25,11 +25,18 @@
                             <li class="breadcrumb-item"><a href="#">Bảng điều khiển</a></li>
                             <li class="breadcrumb-item active">Danh sách trung tâm đăng kiểm</li>
                         </ol>
-                        <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                           <div class="mb-3">
                             <a class="btn btn-secondary" href="quan-tri-vien">
                                 <i class="fas fa-arrow-left me-1"></i>Quay lại
                             </a>
                         </div>
+                        <div class="mb-3">
+                            <a  class="btn btn-primary" href="tao-moi-trung-tam-kiem-dinh">Tạo mới</a>
+
+                        </div> 
+                        </div>
+                        
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
@@ -56,7 +63,12 @@
                                                 <td>
                                                     <a class="btn btn-warning btn-sm" href="danh-sach-nhan-vien-kiem-dinh?stationId=${station.stationId}">Danh sách nhân viên</a>
                                                     <a class="btn btn-primary btn-sm" href="StationServlet?action=update&stationId=${station.stationId}">Cập nhật</a>
-                                                    <a class="btn btn-danger btn-sm" href="#?stationId=${station.stationId}">Xóa</a>
+
+                                                   <form action="StationServlet" method="POST" style="display:inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa trung tâm này?');">
+                                                        <input type="hidden" name="action" value="delete">
+                                                        <input type="hidden" name="stationId" value="${station.stationId}">
+                                                        <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                                                    </form>
                                                 </td>
                                             </tr>
                                         </c:forEach>
