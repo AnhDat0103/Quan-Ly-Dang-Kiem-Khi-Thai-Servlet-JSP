@@ -5,6 +5,7 @@
 package controller.station;
 
 import dao.InspectionRecordDao;
+import dao.LogSystemDao;
 import dao.StationDao;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -21,9 +22,7 @@ import model.InspectionStation;
  */
 public class StationServlet extends HttpServlet {
 
-    private boolean deleteStation(int stationId) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+    
 
     private StationDao stationDao = new StationDao();
     private InspectionRecordDao inspectionRecordDao = new InspectionRecordDao();
@@ -112,22 +111,17 @@ public class StationServlet extends HttpServlet {
             }
         } else if (action.equals("delete")) {
 
-            // Xóa trung tâm đăng kiểm
             int stationId = Integer.parseInt(request.getParameter("stationId"));
 
-            // Bước 1: Cập nhật StationID thành NULL trong InspectionRecords
-            inspectionRecordDao.setStationIdToNull(stationId);
-
-            // Bước 2: Xóa trung tâm (vì StationDao chưa có delete, thêm tạm phương thức này)
-            boolean deleted = deleteStation(stationId);
-            int rowsDeleted = stationDao.delete(stationId);
-
-            if (deleted) {
-                message = "Xóa trung tâm thành công!";
-                request.setAttribute("message", "Xóa trung tâm thành công!");
-            } else {
-                message = "Xóa trung tâm thất bại!";
-            }
+            boolean deleteStation = inspectionRecordDao.deleteByStationID(stationId);
+            if (deleteStation) {
+                int rowsDeleted = stationDao.delete(stationId);
+                if (rowsDeleted > 0) {
+                    request.setAttribute("error", "Xóa trung tâm thành công!");                 
+                } else {
+                    request.setAttribute("error", "Xóa trung tâm thất bại!");
+                }
+            } 
         }
         // Quay lại danh sách
         List<InspectionStation> stations = stationDao.getAllStations();
