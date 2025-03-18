@@ -65,7 +65,6 @@ public class StationDao implements Dao<InspectionStation> {
 
     @Override
     public int delete(int stationId) {
-
        String sql = "DELETE FROM InspectionStations WHERE StationID = ?";
     try {
         PreparedStatement ps = connect.prepareStatement(sql);
@@ -76,6 +75,8 @@ public class StationDao implements Dao<InspectionStation> {
         return 0;
     }
     }
+    
+    
 
     public InspectionStation findStationById(int stationId) {
         String sql = "SELECT * FROM InspectionStations WHERE StationID = ?";
