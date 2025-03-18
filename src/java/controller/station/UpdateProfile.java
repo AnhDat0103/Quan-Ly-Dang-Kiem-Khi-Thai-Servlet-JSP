@@ -119,6 +119,10 @@ public class UpdateProfile extends HttpServlet {
                         response.sendRedirect("ho-so-ca-nhan-1?status=success");
                         return;
                     }
+                    if (currentUser.getRole().compareTo(RoleEnums.Police) == 0) {
+                        response.sendRedirect("ho-so-ca-nhan-2?status=success");
+                        return;
+                    }
                     response.sendRedirect("thong-tin-ca-nhan?status=success");
                 }
             } else {
@@ -128,6 +132,10 @@ public class UpdateProfile extends HttpServlet {
                 }
                 if (currentUser.getRole().compareTo(RoleEnums.Owner) == 0) {
                     response.sendRedirect("ho-so-ca-nhan-1?status=error");
+                    return;
+                }
+                if (currentUser.getRole().compareTo(RoleEnums.Police) == 0) {
+                    response.sendRedirect("ho-so-ca-nhan-2?status=error");
                     return;
                 }
                 response.sendRedirect("thong-tin-ca-nhan?status=error");
@@ -146,6 +154,10 @@ public class UpdateProfile extends HttpServlet {
                             response.sendRedirect("ho-so-ca-nhan-1?status=success");
                             return;
                         }
+                        if (currentUser.getRole().compareTo(RoleEnums.Police) == 0) {
+                            response.sendRedirect("ho-so-ca-nhan-2?status=success");
+                            return;
+                        }
                         response.sendRedirect("thong-tin-ca-nhan?status=success");
                     }
                 } else {
@@ -157,6 +169,10 @@ public class UpdateProfile extends HttpServlet {
                         response.sendRedirect("ho-so-ca-nhan-1?status=error");
                         return;
                     }
+                    if (currentUser.getRole().compareTo(RoleEnums.Police) == 0) {
+                        response.sendRedirect("ho-so-ca-nhan-2?status=error");
+                        return;
+                    }
                     response.sendRedirect("thong-tin-ca-nhan?status=error");
                 }
             } else {
@@ -166,6 +182,10 @@ public class UpdateProfile extends HttpServlet {
                 }
                 if (currentUser.getRole().compareTo(RoleEnums.Owner) == 0) {
                     response.sendRedirect("ho-so-ca-nhan-1?status=error");
+                    return;
+                }
+                if (currentUser.getRole().compareTo(RoleEnums.Police) == 0) {
+                    response.sendRedirect("ho-so-ca-nhan-2?status=error");
                     return;
                 }
                 response.sendRedirect("thong-tin-ca-nhan?status=error");
@@ -191,6 +211,10 @@ public class UpdateProfile extends HttpServlet {
                     response.sendRedirect("ho-so-ca-nhan-1?status=success");
                     return;
                 }
+                if (currentUser.getRole().compareTo(RoleEnums.Police) == 0) {
+                    response.sendRedirect("ho-so-ca-nhan-2?status=success");
+                    return;
+                }
                 response.sendRedirect("thong-tin-ca-nhan?status=success");
             }
         } else if (action.equals("change-avatar")) {
@@ -213,6 +237,10 @@ public class UpdateProfile extends HttpServlet {
                     response.sendRedirect("ho-so-ca-nhan-1?status=success");
                     return;
                 }
+                if (currentUser.getRole().compareTo(RoleEnums.Police) == 0) {
+                    response.sendRedirect("ho-so-ca-nhan-2?status=success");
+                    return;
+                }
                 response.sendRedirect("thong-tin-ca-nhan?status=success");
             } else {
                 if (currentUser.getRole().compareTo(RoleEnums.Inspector) == 0) {
@@ -221,6 +249,10 @@ public class UpdateProfile extends HttpServlet {
                 }
                 if (currentUser.getRole().compareTo(RoleEnums.Owner) == 0) {
                     response.sendRedirect("ho-so-ca-nhan-1?status=error");
+                    return;
+                }
+                if (currentUser.getRole().compareTo(RoleEnums.Police) == 0) {
+                    response.sendRedirect("ho-so-ca-nhan-2?status=error");
                     return;
                 }
                 response.sendRedirect("thong-tin-ca-nhan?status=error");

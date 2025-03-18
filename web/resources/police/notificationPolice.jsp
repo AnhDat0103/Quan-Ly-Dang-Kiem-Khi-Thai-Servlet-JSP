@@ -4,13 +4,14 @@
     Author     : Lenovo
 --%>
 
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="vi">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Xóa Phương Tiện</title>
+        <title>Thông Báo Phương Tiện Vi Phạm</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -74,50 +75,49 @@
         </style>
     </head>
     <body>
-        <%@include file="../layout/owner_navbar.jsp" %>
+        <%@include file="../layout/police_navbar.jsp" %>
 
         <!-- Main Content -->
         <div class="content">
             <div class="form-container">
-                <h2 class="text-center text-primary">Đăng Ký Phương Tiện</h2>
-                <% String bug = (String) request.getAttribute("bug"); %>
-                <% if (bug != null && !bug.isEmpty()) { %>
-                <div class="alert alert-danger" role="alert"><%= bug %></div>
-                <% } %>
-
-                <form action="dang-ky-phuong-tien" method="POST" class="mt-3">
-                    <input type="hidden" name="ownerID" value="${sessionScope.currentUser.userId}">
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Biển số xe:</label>
-                            <input type="text" name="plateNumber" pattern="[0-9]{2}[A-Z]-[0-9]{5}" 
-                                   title="Biển số xe phải có định dạng: 30A-12345" class="form-control" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Hãng Xe:</label>
-                            <input type="text" name="brand" class="form-control" required>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Mẫu Xe:</label>
-                            <input type="text" name="model" class="form-control" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label">Năm Sản Xuất:</label>
-                            <input type="number" name="manufactureYear" class="form-control" required>
-                        </div>
-                    </div>
+                <h2 class="text-center text-primary">Thông Báo</h2>
+                <form action="thong-bao-canh-sat" method="post" class="mt-3">
+                    <!-- Truyền ID của chủ phương tiện -->
+                    <input type="hidden" name="ownerID" value="${owner.userId}">
+                    <input type="hidden" name="violation" value="${violation}">
+                    <!-- Tên chủ phương tiện -->
                     <div class="mb-3">
-                        <label class="form-label">Số Động Cơ:</label>
-                        <input type="text" name="engineNumber" class="form-control" required>
+                        <label class="form-label">Tên Chủ Phương Tiện:</label>
+                        <input type="text" class="form-control" value="${owner.fullName}" readonly>
                     </div>
-                    <button type="submit" class="btn btn-custom w-100">Đăng Ký</button>
+
+                    <!-- Biển số xe -->
+                    <div class="mb-3">
+                        <label class="form-label">Biển Số Xe:</label>
+                        <input type="text" name="plateNumber" class="form-control" value="${plateNumber}" readonly>
+                    </div>
+
+                    <!-- Nội dung thông báo -->
+                    <div class="mb-3">
+                        <label class="form-label">Nội Dung Thông Báo:</label>
+                        <textarea name="messageContent" class="form-control" rows="3" required>${message}</textarea>
+                    </div>
+                        <c:if test="${not empty successMessage}">
+                            <div style="color: green">${successMessage}</div> 
+                        </c:if>
+                        <c:if test="${not empty errorMessage}">
+                        <div style="color: red">${errorMessage}</div> 
+                        </c:if>
+                    <!-- Nút gửi -->
+                    <button type="submit" class="btn btn-custom w-100">Gửi Thông Báo</button>
+                    <a href="trung-tam-canh-sat" class="btn btn-dark mt-2">Quay lại</a>
                 </form>
+
+
             </div>
         </div>
 
         <!-- Footer -->
-        <%@include file="../layout/owner_footer.jsp"%>
+        <%@include file="../layout/police_footer.jsp"%>
     </body>
 </html>

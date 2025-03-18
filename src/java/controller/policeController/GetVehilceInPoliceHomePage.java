@@ -3,21 +3,29 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package controller.vehicleController;
+package controller.policeController;
 
+import dao.PoliceDao;
+import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta .servlet.ServletException;
 import jakarta .servlet.http.HttpServlet;
 import jakarta .servlet.http.HttpServletRequest;
 import jakarta .servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
+import model.Police;
+import model.User;
+import model.enums.RoleEnums;
 
 /**
  *
  * @author Lenovo
  */
-public class chinhSuaPT extends HttpServlet {
-   
+public class GetVehilceInPoliceHomePage extends HttpServlet {
+    PoliceDao policeDao = new PoliceDao();
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -33,10 +41,10 @@ public class chinhSuaPT extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet chinhSuaPT</title>");  
+            out.println("<title>Servlet GetVehilceInPoliceHomePage</title>");  
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet chinhSuaPT at " + request.getContextPath () + "</h1>");
+            out.println("<h1>Servlet GetVehilceInPoliceHomePage at " + request.getContextPath () + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -53,7 +61,20 @@ public class chinhSuaPT extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        response.setContentType("text/html;charset=UTF-8");
+
+        List<Police> policeList = policeDao.getAllInfoVehicleGoPolicePage();
+        if (policeList != null && !policeList.isEmpty()) {
+            for (Police p : policeList) {
+                System.out.println(p);  
+            }
+        } else {
+            System.out.println("No vehicles found!");
+        }
+        request.setAttribute("policeList", policeList);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("resources/police/vehicleInPoliceHomePage.jsp");
+        dispatcher.forward(request, response);
+
     } 
 
     /** 
@@ -66,7 +87,8 @@ public class chinhSuaPT extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        processRequest(request, response);
+        
+        
     }
 
     /** 

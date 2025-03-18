@@ -60,14 +60,32 @@
                 <div class="row">
                     <div class="col-md-4">
                         <div class="card mb-4">
-                            <div class="card-header">
+                            <div class="card-header bg-warning text-dark">
                                 <h5 class="card-title mb-0">Thông báo</h5>
                             </div>
-                            <div class="card-body">
-                                <div class="alert alert-warning">Không có thông báo mới.</div>
-                            </div>
+                            <c:if test="${not empty notificationsList}">
+                                <div class="card-body">
+                                    <table class="table table-bordered text-center" style="background-color: #fff9c4;">
+                                        <tbody>
+                                            <c:forEach var="record" items="${notificationsList}">
+                                                <tr>
+                                                    <td class="text-start ps-3">${record.message}</td>
+                                                </tr>
+                                            </c:forEach>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </c:if>
+                            <c:if test="${empty notificationsList}">
+                                <div class="card-body">
+                                    <div class="alert alert-warning text-start ps-3" style="background-color: #fff9c4; color: #856404;">
+                                        Không có thông báo mới.
+                                    </div>
+                                </div>
+                            </c:if>
                         </div>
                     </div>
+
                     <div class="col-md-8">
                         <div class="card mb-4">
                             <div class="card-header">
@@ -103,7 +121,8 @@
                                 <h4 class="card-title mb-0">Lịch Sử Đăng Kiểm</h4>
                             </div>
 
-                            <c:if test="${not empty historyList}"> <div class="card-body">
+                            <c:if test="${not empty historyList}"> 
+                                <div class="card-body">
                                     <table class="table table-bordered text-center">
                                         <thead class="table-light">
                                             <tr>
@@ -125,52 +144,19 @@
                                         </tbody>
                                     </table>
 
-                                </div></c:if>
+                                </div>
+                            </c:if>
                             <c:if test="${empty historyList}">
                                 <div class="alert text-center">
                                     Bạn chưa đăng ký kiểm định
                                 </div>  
-                            </c:if>
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title mb-0">Lịch Sử Đăng Kiểm</h4>
-                            </div>
-                            <div class="card-body">
-                                <c:choose>
-                                    <c:when test="${not empty historyList}">
-                                        <table class="table table-bordered text-center">
-                                            <thead class="table-light">
-                                                <tr>
-                                                    <th>STT</th>
-                                                    <th>Biển Số Xe</th>
-                                                    <th>Thời Gian Đăng Kiểm</th>
-                                                    <th>Kết Quả</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <c:forEach var="record" items="${historyList}" varStatus="loop">
-                                                    <tr style="background-color: ${record.result eq 'PENDING' ? 'yellow' : 'white'};">
-                                                        <td>${loop.index + 1}</td> 
-                                                        <td>${record.vehicle.plateNumber}</td>
-                                                        <td>${record.inspectionDate}</td>
-                                                        <td>${record.result}</td>
-                                                    </tr>
-                                                </c:forEach>
-                                            </tbody>
-                                        </table>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <div class="alert alert-warning text-center">Bạn chưa đăng ký kiểm định</div>
-                                    </c:otherwise>
-                                </c:choose>
-                            </div>
+                            </c:if>                    
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <%@include file="../layout/owner_footer.jsp" %>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
+            <%@include file="../layout/owner_footer.jsp" %>
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
     </body>
 </html>

@@ -22,6 +22,9 @@ public class InspectionRecords {
     private Double co2Emission; // Có thể null, nên dùng Double
     private Double hcEmission;  // Có thể null, nên dùng Double
     private String comments;
+    
+
+    
 
     // Constructor không tham số
     public InspectionRecords() {
@@ -42,14 +45,14 @@ public class InspectionRecords {
         
     } 
     
-    public InspectionRecords(Date inspectionDate, Date nextInspectionDate, String result, Double co2Emission, Double hcEmission, String comments, Vehicles vehicle) {
-        this.vehicle = vehicle;
+    public InspectionRecords(Date inspectionDate, Date nextInspectionDate, String result, Double co2Emission, Double hcEmission, String comments, Vehicles vehicle) { 
         this.inspectionDate = inspectionDate;
         this.nextInspectionDate = nextInspectionDate;
         this.result = result;
         this.co2Emission = co2Emission;
         this.hcEmission = hcEmission;
         this.comments = comments;
+        this.vehicle = vehicle;
     }
     
     // Constructor đầy đủ tham số (không có recordID)
