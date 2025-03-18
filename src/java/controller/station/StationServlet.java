@@ -5,6 +5,7 @@
 package controller.station;
 
 import dao.InspectionRecordDao;
+
 import dao.LogSystemDao;
 import dao.StationDao;
 import java.io.IOException;
@@ -21,9 +22,6 @@ import model.InspectionStation;
  * @author DUYEN
  */
 public class StationServlet extends HttpServlet {
-
-    
-
     private StationDao stationDao = new StationDao();
     private InspectionRecordDao inspectionRecordDao = new InspectionRecordDao();
 
@@ -86,6 +84,7 @@ public class StationServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+
         String action = request.getParameter("action");
         String message = "";
         if (action.equals("update")) {
@@ -110,7 +109,6 @@ public class StationServlet extends HttpServlet {
                     return;
             }
         } else if (action.equals("delete")) {
-
             int stationId = Integer.parseInt(request.getParameter("stationId"));
 
             boolean deleteStation = inspectionRecordDao.deleteByStationID(stationId);
@@ -122,6 +120,7 @@ public class StationServlet extends HttpServlet {
                     request.setAttribute("error", "Xóa trung tâm thất bại!");
                 }
             } 
+
         }
         // Quay lại danh sách
         List<InspectionStation> stations = stationDao.getAllStations();

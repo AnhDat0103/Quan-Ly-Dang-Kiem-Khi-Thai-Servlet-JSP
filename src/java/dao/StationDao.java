@@ -73,6 +73,7 @@ public class StationDao implements Dao<InspectionStation> {
     } catch (SQLException e) {
         e.printStackTrace();
         return 0;
+
     }
     }
     
@@ -202,5 +203,6 @@ public class StationDao implements Dao<InspectionStation> {
         return false;
     }
     
+
 
 }
