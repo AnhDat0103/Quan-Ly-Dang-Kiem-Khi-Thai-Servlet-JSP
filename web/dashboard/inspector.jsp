@@ -40,9 +40,9 @@
                                     <thead>
                                         <tr>
                                             <th>Tên nhân viên</th>
-                                            <th>Chức vụ</th>
-                                            <th>Số điện thoại</th>
                                             <th>Email</th>
+                                            <th>Số điện thoại</th>
+                                            <th>Địa chỉ</th>
                                             <th>Hành động</th>
                                         </tr>
                                     </thead>
@@ -50,12 +50,12 @@
                                         <c:forEach var="inspector" items="${inspectors}">
                                             <tr>
                                                 <td>${inspector.fullName}</td>
-                                                <td>Nhân viên kỹ thuật</td>
-                                                <td>${inspector.phone}</td>
                                                 <td>${inspector.email}</td>
+                                                <td>${inspector.phone}</td>
+                                                <td>${inspector.address}</td>
                                                 <td>
-                                                    <a class="btn btn-primary btn-sm" href="#?inspectorId=${inspector.userId}">Cập nhật</a>
-                                                    <a class="btn btn-danger btn-sm" href="#?inspectorId=${inspector.userId}">Xóa</a>
+                                                    <a class="btn btn-primary btn-sm" href="cap-nhat-inspector?action=update&inspectorId=${inspector.userId}">Cập nhật</a>
+                                                    <a class="btn btn-danger btn-sm" href="cap-nhat-inspector?action=delete&inspectorId=${inspector.userId}">Xóa</a>
                                                 </td>
                                             </tr>
                                         </c:forEach>

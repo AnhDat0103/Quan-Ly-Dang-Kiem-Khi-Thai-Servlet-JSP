@@ -59,23 +59,11 @@ public class Configuration {
     }
 
     public static boolean checkInspectionDate(String inspectionDate) {
-        try {
-            java.util.Date today = new java.util.Date();
-            SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
-            sd.setLenient(false);
-            Date date = sd.parse(inspectionDate);
-            today = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z").parse(today.toString());
-            System.out.println("today" + today);
-            System.out.println(date);
-            System.out.println(today.compareTo(date));
-            if (today.compareTo(date) > 0) {
-                return false;
-            }
-        } catch (ParseException ex) {
-            Logger.getLogger(Configuration.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
-        }
-        return true;
+        Date today = new Date();
+        SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
+        sd.setLenient(false);
+        String sTody = sd.format(today);
+        return sTody.compareTo(inspectionDate) <= 0;
     }
 
     public static Date getNextInspectionDate(String inspectionDate) {

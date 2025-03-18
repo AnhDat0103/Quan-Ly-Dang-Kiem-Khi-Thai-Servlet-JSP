@@ -12,6 +12,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.LogSystem;
 import model.User;
 import model.dto.RegisterForm;
@@ -66,6 +67,10 @@ public class RegisterServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        if(session != null) {
+            session.invalidate();
+        }
         request.getRequestDispatcher("dashboard/auth/register.jsp").forward(request, response);
     }
 
@@ -94,7 +99,7 @@ public class RegisterServlet extends HttpServlet {
                 && !role.isEmpty() && !address.isEmpty()) {
             RegisterForm rf = new RegisterForm(fullName, email, password, confirmPassword, RoleEnums.valueOf(role), phone, address);
             request.setAttribute("rf", rf);
-            if (Validate.checkEmail(email) && Validate.checkConfirmPassword(password, confirmPassword)
+            if (Validate.checkEmail(email) && Validate.checkPassword(password) && Validate.checkConfirmPassword(password, confirmPassword)
                     && Validate.checkTele(phone) && !Validate.emailIsExist(email)) {
                 User newUser = new User();
                 newUser.setEmail(email);
@@ -121,6 +126,9 @@ public class RegisterServlet extends HttpServlet {
                 }
                 if (!Validate.checkTele(phone)) {
                     request.setAttribute("phoneFormatError", "Số điện thoại không hợp lệ.");
+                }
+                if(!Validate.checkPassword(password)){
+                    request.setAttribute("PassError", "Mật khuẩn phải có ít nhất 5 ký tự.");
                 }
                 if (!Validate.checkConfirmPassword(password, confirmPassword)) {
                     request.setAttribute("confirmPassError", "Mật khẩu không chính xác.");

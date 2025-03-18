@@ -25,11 +25,18 @@
                             <li class="breadcrumb-item"><a href="#">Bảng điều khiển</a></li>
                             <li class="breadcrumb-item active">Danh sách trung tâm đăng kiểm</li>
                         </ol>
-                        <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                           <div class="mb-3">
                             <a class="btn btn-secondary" href="quan-tri-vien">
                                 <i class="fas fa-arrow-left me-1"></i>Quay lại
                             </a>
                         </div>
+                        <div class="mb-3">
+                            <a  class="btn btn-primary" href="tao-moi-trung-tam-kiem-dinh">Tạo mới</a>
+
+                        </div> 
+                        </div>
+                        
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>

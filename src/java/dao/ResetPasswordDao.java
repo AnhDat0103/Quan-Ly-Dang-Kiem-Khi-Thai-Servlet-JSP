@@ -13,6 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 /**
  *
@@ -21,6 +22,7 @@ import java.sql.Timestamp;
 public class ResetPasswordDao implements Dao<ResetPassword> {
 
     Connection connection = DBContext.getInstance().getConnection();
+    UserDao ud = new UserDao();
 
     @Override
     public int save(ResetPassword t) {
@@ -110,6 +112,23 @@ public class ResetPasswordDao implements Dao<ResetPassword> {
     @Override
     public int delete(int t) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public List<ResetPassword> findAllByUserId(int userId) {
+        List<ResetPassword> rps = new ArrayList<>();
+        try {
+            String sql = "select * from password_reset_tokens where UserID = ?";
+            PreparedStatement pt = connection.prepareStatement(sql);
+            pt.setInt(1, userId);
+            ResultSet rs =  pt.executeQuery();
+            while(rs.next()) {
+                rps.add(new ResetPassword(rs.getString("Token"), rs.getDate("Expiry_date"), ud.findUserById(rs.getInt("UserID"))));
+            }
+            return rps;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }
