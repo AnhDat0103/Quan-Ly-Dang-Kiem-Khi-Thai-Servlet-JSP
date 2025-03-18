@@ -15,18 +15,17 @@
     <filter-mapping>
         <filter-name>AuthenAndAuthoFilter</filter-name>
         <url-pattern>/quan-tri-vien</url-pattern>
+        <url-pattern>/StationServlet</url-pattern>
         <url-pattern>/danh-sach-nhan-vien-kiem-dinh</url-pattern>
         <url-pattern>/chi-tiet-trung-tam-dang-kiem</url-pattern>
         <url-pattern>/he-thong-logs</url-pattern>
         <url-pattern>/chi-tiet-chu-phuong-tien</url-pattern>
         <url-pattern>/lay-lai-mat-khau</url-pattern>
-        
         <url-pattern>/quan-ly-lich-hen</url-pattern>
         <url-pattern>/thong-tin-ca-nhan</url-pattern>
         <url-pattern>/bao-cao-kiem-dinh</url-pattern>
         <url-pattern>/trung-tam-dang-kiem</url-pattern>
         <url-pattern>/xac-thuc-don-kiem-dinh</url-pattern>
-        
         <url-pattern>/chu-phuong-tien</url-pattern>
         <url-pattern>/ho-so-ca-nhan-1</url-pattern>
         <url-pattern>/kiem-tra-tai-khoan</url-pattern>
@@ -40,11 +39,12 @@
         <url-pattern>/quan-ly-phuong-tien</url-pattern>
         <url-pattern>/timKiemPT1</url-pattern>
         <url-pattern>/xoa-phuong-tien</url-pattern>
-        
         <url-pattern>/DeleteAccountServlet</url-pattern>
         <url-pattern>/lich-su-trang-chu</url-pattern>
         <url-pattern>/nguoi-kiem-dinh</url-pattern>
         <url-pattern>/thong-tin-nguoi-kiem-dinh</url-pattern>
+        <url-pattern>/tao-moi-trung-tam-kiem-dinh</url-pattern>
+        <url-pattern>/cap-nhat-inspector</url-pattern>
     </filter-mapping>
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
@@ -174,6 +174,18 @@
         <servlet-name>GetErrorRequestPassPage</servlet-name>
         <servlet-class>controller.GetErrorRequestPassPage</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>StationServlet</servlet-name>
+        <servlet-class>controller.station.StationServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateAndDeleteInspector</servlet-name>
+        <servlet-class>controller.admin.UpdateAndDeleteInspector</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateNewStation</servlet-name>
+        <servlet-class>controller.admin.CreateNewStation</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GetProfilePage</servlet-name>
         <url-pattern>/thong-tin-ca-nhan</url-pattern>
@@ -301,6 +313,18 @@
     <servlet-mapping>
         <servlet-name>GetErrorRequestPassPage</servlet-name>
         <url-pattern>/loi-cap-nhat-mat-khau</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>StationServlet</servlet-name>
+        <url-pattern>/StationServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateAndDeleteInspector</servlet-name>
+        <url-pattern>/cap-nhat-inspector</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateNewStation</servlet-name>
+        <url-pattern>/tao-moi-trung-tam-kiem-dinh</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>dashboard/auth/login.jsp</welcome-file>

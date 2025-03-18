@@ -265,4 +265,17 @@ public class VehicleDao implements Dao<Vehicles> {
 
         return null;
     }
+
+    public void update(String result , String plateNumber) {
+        String sql = "Update Vehicles SET Status = ? WHERE PlateNumber = ? " ;
+        try{
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setString(1, result);
+            pt.setString(2, plateNumber);
+            pt.executeUpdate() ;
+            
+        }catch(SQLException e){
+            e.printStackTrace(); 
+        }
+    }
 }

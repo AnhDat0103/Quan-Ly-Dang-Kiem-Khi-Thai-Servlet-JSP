@@ -60,7 +60,7 @@ public class LoginAdminServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       Configuration.killExpiredInspectionRecord();
+        Configuration.killExpiredInspectionRecord();
         request.getRequestDispatcher("dashboard/auth/loginAdmin.jsp").forward(request, response);
     }
 
@@ -81,14 +81,16 @@ public class LoginAdminServlet extends HttpServlet {
         User currentUser = ud.findUserByEmail(email);
         HttpSession session = request.getSession();
         if (!email.isEmpty() && !password.isEmpty()) {
-            if (currentUser != null) { 
+            if (currentUser != null) {
                 if (currentUser.getRole().equals(RoleEnums.Admin)) {
                     session.setAttribute("currentUser", currentUser);
                     response.sendRedirect("quan-tri-vien");
                 } else {
-                    request.setAttribute("notFound", "Tài khoản hoặc mật khẩu không chính xác.");
-                    request.getRequestDispatcher("dashboard/auth/loginAdmin.jsp").forward(request, response);
+                    response.sendRedirect("401error");
                 }
+            } else {
+                request.setAttribute("notFound", "Tài khoản hoặc mật khẩu không chính xác.");
+                request.getRequestDispatcher("dashboard/auth/loginAdmin.jsp").forward(request, response);
             }
         } else {
             if (email.isEmpty()) {

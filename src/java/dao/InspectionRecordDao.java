@@ -101,7 +101,7 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
     public int getNumberOfInspectionRecordsIsInspected(int stationId) {
         int numberRecordsIsInspectedInDay = 0;
         String currentDate = LocalDate.now().toString();
-        String sql = "select count(*) from InspectionRecords WHERE StationID = ? and CAST(InspectionDate AS DATE) = ? and Result <> 'Pending'";
+        String sql = "select count(*) from InspectionRecords WHERE StationID = ? and CAST(InspectionDate AS DATE) = ? and Result <> 'Pending' and Result <> 'Accepted'";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setInt(1, stationId);
@@ -118,7 +118,7 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
 
     public List<InspectionRecords> getInspecedtationRecords(int stationId, int startRecord, int recordsPerPage) {
         List<InspectionRecords> recordses = new ArrayList<>();
-        String sql = "SELECT * FROM InspectionRecords where StationID = ? and Result <> 'Pending' ORDER BY CAST(InspectionDate AS DATE) desc OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        String sql = "SELECT * FROM InspectionRecords where StationID = ? and Result <> 'Pending' and Result <> 'Accepted' ORDER BY CAST(InspectionDate AS DATE) desc OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setInt(1, stationId);
@@ -146,7 +146,7 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
 
     public int getNoOfRecord(int stationId) {
         int noOfRecords = 0;
-        String sql = "SELECT count(*) FROM InspectionRecords where StationID = ? and Result <> 'Pending'";
+        String sql = "SELECT count(*) FROM InspectionRecords where StationID = ? and Result <> 'Pending' and Result <> 'Accepted'";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setInt(1, stationId);
@@ -162,7 +162,7 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
 
     public int getNoOfRecordsPendingAtCurrentDate(int stationId, String today) {
         int noOfRecords = 0;
-        String sql = "SELECT count(*) FROM InspectionRecords where StationID = ? and Result = 'Pending' and InspectionDate = ?";
+        String sql = "SELECT count(*) FROM InspectionRecords where StationID = ? and Result in ('Pending','Accepted') and InspectionDate = ?";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setInt(1, stationId);
@@ -179,7 +179,7 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
 
     public List<InspectionRecords> getListInspectionRecordsPendingAtCurrentDate(int stationId, int startRecord, int recordsPerPage, String currentDate) {
         List<InspectionRecords> recordses = new ArrayList<>();
-        String sql = "SELECT * FROM InspectionRecords where StationID = ? and Result = 'Pending' and InspectionDate = ?  ORDER BY CAST(InspectionDate AS DATE) desc, RecordID asc OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        String sql = "SELECT * FROM InspectionRecords where StationID = ? and Result in ('Pending','Accepted') and InspectionDate = ?  ORDER BY CAST(InspectionDate AS DATE) desc, RecordID asc OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setInt(1, stationId);
@@ -501,7 +501,7 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
 
     public int getNoOfRecordsWithTime(String startDate, String endDate, int stationId) {
         int noOfRecords = 0;
-        String sql = "select count(*) from InspectionRecords where StationID = ? and Result <> 'Pending' and InspectionDate between ? and ?";
+        String sql = "select count(*) from InspectionRecords where StationID = ? and Result <> 'Pending' and Result <> 'Accepted' and InspectionDate between ? and ?";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setInt(1, stationId);
@@ -519,7 +519,7 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
 
     public HashMap<String, Integer> getNoRecordsWithThoughtPendingByADay(String startDate, String endDate, int stationId) {
         HashMap<String, Integer> records = new HashMap<>();
-        String sql = "select CAST(InspectionDate AS DATE), count(*) from InspectionRecords where StationID = ? and Result <> 'Pending' and InspectionDate between ? and ?\n" + " group by CAST(InspectionDate AS DATE)";
+        String sql = "select CAST(InspectionDate AS DATE), count(*) from InspectionRecords where StationID = ? and Result <> 'Pending' and Result <> 'Accepted' and InspectionDate between ? and ?\n" + " group by CAST(InspectionDate AS DATE)";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setInt(1, stationId);
@@ -717,20 +717,32 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
             e.printStackTrace();
         }
     }
-   
-    
-     public boolean setStationIdToNull(int stationId) {
-    String sql = "UPDATE InspectionRecords SET StationID = NULL WHERE StationID = ?";
-    try {
-        PreparedStatement ps = connect.prepareStatement(sql);
-        ps.setInt(1, stationId);
-        int rows = ps.executeUpdate();
-        return rows >= 0;
-    } catch (SQLException e) {
-        e.printStackTrace();
-        return false;
+
+    public boolean deleteByStationID(int stationId) {
+       
+    String sql = "Delete from InspectionRecords Where StationID = ?";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setInt(1, stationId);
+            return pt.executeUpdate() > 0 ;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+      return false ;
     }
-}
+
+
+    public void UpdateInspectionRecordBeforeDeleteInspector(int userId) {
+        int result = 0;
+        String sql = "update InspectionRecords set InspectorID = null where InspectorID = ?";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setInt(1, userId);
+            pt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     
 }
 
