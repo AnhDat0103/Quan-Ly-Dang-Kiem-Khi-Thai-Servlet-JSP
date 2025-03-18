@@ -64,6 +64,7 @@ public class Configuration {
         sd.setLenient(false);
         String sTody = sd.format(today);
         return sTody.compareTo(inspectionDate) <= 0;
+
     }
 
     public static Date getNextInspectionDate(String inspectionDate) {

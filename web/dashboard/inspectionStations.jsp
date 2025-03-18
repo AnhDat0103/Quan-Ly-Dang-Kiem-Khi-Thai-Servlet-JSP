@@ -63,6 +63,7 @@
                                                 <td>
                                                     <a class="btn btn-warning btn-sm" href="danh-sach-nhan-vien-kiem-dinh?stationId=${station.stationId}">Danh sách nhân viên</a>
                                                     <a class="btn btn-primary btn-sm" href="StationServlet?action=update&stationId=${station.stationId}">Cập nhật</a>
+
                                                    <form action="StationServlet" method="POST" style="display:inline;" onsubmit="return confirm('Bạn có chắc chắn muốn xóa trung tâm này?');">
                                                         <input type="hidden" name="action" value="delete">
                                                         <input type="hidden" name="stationId" value="${station.stationId}">
