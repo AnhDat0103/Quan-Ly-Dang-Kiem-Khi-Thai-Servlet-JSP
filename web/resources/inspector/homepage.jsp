@@ -74,6 +74,12 @@
                         <div class="card-header d-flex justify-content-between align-items-center">
                         </div>
                         <div class="card-body">
+                            
+                            <c:if test="${not empty errorMessage}">
+                                <div class="alert alert-danger" role="alert">
+                                    ${errorMessage}
+                                </div>
+                            </c:if>
 
                             <table id="waitingList" class="table">
                                 <thead>
@@ -164,6 +170,14 @@
                         </div>
                     </div>
                 </div>
+                
+                <div class="text-start ps-3">
+                        <!-- Thông tin về các loại vi phạm -->
+                        <div class="alert alert-info mt-3" role="alert">
+                            <strong>Chú ý:</strong> Nếu nồng độ CO2 và HC vượt quá 40 thì sẽ Fail  <br>
+                            
+                        </div>
+                    </div>
             </div>
         </div>
         <!-- Footer -->
