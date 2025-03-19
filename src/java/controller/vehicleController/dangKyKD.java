@@ -166,7 +166,7 @@ public class dangKyKD extends HttpServlet {
             SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
             Date date = sd.parse(inspectionDate);
             if (today.compareTo(date) > 0) {
-                request.setAttribute("message", "Ngày đăng kiểm không thể là ngày trong quá khứ!");
+                request.setAttribute("message", "Ngày đặt lịch hẹn đăng kiểm được phép bắt đầu từ hôm sau!");
                 doGet(request, response);
                 return;
             }
