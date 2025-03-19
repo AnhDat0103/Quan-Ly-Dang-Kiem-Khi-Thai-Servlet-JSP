@@ -18,6 +18,7 @@ import java.util.List;
 import model.InspectionRecords;
 import model.Notification;
 import model.User;
+import validation.Validate;
 
 /**
  *
@@ -59,6 +60,10 @@ public class GetInspectorHomePage extends HttpServlet {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("currentUser");
         StationDao sd = new StationDao();
+        String status = request.getParameter("status") != null? request.getParameter("status"):"";
+        if( status.equals("error") ){
+            request.setAttribute("errorMessage", "HC và CO2 phải là số, không được để trống, không chứa ký tự đặc biệt, khoảng trống, hoặc chữ cái.");
+        }
         int stationId = 0;
         if (user.getInspectionStation() != null) {
             stationId = user.getInspectionStation().getStationId();
@@ -96,6 +101,13 @@ public class GetInspectorHomePage extends HttpServlet {
         String comment = request.getParameter("comment") == null ? "" : (request.getParameter("comment"));
         String recordId = (request.getParameter("recordId")) == null ? "" : (request.getParameter("recordId"));
         String plateNumber = request.getParameter("plateNum") == null ? "" : request.getParameter("plateNum");
+        
+         // Validate HC và CO2
+    if (!Validate.checkHCAndCO2(hcr) || !Validate.checkHCAndCO2(co2r)) {
+        request.setAttribute("errorMessage", "HC và CO2 phải là số, không được để trống, không chứa ký tự đặc biệt, khoảng trống, hoặc chữ cái.");
+        response.sendRedirect("nguoi-kiem-dinh?status=error");
+        return;
+    }
 
         User onwer = vhd.getOwnerByPlateNumber(plateNumber);
 
