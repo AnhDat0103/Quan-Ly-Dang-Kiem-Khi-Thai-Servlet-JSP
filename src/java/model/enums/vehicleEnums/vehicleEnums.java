@@ -9,5 +9,5 @@ package model.enums.vehicleEnums;
  * @author Lenovo
  */
 public enum vehicleEnums {
-    Pass, Fail; 
+    Ban ,Pass, Fail; 
 }

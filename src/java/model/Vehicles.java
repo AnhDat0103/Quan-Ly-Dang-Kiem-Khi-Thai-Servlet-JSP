@@ -19,7 +19,15 @@ public class Vehicles {
     private int manufactureYear;
     private String engineNumber;
     private vehicleEnums status;
-    
+    private int violationType;
+
+    public int getViolationType() {
+        return violationType;
+    }
+
+    public void setViolationType(int violationType) {
+        this.violationType = violationType;
+    }
 
     public Vehicles() {
     }
@@ -34,12 +42,28 @@ public class Vehicles {
         this.model = model;
     }
     
+    public Vehicles(String plateNumber, String brand, String model, vehicleEnums status){
+        this.plateNumber = plateNumber;
+        this.brand = brand;
+        this.model = model;
+        this.status = status;
+    }
+    
     public Vehicles(String plateNumber, String brand){
         this.plateNumber = plateNumber;
         this.brand = brand;
    
     }
-
+    
+    public Vehicles(String plateNumber, String brand, String model, int manufactureYear, String engineNumber, vehicleEnums status) {
+        this.plateNumber = plateNumber;
+        this.brand = brand;
+        this.model = model;
+        this.manufactureYear = manufactureYear;
+        this.engineNumber = engineNumber;
+        this.status = status;
+    }
+    
     public Vehicles(int vehicleId, User owner, String plateNumber, String brand, String model, int manufactureYear, String engineNumber, vehicleEnums status) {
         this.vehicleId = vehicleId;
         this.owner = owner;

@@ -87,6 +87,7 @@
                                         <th>Biển số xe</th>
                                         <th>Hãng xe</th>
                                         <th>Loại xe</th>
+                                        <th>Trạng Thái</th>
                                         <th>Hành động</th>
                                     </tr>
                                 </thead>
@@ -97,6 +98,7 @@
                                             <td>${vehicle.plateNumber}</td>
                                             <td>${vehicle.brand}</td>
                                             <td>${vehicle.model}</td>
+                                            <td>${vehicle.status}</td>
                                             <td style="width: 120px;" class="text-center">
                                                 <div class="d-flex justify-content-center gap-2">
                                                     <form action="xoa-phuong-tien" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xóa phương tiện này không?');">
@@ -105,8 +107,8 @@
                                                             <i class="bi bi-trash"></i>
                                                         </button>
                                                     </form>
-
                                                 </div>
+                                                
                                             </td>
 
                                         </tr>

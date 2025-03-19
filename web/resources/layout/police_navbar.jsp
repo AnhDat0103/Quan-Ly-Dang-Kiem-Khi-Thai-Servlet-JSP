@@ -39,9 +39,9 @@
     <!-- Wrap all content except footer in a div -->
     <div class="content-wrapper">
         <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-danger">
             <div class="container">
-                <a class="navbar-brand" href="chu-phuong-tien">Cảnh Sát Giao Thông</a>
+                <a class="navbar-brand" href="trung-tam-canh-sat">Cảnh Sát Giao Thông</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -51,16 +51,10 @@
                             <a class="nav-link active" href="trung-tam-canh-sat">Trang chủ</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Tra Cứu Phương Tiện</a>
+                            <a class="nav-link" href="danh-sach-phuong-tien">Tra Cứu Phương Tiện</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Phương Tiện Vi Phạm</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Xử Lý Vi Phạm</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Báo Cáo</a>
+                            <a class="nav-link" href="phuong-tien-vi-pham">Xử Lý Vi Phạm</a>
                         </li>
                     </ul>
                     <ul class="navbar-nav ms-auto">
@@ -70,7 +64,7 @@
                                 <span>${currentUser.fullName}</span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                <li><a class="dropdown-item" href="profile.jsp">
+                                <li><a class="dropdown-item" href="ho-so-ca-nhan-2">
                                     <i class="bi bi-person-fill me-2"></i>Hồ sơ cá nhân
                                 </a></li>
                                 <li><hr class="dropdown-divider"></li>
