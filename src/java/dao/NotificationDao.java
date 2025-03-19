@@ -56,10 +56,10 @@ public class NotificationDao implements Dao<Notification> {
                 String message = rs.getString("Message");
                 Timestamp ts = rs.getTimestamp("SentDate");
                 boolean isRead = rs.getBoolean("IsRead");
-                
+
                 User user = new User();
                 user.setUserId(userId);
-                
+
                 Notification notification = new Notification();
                 notification.setNotificationId(notificationId);
                 notification.setUser(user);
@@ -95,7 +95,7 @@ public class NotificationDao implements Dao<Notification> {
         }
         return result;
     }
-    
+
     public List<Notification> findAllByUserId(int userId) {
         List<Notification> notifications = new ArrayList<>();
         String sql = "SELECT * FROM Notifications WHERE UserID = ? ORDER BY NotificationID ASC";
@@ -103,29 +103,62 @@ public class NotificationDao implements Dao<Notification> {
             PreparedStatement ps = connect.prepareStatement(sql);
             ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 int notificationId = rs.getInt("NotificationID");
                 String message = rs.getString("Message");
                 Timestamp ts = rs.getTimestamp("SentDate");
                 boolean isRead = rs.getBoolean("IsRead");
-                
+
                 User user = new User();
                 user.setUserId(userId);
-                
+
                 Notification notification = new Notification();
                 notification.setNotificationId(notificationId);
                 notification.setUser(user);
                 notification.setMessage(message);
-                if(ts != null){
+                if (ts != null) {
                     notification.setSentDate(new Date(ts.getTime()));
                 }
                 notification.setIsRead(isRead);
-                
+
                 notifications.add(notification);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return notifications;
+    }
+
+    public List<Notification> getMessageByUserID(int userId) {
+        List<Notification> message = new ArrayList<>();
+        String sql = "SELECT Message FROM Notifications WHERE UserID = ?";
+        try {
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Notification notification = new Notification(
+                        rs.getString("Message")
+                );
+                message.add(notification);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return message;
+    }
+
+    public boolean addNotificationByUserID(int userId, String message) {
+        String sql = "INSERT INTO Notifications (UserID, Message, SentDate, IsRead) VALUES (?, ?, GETDATE(), 0)";
+        try {
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.setInt(1, userId);
+            ps.setString(2, message);
+            int rowsInserted = ps.executeUpdate();
+            return rowsInserted > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

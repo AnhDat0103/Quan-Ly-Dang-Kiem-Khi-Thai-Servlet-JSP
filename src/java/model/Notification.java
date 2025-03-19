@@ -21,6 +21,12 @@ public class Notification {
     public Notification() {
     }
 
+    public Notification(String message) {
+        this.message = message;
+    }
+    
+    
+    
     public Notification(int notificationId, String message, Date sentDate, boolean isRead, User user) {
         this.notificationId = notificationId;
         this.message = message;

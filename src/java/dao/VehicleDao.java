@@ -52,27 +52,7 @@ public class VehicleDao implements Dao<Vehicles> {
 
     @Override
     public int update(Vehicles t) {
-//        String sql = "UPDATE Vehicles "
-//                + "SET Brand = ?, "
-//                + "    Model = ?,"
-//                + "    ManufactureYear = ?,"
-//                + "    EngineNumber = ?,"
-//                + "    Status = ?"
-//                + "WHERE plateNumber = ?";
-//        try{
-//            PreparedStatement st = connect.prepareStatement(sql);
-//            st.setString(1, t.getBrand());
-//            st.setString(2, t.getBrand());
-//            st.setInt(3, t.getManufactureYear());
-//            st.setString(4, t.getEngineNumber());
-//            st.setString(5, t.getStatus());
-//            if(rs.next()){
-//                
-//            }
-//        }catch(SQLException e){
-//            e.printStackTrace();
-//        }
-        return 0;
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
@@ -199,19 +179,20 @@ public class VehicleDao implements Dao<Vehicles> {
         }
         return null;
     }
-  
+
     public List<Vehicles> getAllVehiclesByUserID(int ownerID) {
         List<Vehicles> vehicleList = new ArrayList<>();
-        String sql = "SELECT PlateNumber, Brand, Model FROM Vehicles WHERE OwnerID = ?";
+        String sql = "SELECT PlateNumber, Brand, Model, Status FROM Vehicles WHERE OwnerID = ?";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setInt(1, ownerID);
             ResultSet rs = pt.executeQuery();
             while (rs.next()) {
                 Vehicles vehilce = new Vehicles(
-                        rs.getString("plateNumber"),
-                        rs.getString("brand"),
-                        rs.getString("model")
+                        rs.getString("PlateNumber"),
+                        rs.getString("Brand"),
+                        rs.getString("Model"),
+                        vehicleEnums.valueOf(rs.getString("Status"))
                 );
                 vehicleList.add(vehilce);
             }
@@ -266,6 +247,75 @@ public class VehicleDao implements Dao<Vehicles> {
         return null;
     }
 
+    public List<Vehicles> getFullVehiclesByUserID(int ownerID) {
+        List<Vehicles> vehicleList = new ArrayList<>();
+        String sql = "SELECT * FROM Vehicles WHERE OwnerID = ?";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setInt(1, ownerID);
+            ResultSet rs = pt.executeQuery();
+            while (rs.next()) {
+                Vehicles vehilce = new Vehicles(
+                        rs.getString("plateNumber"),
+                        rs.getString("brand"),
+                        rs.getString("model"),
+                        rs.getInt("manufactureYear"),
+                        rs.getString("engineNumber"),
+                        vehicleEnums.valueOf(rs.getString("Status"))
+                );
+                vehicleList.add(vehilce);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return vehicleList;
+    }
+
+    public boolean banVehicleByPlateNumber(String plateNumber) {
+        String sql = "UPDATE Vehicles SET Status = 'Ban' WHERE PlateNumber = ?";
+
+        try {
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.setString(1, plateNumber);
+            int rowsUpdated = ps.executeUpdate();
+
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean changeVehicleViolaType(String plateNumber, int type) {
+        String sql = "UPDATE Vehicles SET ViolationType = ? where PlateNumber = ?";
+
+        try {
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.setInt(1, type);
+            ps.setString(2, plateNumber);
+            int rowsUpdated = ps.executeUpdate();
+
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public int countVehicles() {
+        int count = 0;
+        String sql = "SELECT COUNT(*) AS VehicleCount FROM Vehicles";
+
+        try (PreparedStatement ps = connect.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                count = rs.getInt("VehicleCount");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+
     public void update(String result , String plateNumber) {
         String sql = "Update Vehicles SET Status = ? WHERE PlateNumber = ? " ;
         try{
@@ -278,4 +328,5 @@ public class VehicleDao implements Dao<Vehicles> {
             e.printStackTrace(); 
         }
     }
+
 }

@@ -2,21 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.ownerController;
+package controller.admin;
 
-import dao.InspectionRecordDao;
-import dao.NotificationDao;
 import dao.VehicleDao;
+import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
-import jakarta .servlet.ServletException;
-import jakarta .servlet.http.HttpServlet;
-import jakarta .servlet.http.HttpServletRequest;
-import jakarta .servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
-import model.InspectionRecords;
-import model.Notification;
 import model.User;
 import model.Vehicles;
 
@@ -24,11 +21,8 @@ import model.Vehicles;
  *
  * @author Lenovo
  */
-public class GetOwnerHomePage extends HttpServlet {
-    VehicleDao vehicleDao = new VehicleDao();
-    InspectionRecordDao inspectionRecordDao= new InspectionRecordDao();
-    NotificationDao notificationDao = new NotificationDao();
-        
+public class GetFullVehicleByUserID extends HttpServlet {
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -41,17 +35,15 @@ public class GetOwnerHomePage extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
-        
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet GetOwnerHomePage</title>");            
+            out.println("<title>Servlet GetFullVehicleByUserID</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet GetOwnerHomePage at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet GetFullVehicleByUserID at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -69,25 +61,28 @@ public class GetOwnerHomePage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        User currentUser = (User) session.getAttribute("currentUser"); // Lấy user từ session
+        String ownerIdParam = request.getParameter("ownerId");
 
-        if (currentUser != null) {
-            int ownerID = currentUser.getUserId(); // Lấy ownerID từ user object
-            List<Vehicles> vehicleList = vehicleDao.getAllVehiclesByUserID(ownerID); // Lấy danh sách xe
-            request.setAttribute("vehicleList", vehicleList); // Gửi danh sách xe lên JSP
-            
-            List<InspectionRecords> historyList = inspectionRecordDao.getInspectionHistoryByOwnerID(ownerID); // Lấy lịch sử đăng kiểm
-            request.setAttribute("historyList", historyList); // Gửi lịch sử lên JSP
-            
-            List<Notification> notificationsList = notificationDao.findAllByUserId(ownerID);
-            request.setAttribute("notificationsList", notificationsList);
+        int ownerId = 0;
+        if (ownerIdParam != null && !ownerIdParam.isEmpty()) {
+            try {
+                ownerId = Integer.parseInt(ownerIdParam);
+            } catch (NumberFormatException e) {
+                response.sendRedirect("error.jsp"); // Redirect nếu ID không hợp lệ
+                return;
+            }
         } else {
-            response.sendRedirect("login.jsp"); // Chuyển hướng về trang đăng nhập nếu chưa đăng nhập
+            response.sendRedirect("error.jsp"); // Redirect nếu thiếu ownerId
             return;
         }
 
-        request.getRequestDispatcher("resources/owner/ownerHomePage.jsp").forward(request, response);
+        VehicleDao vehicleDao = new VehicleDao();
+        List<Vehicles> vehicleList = vehicleDao.getFullVehiclesByUserID(ownerId);
+        request.setAttribute("vehicleList", vehicleList);
+        request.setAttribute("ownerId", ownerId);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("dashboard/fullVehiclesOwners.jsp");
+        dispatcher.forward(request, response);
+
     }
 
     /**

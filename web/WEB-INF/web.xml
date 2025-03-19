@@ -175,6 +175,38 @@
         <servlet-class>controller.GetErrorRequestPassPage</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>GetFullVehicleByUserID</servlet-name>
+        <servlet-class>controller.admin.GetFullVehicleByUserID</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>updateVehicles</servlet-name>
+        <servlet-class>controller.vehicleController.updateVehicles</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetVehilceInPoliceHomePage</servlet-name>
+        <servlet-class>controller.policeController.GetVehilceInPoliceHomePage</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PoliceDao</servlet-name>
+        <servlet-class>dao.PoliceDao</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Police</servlet-name>
+        <servlet-class>model.Police</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetProfileHomePage</servlet-name>
+        <servlet-class>controller.policeController.GetProfileHomePage</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetViolatingVehicle</servlet-name>
+        <servlet-class>controller.policeController.GetViolatingVehicle</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GetNotificationPolice</servlet-name>
+        <servlet-class>controller.policeController.GetNotificationPolice</servlet-class>
+    </servlet>
+    <servlet>    
         <servlet-name>StationServlet</servlet-name>
         <servlet-class>controller.station.StationServlet</servlet-class>
     </servlet>
@@ -315,6 +347,38 @@
         <url-pattern>/loi-cap-nhat-mat-khau</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>GetFullVehicleByUserID</servlet-name>
+        <url-pattern>/phuong-tien-ca-nhan</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>updateVehicles</servlet-name>
+        <url-pattern>/update-phuong-tien</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetVehilceInPoliceHomePage</servlet-name>
+        <url-pattern>/danh-sach-phuong-tien</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PoliceDao</servlet-name>
+        <url-pattern>/police-dao</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Police</servlet-name>
+        <url-pattern>/canh-sat</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetProfileHomePage</servlet-name>
+        <url-pattern>/ho-so-ca-nhan-2</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetViolatingVehicle</servlet-name>
+        <url-pattern>/phuong-tien-vi-pham</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GetNotificationPolice</servlet-name>
+        <url-pattern>/thong-bao-canh-sat</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>    
         <servlet-name>StationServlet</servlet-name>
         <url-pattern>/StationServlet</url-pattern>
     </servlet-mapping>
