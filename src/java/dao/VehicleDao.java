@@ -316,17 +316,72 @@ public class VehicleDao implements Dao<Vehicles> {
         return count;
     }
 
-    public void update(String result , String plateNumber) {
-        String sql = "Update Vehicles SET Status = ? WHERE PlateNumber = ? " ;
-        try{
+    public void update(String result, String plateNumber) {
+        String sql = "Update Vehicles SET Status = ? WHERE PlateNumber = ? ";
+        try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setString(1, result);
             pt.setString(2, plateNumber);
-            pt.executeUpdate() ;
-            
-        }catch(SQLException e){
-            e.printStackTrace(); 
+            pt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+    }
+
+    public String getStatusVehicles(int vehicleID) {
+        String sql = "select Status from Vehicles where VehicleID = ?";
+
+        try (PreparedStatement ps = connect.prepareStatement(sql)) {
+            ps.setInt(1, vehicleID);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getString("Status"); // Trả về kết quả mới nhất
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // Nếu không có dữ liệu thì trả về null
+    }
+
+    public boolean updateVehicle(Vehicles vehicles) {
+        String sql = "UPDATE Vehicles SET Brand = ?, Model = ?, ManufactureYear = ?, EngineNumber = ?, Status = 'Fail', ViolationType = NULL WHERE PlateNumber = ?";
+        try {
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.setString(1, vehicles.getBrand());
+            ps.setString(2, vehicles.getModel());
+            ps.setInt(3, vehicles.getManufactureYear());
+            ps.setString(4, vehicles.getEngineNumber());
+            ps.setString(5, vehicles.getPlateNumber());
+
+            int rowsUpdated = ps.executeUpdate();
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public Vehicles findByPlateNumber(String plateNumber) {
+        String sql = "SELECT PlateNumber, Brand, Model, ManufactureYear, EngineNumber "
+                + "FROM Vehicles WHERE PlateNumber = ?";
+        try{
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.setString(1, plateNumber);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                Vehicles vehicle = new Vehicles();
+                vehicle.setPlateNumber(rs.getString("PlateNumber"));
+                vehicle.setBrand(rs.getString("Brand"));
+                vehicle.setModel(rs.getString("Model"));
+                vehicle.setManufactureYear(rs.getInt("ManufactureYear"));
+                vehicle.setEngineNumber(rs.getString("EngineNumber"));
+                return vehicle;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

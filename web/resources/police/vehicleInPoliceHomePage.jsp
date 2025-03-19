@@ -84,22 +84,20 @@
                                     <tr>
                                         <th>Tên Chủ Phương Tiện</th>
                                         <th>Biển Số Xe</th>
-                                        <th>Hãng Xe</th>
                                         <th>Loại Xe</th>
-                                        <th>Năm Sản Xuất</th>
-                                        <th>Mã Số Xe</th>
+                                        <th>Ngày Đăng Kiểm</th>
                                         <th>Trạng Thái</th>
+                                        <th>Ngày Đăng Kiểm Kế Tiếp</th>
                                     </tr>
                                 </thead>
                                 <c:forEach var="police" items="${policeList}">
                                     <tr>
                                         <td>${police.user.fullName}</td>
                                         <td>${police.vehicles.plateNumber}</td>
-                                        <td>${police.vehicles.brand}</td>
                                         <td>${police.vehicles.model}</td>
-                                        <td>${police.vehicles.manufactureYear}</td>
-                                        <td>${police.vehicles.engineNumber}</td>
+                                        <td>${police.inspectionRecords.inspectionDate}</td>
                                         <td>${police.inspectionRecords.result}</td>
+                                        <td>${police.inspectionRecords.nextInspectionDate}</td>
                                         
                                     </tr>
                                 </c:forEach>
