@@ -64,6 +64,16 @@ public class Vehicles {
         this.status = status;
     }
     
+    public Vehicles(String plateNumber, String brand, String model, int manufactureYear, String engineNumber, vehicleEnums status, int violationType) {
+        this.plateNumber = plateNumber;
+        this.brand = brand;
+        this.model = model;
+        this.manufactureYear = manufactureYear;
+        this.engineNumber = engineNumber;
+        this.status = status;
+        this.violationType = violationType;
+    }
+    
     public Vehicles(int vehicleId, User owner, String plateNumber, String brand, String model, int manufactureYear, String engineNumber, vehicleEnums status) {
         this.vehicleId = vehicleId;
         this.owner = owner;
@@ -90,7 +100,9 @@ public class Vehicles {
     public void setVehicleId(int vehicleId) {
         this.vehicleId = vehicleId;
     }
-
+    
+    
+    
     public User getOwner() {
         return owner;
     }
