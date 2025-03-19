@@ -17,7 +17,7 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
         <style>
-          body {
+            body {
                 min-height: 100vh;
                 display: flex;
                 flex-direction: column;
@@ -63,7 +63,7 @@
                         <a href="dang-ky-phuong-tien" class="btn btn-success">
                             <i class="bi bi-plus-lg"></i> Đăng ký phương tiện
                         </a>
-                        
+
                     </div>
                     <div class="card">
                         <div class="card-header">
@@ -107,8 +107,14 @@
                                                             <i class="bi bi-trash"></i>
                                                         </button>
                                                     </form>
+                                                    <form action="update-phuong-tien" method="get">
+                                                        <input type="hidden" name="plateNumber" value="${vehicle.plateNumber}">
+                                                        <button type="submit" class="btn btn-primary btn-sm" onclick="return confirm('Bạn có muốn cập nhật phương tiện này không?');">
+                                                            <i class="bi bi-pencil"></i>
+                                                        </button>
+                                                    </form>
                                                 </div>
-                                                
+
                                             </td>
 
                                         </tr>

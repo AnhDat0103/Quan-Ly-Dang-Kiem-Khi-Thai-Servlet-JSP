@@ -179,10 +179,6 @@
         <servlet-class>controller.admin.GetFullVehicleByUserID</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>updateVehicles</servlet-name>
-        <servlet-class>controller.vehicleController.updateVehicles</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>GetVehilceInPoliceHomePage</servlet-name>
         <servlet-class>controller.policeController.GetVehilceInPoliceHomePage</servlet-class>
     </servlet>
@@ -206,7 +202,7 @@
         <servlet-name>GetNotificationPolice</servlet-name>
         <servlet-class>controller.policeController.GetNotificationPolice</servlet-class>
     </servlet>
-    <servlet>    
+    <servlet>
         <servlet-name>StationServlet</servlet-name>
         <servlet-class>controller.station.StationServlet</servlet-class>
     </servlet>
@@ -217,6 +213,10 @@
     <servlet>
         <servlet-name>CreateNewStation</servlet-name>
         <servlet-class>controller.admin.CreateNewStation</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>updatePhuongTien</servlet-name>
+        <servlet-class>controller.vehicleController.updatePhuongTien</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>GetProfilePage</servlet-name>
@@ -351,10 +351,6 @@
         <url-pattern>/phuong-tien-ca-nhan</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>updateVehicles</servlet-name>
-        <url-pattern>/update-phuong-tien</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>GetVehilceInPoliceHomePage</servlet-name>
         <url-pattern>/danh-sach-phuong-tien</url-pattern>
     </servlet-mapping>
@@ -378,7 +374,7 @@
         <servlet-name>GetNotificationPolice</servlet-name>
         <url-pattern>/thong-bao-canh-sat</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>    
+    <servlet-mapping>
         <servlet-name>StationServlet</servlet-name>
         <url-pattern>/StationServlet</url-pattern>
     </servlet-mapping>
@@ -389,6 +385,10 @@
     <servlet-mapping>
         <servlet-name>CreateNewStation</servlet-name>
         <url-pattern>/tao-moi-trung-tam-kiem-dinh</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>updatePhuongTien</servlet-name>
+        <url-pattern>/update-phuong-tien</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>dashboard/auth/login.jsp</welcome-file>
