@@ -28,7 +28,7 @@ import java.util.Date;
  * @author Lenovo
  */
 public class dangKyKD extends HttpServlet {
-
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -125,6 +125,7 @@ public class dangKyKD extends HttpServlet {
 //                request.setAttribute("message", "Phương tiện đã đạt kiểm định, không thể đăng ký lại!");
 // 
             String lastResult = inspectionRecordDao.getLatestInspectionResult(vehicleID);
+            String ifBanned = vehicleDao.getStatusVehicles(vehicleID);
 
             if ("Pass".equalsIgnoreCase(lastResult)) {
                 request.setAttribute("message", "Phương tiện đã đạt đăng kiểm, không cần đăng kiểm lại.");
@@ -145,6 +146,12 @@ public class dangKyKD extends HttpServlet {
                     doGet(request, response);
                     return;
                 }
+            }
+            
+            if ("Ban".equalsIgnoreCase(ifBanned)) {
+                request.setAttribute("message", "Phương tiện vi phạm quy định an toàn giao thông, không thể đăng kiểm.");
+                doGet(request, response);
+                return;
             }
 
             // Kiểm tra ID có hợp lệ
