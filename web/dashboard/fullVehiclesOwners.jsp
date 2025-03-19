@@ -14,7 +14,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Danh Sách Chủ Phương Tiện</title>
+        <title>Danh Sách Phương Tiện</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="./resources/css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -29,7 +29,7 @@
                         <h1 class="mt-4">Danh sách chủ phương tiện</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="#">Bảng điều kiển</a></li>
-                            <li class="breadcrumb-item active">Danh sách chủ phương tiện</li>
+                            <li class="breadcrumb-item active">Danh sách phương tiện</li>
                         </ol>
                         <div class="mb-3">
                             <button class="btn btn-secondary" onclick="history.back()">
@@ -39,29 +39,32 @@
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
-                                Danh sách chủ phương tiện
+                                Danh sách phương tiện
                             </div>
                             <div class="card-body">
                                 <table id="datatablesSimple">
                                     <thead>
                                         <tr>
-                                            <th>Tên</th>
-                                            <th>Địa chỉ</th>
-                                            <th>Số điện thoại</th>
-                                            <th>Email</th>
-                                            <th>Hành động</th>
+                                            <th>Biển Số Xe</th>
+                                            <th>Hãng Xe</th>
+                                            <th>Loại Xe</th>
+                                            <th>Năm Sản Xuất</th>
+                                            <th>Mã Số Xe</th>
+                                            <th>Trạng Thái</th>
+                                            <th>Hành Động</th> <!-- Thêm cột Hành động -->
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <c:forEach var="owner" items="${owners}">
+                                        <c:forEach var="vehicle" items="${vehicleList}">
                                             <tr>
-                                                <td>${owner.fullName}</td>
-                                                <td>${owner.address}</td>
-                                                <td>${owner.phone}</td>
-                                                <td>${owner.email}</td>
+                                                <td>${vehicle.plateNumber}</td>
+                                                <td>${vehicle.brand}</td>
+                                                <td>${vehicle.model}</td>
+                                                <td>${vehicle.manufactureYear}</td>
+                                                <td>${vehicle.engineNumber}</td>
+                                                <td>${vehicle.status}</td>
                                                 <td>
-                                                    <a class="btn btn-warning btn-sm" href="phuong-tien-ca-nhan?ownerId=${owner.userId}">Danh sách phương tiện</a>
-                                                    <a class="btn bi-trash btn-sm" href="xoa-ca-nhan?ownerId=${owner.userId}"></a>
+                                                    <a class="btn btn-danger btn-sm" href="deleteOwner.jsp?ownerId=${ownerId}">Xóa</a>
                                                 </td>
                                             </tr>
                                         </c:forEach>
@@ -69,6 +72,7 @@
                                 </table>
                             </div>
                         </div>
+
                     </div>
                 </main>
                 <%@include file="./layout/footer.jsp" %>

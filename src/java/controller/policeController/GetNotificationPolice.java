@@ -2,10 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller.vehicleController;
+package controller.policeController;
 
-import dao.InspectionRecordDao;
-import dao.StationDao;
+import config.ViolationMap;
+import dao.NotificationDao;
+import dao.UserDao;
 import dao.VehicleDao;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
@@ -14,19 +15,18 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.List;
-import model.InspectionRecords;
+import java.util.HashMap;
+import java.util.Map;
 import model.User;
-import model.Vehicles;
-import model.enums.RoleEnums;
 
 /**
  *
  * @author Lenovo
  */
-public class lichSuKD extends HttpServlet {
+public class GetNotificationPolice extends HttpServlet {
+    private UserDao userDao = new UserDao();
+    private NotificationDao notificationDao = new NotificationDao();
+    private VehicleDao vehicleDao = new VehicleDao();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -45,10 +45,10 @@ public class lichSuKD extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet lichSuKD</title>");
+            out.println("<title>Servlet GetNotificationPolice</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet lichSuKD at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet GetNotificationPolice at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -66,44 +66,26 @@ public class lichSuKD extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-
-        HttpSession session = request.getSession();
-        User currentUser = (User) session.getAttribute("currentUser");
-
-        // Kiểm tra nếu user không đăng nhập hoặc không phải chủ phương tiện
-        if (currentUser == null || !currentUser.getRole().equals(RoleEnums.Owner)) {
-            response.sendRedirect("dang-nhap");
-            return;
-        }
-
-        VehicleDao vehicleDao = new VehicleDao();
-        InspectionRecordDao inspectionRecordDao = new InspectionRecordDao();
         
-        // Lấy danh sách biển số xe theo User ID
-        List<String> plateNumbers = vehicleDao.getPlateNumberByOwnerID(currentUser.getUserId());
-
-        // Nếu người dùng không có phương tiện, hiển thị thông báo
-        if (plateNumbers.isEmpty()) {
-            request.setAttribute("message", "Vui lòng đăng ký phương tiện trước khi xem lịch sử kiểm định.");
-            request.getRequestDispatcher("resources/vehicle/lichSuKD.jsp").forward(request, response);
-            return;
-        }
-
-        String action = request.getParameter("action");
-        List<InspectionRecords> historyList = new ArrayList<>();
-
-        // Duyệt qua danh sách biển số và lấy lịch sử kiểm định
-        for (String plateNumber : plateNumbers) {
-            int vehicleID = vehicleDao.getVehicleIDByPlateNumber(plateNumber);
-            if (vehicleID != -1) {      
-                    historyList.addAll(inspectionRecordDao.getInspectedVehilce(vehicleID));
+        int ownerId = Integer.parseInt(request.getParameter("ownerId"));
+        User user = userDao.findUserById(ownerId);
+        int violation = Integer.parseInt(request.getParameter("violation"));
+        request.setAttribute("violation", violation);
+        ViolationMap violationMap = new ViolationMap();
+        HashMap<Integer, String> list = violationMap.getList();
+        String message ="";
+        for (Map.Entry<Integer, String> entry : list.entrySet()) {
+            if(violation == entry.getKey()){
+                message = entry.getValue();
+                break;
             }
         }
-
-        // Đặt danh sách lịch sử kiểm định vào request attribute
-        request.setAttribute("historyList", historyList);
-        request.getRequestDispatcher("resources/vehicle/lichSuKD.jsp").forward(request, response);
+        request.setAttribute("message", message);
+        String plateNumber = request.getParameter("plateNumber");
+        request.setAttribute("plateNumber", plateNumber);
+        request.setAttribute("owner", user);
+        request.getRequestDispatcher("resources/police/notificationPolice.jsp").forward(request, response);
+        
     }
 
     /**
@@ -117,7 +99,24 @@ public class lichSuKD extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doGet(request, response);
+        response.setContentType("text/html;charset=UTF-8");
+
+        int ownerId = Integer.parseInt(request.getParameter("ownerID"));
+        String plateNumber = request.getParameter("plateNumber");
+        String message = request.getParameter("messageContent");
+        int violation =Integer.parseInt(request.getParameter("violation"));
+
+        boolean success = notificationDao.addNotificationByUserID(ownerId, message);
+
+        boolean banSuccess = vehicleDao.banVehicleByPlateNumber(plateNumber);
+        boolean changeViolationType = vehicleDao.changeVehicleViolaType(plateNumber, violation);
+        if (success && banSuccess && changeViolationType) {
+            request.setAttribute("successMessage", "Thông báo đã được gửi và phương tiện đã bị cấm!");
+        } else {
+            request.setAttribute("errorMessage", "Lỗi khi xử lý yêu cầu. Vui lòng thử lại!");
+        }
+
+        request.getRequestDispatcher("resources/police/notificationPolice.jsp").forward(request, response);
     }
 
     /**

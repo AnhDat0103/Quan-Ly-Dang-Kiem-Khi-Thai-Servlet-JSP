@@ -11,106 +11,104 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Trang chủ - Chủ phương tiện</title>
+        <title>Quản Lý CSGT</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
         <style>
-        body {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .content-wrapper {
-            flex: 1 0 auto;
-            margin-bottom: 2rem;
-        }
-        
-        .footer {
-            flex-shrink: 0;
-            padding: 1rem 0;
-        }
-    </style>
+            body {
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .content-wrapper {
+                flex: 1 0 auto;
+                margin-bottom: 2rem;
+            }
+
+            .footer {
+                flex-shrink: 0;
+                padding: 1rem 0;
+                margin: 0;
+            }
+
+            .navbar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                z-index: 1030;
+            }
+
+            .content-wrapper {
+                flex: 1;
+                padding-top: 0px; /* Đảm bảo nội dung không bị navbar che */
+                padding-bottom: 0px; /* Tránh bị footer che */
+            }
+
+            /* Footer nhỏ gọn hơn */
+            .footer {
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+                background-color: #f8f9fa;
+                padding: 0.5rem 0; /* Giảm padding để footer nhỏ hơn */
+                box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+                font-size: 0.9rem; /* Chữ nhỏ hơn */
+            }
+        </style>
     </head>
     <body>
-        <!-- Wrap all content except footer in a div -->
         <div class="content-wrapper">
-            <!-- Navbar -->
             <%@include file="../layout/police_navbar.jsp" %>
-
-            <!-- Main content -->
             <div class="container mt-4">
                 <div class="row">
-                    <!-- Thông báo -->
+                    <!-- Phần Tin Tức -->
                     <div class="col-md-4">
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <h5 class="card-title mb-0">Thông báo</h5>
+                        <div class="card mb-4 shadow-sm">
+                            <div class="card-header bg-warning text-dark">
+                                <h5 class="card-title mb-0">Tin Tức</h5>
                             </div>
-                            <div class="card-body">
-                                <div class="alert alert-warning">
-                                    Xe máy AB-12345 sắp đến hạn đóng phạt kiểm định (còn 7 ngày)
+                            <div class="card mb-4">
+                                <div class="card-header bg-warning text-dark">
+                                    <h5 class="card-title mb-0"><i class="bi bi-info-circle-fill"></i> Thông Báo</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p><strong>Nghị định 166/2024/NĐ-CP:</strong>  
+                                        Các cơ sở đăng kiểm phải tuân thủ nghiêm túc, minh bạch và khách quan theo quy định pháp luật.</p>
+
+                                    <h6 class="text-danger mt-3"><i class="bi bi-exclamation-triangle-fill"></i> Mức phạt quá hạn đăng kiểm:</h6>
+                                    <ul>
+                                        <li><strong>Dưới 1 tháng:</strong> Phạt 3-4 triệu, tước GPLX 1-3 tháng.</li>
+                                        <li><strong>Từ 1 tháng trở lên:</strong> Phạt 4-6 triệu, tước GPLX 1-3 tháng.</li>
+                                    </ul>
+
+                                    <p class="text-success mt-3"><i>🚓 Hãy đăng kiểm đúng hạn để bảo vệ bản thân và cộng đồng.</i></p>
                                 </div>
                             </div>
+
                         </div>
                     </div>
 
-                    <!-- Phương tiện -->
+                    <!-- Phần Thống kê -->
                     <div class="col-md-8">
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <h5 class="card-title mb-0">Phương tiện vi phạm</h5>
+                        <div class="card mb-4 shadow-sm">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="card-title mb-0">Thống Kê Nhanh</h5>
                             </div>
                             <div class="card-body">
-                                <table class="table">
-                                    <thead>
+                                <table class="table table-bordered text-center">
+                                    <thead class="table-light">
                                         <tr>
-                                            <th>Biển số</th>
-                                            <th>Loại xe</th>
-                                            <th>Trạng thái</th>
-                                            <th>Hạn kiểm định</th>
+                                            <th>Tổng Phương Tiện</th>
+                                            <th>Phương Tiện Vi Phạm</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>AB-12345</td>
-                                            <td>Honda Wave</td>
-                                            <td><span class="badge bg-success">Đã đăng kiểm</span></td>
-                                            <td>20/12/2024</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <!-- Lịch đăng kiểm -->
-                        <div class="card mt-4">
-                            <div class="card-header">
-                                <h5 class="card-title mb-0">Xử lý vi phạm</h5>
-                            </div>
-                            <div class="card-body">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>Biển số xe</th>
-                                            <th>Ngày đăng kiểm</th>
-                                            <th>Trung tâm</th>
-                                            <th>Trạng thái</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>AB-12345</td>
-                                            <td>25/03/2024</td>
-                                            <td>Trung tâm Đăng kiểm 50-02V</td>
-                                            <td><span class="badge bg-warning">Chờ kiểm định</span></td>
-                                        </tr>
-                                        <tr>
-                                            <td>AB-12345</td>
-                                            <td>15/01/2024</td>
-                                            <td>Trung tâm Đăng kiểm 50-02V</td>
-                                            <td><span class="badge bg-success">Đã hoàn thành</span></td>
+                                            <td><c:out value="${vehicleCount}" /></td>
+                                            <td><c:out value="${bannedCount}" /></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -119,12 +117,11 @@
                     </div>
                 </div>
             </div>
+
+            <%@include file="../layout/police_footer.jsp" %>
         </div>
 
-        <%@include file="../layout/police_footer.jsp" %>
-        <!-- Thêm Bootstrap Icons -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
-        <!-- Thêm Bootstrap JS và Popper.js -->
+        <!-- Bootstrap JS và Popper -->
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
     </body>

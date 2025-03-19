@@ -5,6 +5,8 @@
 
 package controller.policeController;
 
+import dao.PoliceDao;
+import dao.VehicleDao;
 import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,7 +20,8 @@ import jakarta .servlet.http.HttpServletResponse;
  * @author Lenovo
  */
 public class GetPoliceHomePage extends HttpServlet {
-   
+    PoliceDao policeDao = new PoliceDao();
+    VehicleDao vehicleDao = new VehicleDao();
     /** 
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -54,6 +57,12 @@ public class GetPoliceHomePage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        int bannedCount = policeDao.countBannedVehicles();
+        int vehicleCount = vehicleDao.countVehicles();
+        
+        request.setAttribute("bannedCount", bannedCount);
+        request.setAttribute("vehicleCount", vehicleCount);
+        
         RequestDispatcher dispatcher = request.getRequestDispatcher("resources/police/policeHomePage.jsp");
         dispatcher.forward(request, response);
     } 

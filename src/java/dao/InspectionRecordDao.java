@@ -5,6 +5,7 @@
 package dao;
 
 import config.Configuration;
+import java.math.BigDecimal;
 
 import java.sql.Connection;
 import java.util.List;
@@ -19,6 +20,7 @@ import model.Vehicles;
 import java.util.HashMap;
 import java.util.Map;
 import model.InspectionStation;
+import model.enums.vehicleEnums.vehicleEnums;
 
 /**
  *
@@ -434,7 +436,7 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
 
     public List<InspectionRecords> getInspectedVehilce(int vehicleID) {
         List<InspectionRecords> listhistory = new ArrayList<>();
-        String sql = "SELECT v.PlateNumber, v.Brand, v.Model, id.InspectionDate, id.Result, id.NextInspectionDate "
+        String sql = "SELECT v.PlateNumber, v.Brand, v.Model, id.InspectionDate, id.Result, id.NextInspectionDate, id.CO2Emission, id.HCEmission, id.Comments "
                 + "FROM Vehicles v "
                 + "INNER JOIN InspectionRecords id ON id.VehicleID = v.VehicleID "
                 + "WHERE v.VehicleID = ? "
@@ -451,8 +453,11 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
                 );
                 InspectionRecords record = new InspectionRecords(
                         rs.getDate("InspectionDate"),
-                        rs.getString("Result"),
                         rs.getDate("NextInspectionDate"),
+                        rs.getString("Result"),
+                        rs.getDouble("CO2Emission"),
+                        rs.getDouble("HCEmission"),
+                        rs.getString("Comments"),
                         vehicle
                 );
                 listhistory.add(record);
@@ -462,41 +467,6 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
             e.printStackTrace();
         }
         return listhistory;
-    }
-
-    public List<InspectionRecords> getFullHistoryVehicleInspected(int vehicleID) {
-        List<InspectionRecords> listhistoryfull = new ArrayList<>();
-
-        String sql = "SELECT ve.Brand, ve.PlateNumber, id.InspectionDate, "
-                + "id.Result, id.CO2Emission, id.HCEmission, id.Comments, id.NextInspectionDate "
-                + "FROM InspectionRecords id "
-                + "INNER JOIN Vehicles ve ON id.VehicleID = ve.VehicleID "
-                + "INNER JOIN InspectionStations it ON id.StationID = it.StationID "
-                + "WHERE ve.VehicleID = ?";
-        try {
-            PreparedStatement ps = connect.prepareStatement(sql);
-            ps.setInt(1, vehicleID);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                Vehicles vehicle = new Vehicles(
-                        rs.getString("Brand"),
-                        rs.getString("PlateNumber")
-                );
-                InspectionRecords record = new InspectionRecords(
-                        rs.getDate("InspectionDate"),
-                        rs.getDate("NextInspectionDate"),
-                        rs.getString("Result"),
-                        rs.getDouble("CO2Emission"),
-                        rs.getDouble("HCEmission"),
-                        rs.getString("Comments"),
-                        vehicle
-                );
-                listhistoryfull.add(record);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return listhistoryfull;
     }
 
     public int getNoOfRecordsWithTime(String startDate, String endDate, int stationId) {
