@@ -70,43 +70,85 @@
     </head>
     <body class="sb-nav-fixed">
         <%@include file="../layout/police_navbar.jsp"%>
-        <div id="layoutSidenav_content">
-            <main>
+        <div class="container mt-5">
+            <h4 class="text-center mb-4">Tra Cứu Phương Tiện</h4>
+            <div class="d-flex justify-content-center">
+                <table class="table table-bordered w-auto" style="background-color: #f8f9fa; border-radius: 8px;">
+                    <form action="danh-sach-phuong-tien" method="get">
+                        <tbody>
+                            <tr>
+                                <th><label for="plateNumber" class="form-label">Biển kiểm soát</label></th>
+                                <td>
+                                    <input type="text" class="form-control" id="plateNumber" name="plateNumber"
+                                           placeholder="VD: 30A12345" required value="${param.plateNumber}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="text-center">
+                                    <button type="submit" class="btn btn-danger w-50">Tra cứu</button>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </form>
+                </table>
+            </div>
+
+            <!-- Nếu đã nhập và không có kết quả -->
+            <c:if test="${not empty notFound}">
+                <div class="text-center text-danger mt-4">
+                    <h5>${notFound}</h5>
+                </div>
+            </c:if>
+
+            <c:if test="${not empty policeList}">
                 <div class="container-fluid">
                     <div class="text-center">
-                        <h2 class="mt-4">Danh Sách Chủ Phương Tiện</h2>
+                        <h2 class="mt-4">Thông Tin Phương Tiện</h2>
                     </div>
-
-                    <div class="card">
+                    <div class="card mt-3 mb-5">
                         <div class="card-body">
-                            <table id="datatablesSimple" class="table table-striped table-bordered">
+                            <table class="table table-striped table-bordered">
                                 <thead class="table-dark">
                                     <tr>
-                                        <th>Tên Chủ Phương Tiện</th>
                                         <th>Biển Số Xe</th>
+                                        <th>Tên Chủ Phương Tiện</th>
+                                        <th>Hãng Xe</th>
                                         <th>Loại Xe</th>
-                                        <th>Ngày Đăng Kiểm</th>
+                                        <th>Ngày Sản Xuất</th>
+                                        <th>Mã Số Động Cơ</th>
                                         <th>Trạng Thái</th>
-                                        <th>Ngày Đăng Kiểm Kế Tiếp</th>
+                                        <th>Hành Động</th>
                                     </tr>
                                 </thead>
-                                <c:forEach var="police" items="${policeList}">
-                                    <tr>
-                                        <td>${police.user.fullName}</td>
-                                        <td>${police.vehicles.plateNumber}</td>
-                                        <td>${police.vehicles.model}</td>
-                                        <td>${police.inspectionRecords.inspectionDate}</td>
-                                        <td>${police.inspectionRecords.result}</td>
-                                        <td>${police.inspectionRecords.nextInspectionDate}</td>
-                                        
-                                    </tr>
-                                </c:forEach>
+                                <tbody>
+                                    <c:forEach var="police" items="${policeList}">
+                                        <tr>
+                                            <td>${police.vehicles.plateNumber}</td>
+                                            <td>${police.user.fullName}</td>
+                                            <td>${police.vehicles.brand}</td>
+                                            <td>${police.vehicles.model}</td>
+                                            <td>${police.vehicles.manufactureYear}</td>
+                                            <td>${police.vehicles.engineNumber}</td>
+                                            <td>${police.vehicles.status}</td> 
+                                            <td>
+                                                <a href="thong-bao-canh-sat?plateNumber=${police.vehicles.plateNumber}" class="btn btn-danger ${police.vehicles.status eq 'Fail' ? ' ' : 'd-none'}">Xử Phạt</a>
+                                            </td>
+
+                                        </tr>
+                                    </c:forEach>
+                                </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-            </main>
+            </c:if>
+
         </div>
+
+        <!-- Nếu tìm thấy danh sách phương tiện -->
+
+
         <%@include file="../layout/police_footer.jsp" %>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>

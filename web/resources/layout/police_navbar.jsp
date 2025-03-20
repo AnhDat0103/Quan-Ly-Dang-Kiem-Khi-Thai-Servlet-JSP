@@ -53,9 +53,6 @@
                         <li class="nav-item">
                             <a class="nav-link" href="danh-sach-phuong-tien">Tra Cứu Phương Tiện</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="phuong-tien-vi-pham">Xử Lý Vi Phạm</a>
-                        </li>
                     </ul>
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item dropdown">

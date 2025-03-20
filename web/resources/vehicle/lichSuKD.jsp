@@ -112,7 +112,7 @@
                                                 <td>
                                                     <span class="badge 
                                                         <c:choose>
-                                                            <c:when test="${record.result == 'Passed'}">bg-success</c:when>
+                                                            <c:when test="${record.result == 'Pass'}">bg-success</c:when>
                                                             <c:otherwise>bg-danger</c:otherwise>
                                                         </c:choose>">
                                                         ${record.result}
