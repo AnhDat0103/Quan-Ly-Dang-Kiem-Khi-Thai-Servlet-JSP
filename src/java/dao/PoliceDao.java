@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import model.InspectionRecords;
 import model.User;
 import model.Vehicles;
+import model.enums.vehicleEnums.vehicleEnums;
 
 /**
  *
@@ -65,6 +66,7 @@ public class PoliceDao implements Dao<Police> {
                 + "JOIN [Users] u ON v.ownerID = u.UserID "
                 + "JOIN InspectionRecords id ON id.VehicleID = v.VehicleID "
                 + "WHERE u.Role = 'Owner' "
+                + "AND v.Status <> 'Ban' "
                 + "ORDER BY u.FullName";
 
         try {
@@ -104,27 +106,26 @@ public class PoliceDao implements Dao<Police> {
     public List<Police> getViolatingVehicles() {
         List<Police> violatingVehicles = new ArrayList<>();
         String sql = "SELECT "
-                + "    u.UserID, "
-                + "    u.FullName, "
-                + "    ve.PlateNumber, "
-                + "    ve.Brand, "
-                + "    ve.Model, "
-                + "    STRING_AGG(CAST(Violations.Violation AS VARCHAR), ',') AS ViolationType "
+                + "u.UserID, "
+                + "u.FullName, "
+                + "ve.PlateNumber, "
+                + "ve.Brand, "
+                + "ve.Model, "
+                + "STRING_AGG(CAST(Violations.Violation AS VARCHAR), ',') AS ViolationType "
                 + "FROM Vehicles ve "
                 + "JOIN [Users] u ON ve.ownerID = u.UserID "
                 + "JOIN ( "
-                + "    SELECT VehicleID, 1 AS Violation "
-                + "    FROM InspectionRecords "
-                + "    WHERE Result = 'Fail' "
-                + "    GROUP BY VehicleID "
-                + "    HAVING COUNT(*) >= 3 "
-                + "    UNION "
-                + "    SELECT VehicleID, 2 AS Violation "
-                + "    FROM InspectionRecords "
-                + "    WHERE DATEDIFF(DAY, NextInspectionDate, GETDATE()) >= 10 "
+                + "   SELECT VehicleID, 1 AS Violation "
+                + "   FROM InspectionRecords "
+                + "   WHERE Result = 'Fail' "
+                + "   GROUP BY VehicleID "
+                + "   UNION "
+                + "   SELECT VehicleID, 2 AS Violation "
+                + "   FROM InspectionRecords "
+                + "   WHERE DATEDIFF(DAY, NextInspectionDate, InspectionDate) >= 10 "
                 + ") AS Violations ON ve.VehicleID = Violations.VehicleID "
                 + "WHERE Status <> 'Ban' "
-                + "GROUP BY u.UserID ,u.FullName, ve.PlateNumber, ve.Brand, ve.Model "
+                + "GROUP BY u.UserID, u.FullName, ve.PlateNumber, ve.Brand, ve.Model "
                 + "ORDER BY ve.PlateNumber;";
         try {
             PreparedStatement ps = connect.prepareStatement(sql);
@@ -172,6 +173,38 @@ public class PoliceDao implements Dao<Police> {
             e.printStackTrace();
         }
         return count;
+    }
+
+    public List<Police> findByPlateNumber(String plateNumber) {
+        List<Police> list = new ArrayList<>();
+        String sql = "SELECT v.PlateNumber, u.FullName, v.Brand, v.Model, v.ManufactureYear, v.EngineNumber, v.Status "
+                + "FROM Vehicles v "
+                + "INNER JOIN [Users] u ON v.OwnerID = u.UserID  "
+                + "WHERE v.PlateNumber = ? ";
+        try {
+            PreparedStatement ps = connect.prepareStatement(sql);
+            ps.setString(1, plateNumber);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                User user = new User();
+                user.setFullName(rs.getString("FullName"));
+
+                Vehicles vehicle = new Vehicles();
+                vehicle.setPlateNumber(rs.getString("PlateNumber"));
+                vehicle.setBrand(rs.getString("Brand"));
+                vehicle.setModel(rs.getString("Model"));
+                vehicle.setManufactureYear(rs.getInt("ManufactureYear"));
+                vehicle.setEngineNumber(rs.getString("EngineNumber"));
+                vehicle.setStatus(vehicleEnums.valueOf(rs.getString("Status")));
+
+                Police police = new Police(user, vehicle);
+                list.add(police);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 
 }

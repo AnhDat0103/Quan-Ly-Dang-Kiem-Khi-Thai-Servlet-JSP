@@ -54,13 +54,13 @@ public class UserDao implements Dao<User> {
     @Override
     public int update(User t) {
         int result = 0;
-        String sql = "UPDATE Users SET FullName = ?, Phone = ?, Address = ? where UserID = ?";
+        String sql = "UPDATE Users SET FullName = ?, Phone = ?, Address = ? where Email = ?";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setString(1, t.getFullName());
             pt.setString(2, t.getPhone());
             pt.setString(3, t.getAddress());
-            pt.setInt(4, t.getUserId());
+            pt.setString(4, t.getEmail());
             result = pt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -138,6 +138,19 @@ public class UserDao implements Dao<User> {
         return false;
     }
 
+    public int updatePassword(String newPassword, String email) {
+        int updatedRow = 0;
+        String sql = "UPDATE Users SET Password = ? WHERE Email = ?";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setString(1, newPassword);
+            pt.setString(2, email);
+            updatedRow = pt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return updatedRow;
+    }
     public int updatePassword(String newPassword, int userId) {
         int updatedRow = 0;
         String sql = "UPDATE Users SET Password = ? WHERE UserID = ?";
@@ -306,13 +319,13 @@ public class UserDao implements Dao<User> {
         return null;
     }
 
-    public int updateAvatar(String newAvatar, int userId) {
+    public int updateAvatar(String newAvatar, String email) {
         int result = 0;
-        String sql  = "UPDATE Users SET Avatar = ? WHERE UserID = ?";
+        String sql  = "UPDATE Users SET Avatar = ? WHERE Email = ?";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setString(1, newAvatar);
-            pt.setInt(2, userId);
+            pt.setString(2, email);
             result = pt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

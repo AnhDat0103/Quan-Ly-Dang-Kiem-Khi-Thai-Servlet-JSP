@@ -116,7 +116,7 @@ public class LoginOauth2WithGoogle extends HttpServlet {
         }
         user.setRole(RoleEnums.valueOf(role));
         ud.save(user);
-        session.setAttribute("currentUser", user);
+        session.setAttribute("currentUser", ud.findUserByEmail(user.getEmail()));
         loginService(user, request, response);
     }
 

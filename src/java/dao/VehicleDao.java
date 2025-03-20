@@ -106,6 +106,16 @@ public class VehicleDao implements Dao<Vehicles> {
             }
         }
     }
+    
+    public boolean kiemtrakhungphuongtien(String engineNumber) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM Vehicles WHERE EngineNumber = ?";
+        try (PreparedStatement st = connect.prepareStatement(sql)) {
+            st.setString(1, engineNumber);
+            try (ResultSet rs = st.executeQuery()) {
+                return rs.next() && rs.getInt(1) > 0;
+            }
+        }
+    }
 
     public List<String> getPlateNumberByOwnerID(int ownerID) {
         List<String> plateNumbers = new ArrayList<>();
@@ -277,22 +287,6 @@ public class VehicleDao implements Dao<Vehicles> {
         try {
             PreparedStatement ps = connect.prepareStatement(sql);
             ps.setString(1, plateNumber);
-            int rowsUpdated = ps.executeUpdate();
-
-            return rowsUpdated > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public boolean changeVehicleViolaType(String plateNumber, int type) {
-        String sql = "UPDATE Vehicles SET ViolationType = ? where PlateNumber = ?";
-
-        try {
-            PreparedStatement ps = connect.prepareStatement(sql);
-            ps.setInt(1, type);
-            ps.setString(2, plateNumber);
             int rowsUpdated = ps.executeUpdate();
 
             return rowsUpdated > 0;
