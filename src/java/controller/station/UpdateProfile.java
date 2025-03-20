@@ -29,6 +29,7 @@ import model.Notification;
 import model.ResetPassword;
 import model.User;
 import model.Vehicles;
+import model.enums.ProviderClass;
 import model.enums.RoleEnums;
 import validation.Validate;
 
@@ -155,7 +156,7 @@ public class UpdateProfile extends HttpServlet {
             if (!oldPass.isEmpty() && !newPass.isEmpty() && !confirm.isEmpty()) {
                 if (Validate.checkPassword(newPass) && checkNewPassAndConfirmNewPass(newPass, confirm) && Configuration.verifyPasswordAfterHashed(oldPass, currentUser.getPassword())) {
                     String hashNewPass = Configuration.hashPasswordByMD5(newPass);
-                    rs = ud.updatePassword(hashNewPass, currentUser.getUserId());
+                    rs = ud.updatePassword(hashNewPass, currentUser.getEmail());
                     if (rs == 1) {
                         if (currentUser.getRole().compareTo(RoleEnums.Inspector) == 0) {
                             response.sendRedirect("thong-tin-nguoi-kiem-dinh?status=success");
@@ -201,7 +202,7 @@ public class UpdateProfile extends HttpServlet {
                 }
                 response.sendRedirect("thong-tin-ca-nhan?status=error");
             }
-        } else if (action.equals("delete-account")) {
+        } else if (action.equals("delete-account")) {            
             List<Notification> notifications = nd.findAllByUserId(currentUser.getUserId());
             List<ResetPassword> resetPasswords = rd.findAllByUserId(currentUser.getUserId());
             if (currentUser.getRole().compareTo(RoleEnums.Owner) == 0) {
@@ -252,7 +253,7 @@ public class UpdateProfile extends HttpServlet {
             String newAvatar = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
             uploadFile(newAvatar, uploadPath, request, response);
             currentUser.setAvatar(newAvatar);
-            rs = ud.updateAvatar(newAvatar, currentUser.getUserId());
+            rs = ud.updateAvatar(newAvatar, currentUser.getEmail());
             if (rs == 1) {
                 if (currentUser.getRole().compareTo(RoleEnums.Inspector) == 0) {
                     response.sendRedirect("thong-tin-nguoi-kiem-dinh?status=success");

@@ -151,9 +151,14 @@ public class GetAppointmentPage extends HttpServlet {
                 errorMsg = "Ngày kiểm định không phù hợp. Hãy chọn ngày khác!";
             } else {
                 java.sql.Date date = new java.sql.Date(Configuration.convertStringToDate(inspectionDate).getTime());
-                if (!ird.isInspectionDateExists(v.getVehicleId(), date)) {
-                    errorMsg = "Phương tiện đã đăng ký.";
-                } else {
+                boolean test1 = ird.checkResultVehicle(v.getVehicleId(), stationId);
+                                boolean test2 = ird.isInspectionDateExists(v.getVehicleId(), date, stationId);
+
+                if (test1) {
+                    errorMsg = "Phương tiện đã được đăng ký.";
+                }else if(test2) {
+                    errorMsg = "Ngày hiện tại đã hết lịch trống.Hãy đăng ký vào ngày khác.";
+                }else {
                     InspectionRecords t = new InspectionRecords();
                     t.setVehicle(v);
                     t.setStationID(stationId);
