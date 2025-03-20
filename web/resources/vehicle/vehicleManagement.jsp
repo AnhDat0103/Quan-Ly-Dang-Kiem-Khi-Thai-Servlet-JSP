@@ -98,7 +98,15 @@
                                             <td>${vehicle.plateNumber}</td>
                                             <td>${vehicle.brand}</td>
                                             <td>${vehicle.model}</td>
-                                            <td>${vehicle.status}</td>
+                                            <td>
+                                                    <span class="badge 
+                                                        <c:choose>
+                                                            <c:when test="${vehicle.status == 'Pass'}">bg-success</c:when>
+                                                            <c:otherwise>bg-danger</c:otherwise>
+                                                        </c:choose>">
+                                                        ${vehicle.status}
+                                                    </span>
+                                                </td>
                                             <td style="width: 120px;" class="text-center">
                                                 <div class="d-flex justify-content-center gap-2">
                                                     <form action="xoa-phuong-tien" method="post" onsubmit="return confirm('Bạn có chắc chắn muốn xóa phương tiện này không?');">

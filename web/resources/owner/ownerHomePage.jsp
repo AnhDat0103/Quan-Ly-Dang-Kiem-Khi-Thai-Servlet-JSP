@@ -138,7 +138,15 @@
                                                     <td>${loop.index + 1}</td> 
                                                     <td>${record.vehicle.plateNumber}</td>
                                                     <td>${record.inspectionDate}</td>
-                                                    <td>${record.result}</td>
+                                                    <td>
+                                                    <span class="badge 
+                                                        <c:choose>
+                                                            <c:when test="${record.result == 'Pass'}">bg-success</c:when>
+                                                            <c:otherwise>bg-danger</c:otherwise>
+                                                        </c:choose>">
+                                                        ${record.result}
+                                                    </span>
+                                                </td>
                                                 </tr>
                                             </c:forEach>
                                         </tbody>

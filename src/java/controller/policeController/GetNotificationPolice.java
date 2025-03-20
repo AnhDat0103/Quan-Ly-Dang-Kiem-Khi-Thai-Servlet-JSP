@@ -4,7 +4,7 @@
  */
 package controller.policeController;
 
-import config.ViolationMap;
+
 import dao.NotificationDao;
 import dao.UserDao;
 import dao.VehicleDao;
@@ -15,8 +15,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.Map;
 import model.User;
 
 /**
@@ -24,6 +22,7 @@ import model.User;
  * @author Lenovo
  */
 public class GetNotificationPolice extends HttpServlet {
+
     private UserDao userDao = new UserDao();
     private NotificationDao notificationDao = new NotificationDao();
     private VehicleDao vehicleDao = new VehicleDao();
@@ -66,26 +65,15 @@ public class GetNotificationPolice extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        int ownerId = Integer.parseInt(request.getParameter("ownerId"));
-        User user = userDao.findUserById(ownerId);
-        int violation = Integer.parseInt(request.getParameter("violation"));
-        request.setAttribute("violation", violation);
-        ViolationMap violationMap = new ViolationMap();
-        HashMap<Integer, String> list = violationMap.getList();
-        String message ="";
-        for (Map.Entry<Integer, String> entry : list.entrySet()) {
-            if(violation == entry.getKey()){
-                message = entry.getValue();
-                break;
-            }
-        }
-        request.setAttribute("message", message);
+
         String plateNumber = request.getParameter("plateNumber");
+        User user = vehicleDao.getOwnerByPlateNumber(plateNumber);
+        String message = "Hệ thống điều khiển xe (phanh, lái, đèn tín hiệu...) không đầy đủ, hoạt động không hiệu quả hoặc không đạt tiêu chuẩn an toàn kỹ thuật khi kiểm tra.";
+        request.setAttribute("message", message);
         request.setAttribute("plateNumber", plateNumber);
         request.setAttribute("owner", user);
         request.getRequestDispatcher("resources/police/notificationPolice.jsp").forward(request, response);
-        
+
     }
 
     /**
@@ -104,13 +92,11 @@ public class GetNotificationPolice extends HttpServlet {
         int ownerId = Integer.parseInt(request.getParameter("ownerID"));
         String plateNumber = request.getParameter("plateNumber");
         String message = request.getParameter("messageContent");
-        int violation =Integer.parseInt(request.getParameter("violation"));
 
         boolean success = notificationDao.addNotificationByUserID(ownerId, message);
 
         boolean banSuccess = vehicleDao.banVehicleByPlateNumber(plateNumber);
-        boolean changeViolationType = vehicleDao.changeVehicleViolaType(plateNumber, violation);
-        if (success && banSuccess && changeViolationType) {
+        if (success && banSuccess) {
             request.setAttribute("successMessage", "Thông báo đã được gửi và phương tiện đã bị cấm!");
         } else {
             request.setAttribute("errorMessage", "Lỗi khi xử lý yêu cầu. Vui lòng thử lại!");
