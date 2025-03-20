@@ -12,7 +12,6 @@ public class Police {
     private User user;  // Đổi từ 'users' thành 'user' để tránh nhầm lẫn
     private Vehicles vehicles;
     private InspectionRecords inspectionRecords;
-    private int violation;
 
     // Constructor không tham số
     public Police() {
@@ -29,21 +28,6 @@ public class Police {
         this.inspectionRecords = inspectionRecords;
     }
     
-    // Constructor đầy đủ
-    public Police(User user, Vehicles vehicles, InspectionRecords inspectionRecords, int violation) {
-        this.violation = violation;
-        this.user = user;
-        this.vehicles = vehicles;
-        this.inspectionRecords = inspectionRecords;
-    }
-
-    public int getViolation() {
-        return violation;
-    }
-
-    public void setViolation(int violation) {
-        this.violation = violation;
-    }
 
     // Getter và Setter cho User
     public User getUser() {

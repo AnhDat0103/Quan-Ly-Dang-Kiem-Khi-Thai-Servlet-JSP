@@ -286,22 +286,6 @@ public class VehicleDao implements Dao<Vehicles> {
         }
     }
 
-    public boolean changeVehicleViolaType(String plateNumber, int type) {
-        String sql = "UPDATE Vehicles SET ViolationType = ? where PlateNumber = ?";
-
-        try {
-            PreparedStatement ps = connect.prepareStatement(sql);
-            ps.setInt(1, type);
-            ps.setString(2, plateNumber);
-            int rowsUpdated = ps.executeUpdate();
-
-            return rowsUpdated > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
     public int countVehicles() {
         int count = 0;
         String sql = "SELECT COUNT(*) AS VehicleCount FROM Vehicles";
