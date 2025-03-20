@@ -106,6 +106,16 @@ public class VehicleDao implements Dao<Vehicles> {
             }
         }
     }
+    
+    public boolean kiemtrakhungphuongtien(String engineNumber) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM Vehicles WHERE EngineNumber = ?";
+        try (PreparedStatement st = connect.prepareStatement(sql)) {
+            st.setString(1, engineNumber);
+            try (ResultSet rs = st.executeQuery()) {
+                return rs.next() && rs.getInt(1) > 0;
+            }
+        }
+    }
 
     public List<String> getPlateNumberByOwnerID(int ownerID) {
         List<String> plateNumbers = new ArrayList<>();
