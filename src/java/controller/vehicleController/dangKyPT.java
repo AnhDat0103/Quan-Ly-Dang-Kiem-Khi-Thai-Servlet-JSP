@@ -121,7 +121,10 @@ public class dangKyPT extends HttpServlet {
         try {
             if (vehicleDao.kiemtraphuongtien(plateNumber)) {
                 bug += "Biển số xe đã tồn tại, vui lòng nhập biển số khác!\n";
-            }
+            } else if (vehicleDao.kiemtrakhungphuongtien(engineNumber)){
+                bug += "Khung xe đã tồn tại, vui lòng kiểm tra lại khung phương tiện!\n";
+            } 
+             
         } catch (SQLException ex) {
             Logger.getLogger(dangKyPT.class.getName()).log(Level.SEVERE, null, ex);
             bug += "Lỗi hệ thống khi kiểm tra phương tiện.\n";
