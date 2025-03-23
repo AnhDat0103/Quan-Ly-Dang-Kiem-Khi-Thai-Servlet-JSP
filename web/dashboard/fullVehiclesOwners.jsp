@@ -26,7 +26,7 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Danh sách chủ phương tiện</h1>
+                        <h1 class="mt-4">Danh sách phương tiện</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="#">Bảng điều kiển</a></li>
                             <li class="breadcrumb-item active">Danh sách phương tiện</li>
@@ -51,7 +51,6 @@
                                             <th>Năm Sản Xuất</th>
                                             <th>Mã Số Xe</th>
                                             <th>Trạng Thái</th>
-                                            <th>Hành Động</th> <!-- Thêm cột Hành động -->
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -62,10 +61,7 @@
                                                 <td>${vehicle.model}</td>
                                                 <td>${vehicle.manufactureYear}</td>
                                                 <td>${vehicle.engineNumber}</td>
-                                                <td>${vehicle.status}</td>
-                                                <td>
-                                                    <a class="btn btn-danger btn-sm" href="deleteOwner.jsp?ownerId=${ownerId}">Xóa</a>
-                                                </td>
+                                                <td>${vehicle.status}</td>                              
                                             </tr>
                                         </c:forEach>
                                     </tbody>

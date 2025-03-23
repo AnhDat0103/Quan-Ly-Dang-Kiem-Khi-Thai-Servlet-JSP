@@ -45,6 +45,8 @@
         <url-pattern>/thong-tin-nguoi-kiem-dinh</url-pattern>
         <url-pattern>/tao-moi-trung-tam-kiem-dinh</url-pattern>
         <url-pattern>/cap-nhat-inspector</url-pattern>
+        <url-pattern>/xoa-chu-phuong-tien</url-pattern>
+        <url-pattern>/phuong-tien-ca-nhan</url-pattern>
     </filter-mapping>
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
@@ -218,6 +220,10 @@
         <servlet-name>updatePhuongTien</servlet-name>
         <servlet-class>controller.vehicleController.updatePhuongTien</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteOwner</servlet-name>
+        <servlet-class>controller.admin.DeleteOwner</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>GetProfilePage</servlet-name>
         <url-pattern>/thong-tin-ca-nhan</url-pattern>
@@ -389,6 +395,10 @@
     <servlet-mapping>
         <servlet-name>updatePhuongTien</servlet-name>
         <url-pattern>/update-phuong-tien</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteOwner</servlet-name>
+        <url-pattern>/xoa-chu-phuong-tien</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>dashboard/auth/login.jsp</welcome-file>
