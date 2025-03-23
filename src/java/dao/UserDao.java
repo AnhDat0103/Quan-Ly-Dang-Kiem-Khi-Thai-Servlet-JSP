@@ -75,7 +75,7 @@ public class UserDao implements Dao<User> {
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setInt(1, t);
-            result =  pt.executeUpdate();
+            result = pt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -151,6 +151,7 @@ public class UserDao implements Dao<User> {
         }
         return updatedRow;
     }
+
     public int updatePassword(String newPassword, int userId) {
         int updatedRow = 0;
         String sql = "UPDATE Users SET Password = ? WHERE UserID = ?";
@@ -321,7 +322,7 @@ public class UserDao implements Dao<User> {
 
     public int updateAvatar(String newAvatar, String email) {
         int result = 0;
-        String sql  = "UPDATE Users SET Avatar = ? WHERE Email = ?";
+        String sql = "UPDATE Users SET Avatar = ? WHERE Email = ?";
         try {
             PreparedStatement pt = connect.prepareStatement(sql);
             pt.setString(1, newAvatar);
@@ -363,6 +364,35 @@ public class UserDao implements Dao<User> {
             e.printStackTrace();
         }
         return users;
+    }
+
+    public List<User> findAllPolice() {
+        List<User> polices = new ArrayList<>();
+        String sql = "select * from Users where Role = 'Police'";
+        try {
+            PreparedStatement pt = connect.prepareStatement(sql);
+            ResultSet rs = pt.executeQuery();
+            while (rs.next()) {
+                InspectionStation is = sd.findStationById(rs.getInt("StationID")) != null
+                        ? sd.findStationById(rs.getInt("StationID"))
+                        : new InspectionStation();
+                polices.add(new User(
+                        rs.getInt("UserID"),
+                        rs.getString("FullName"),
+                        rs.getString("Email"),
+                        rs.getString("Password"),
+                        RoleEnums.valueOf(rs.getString("Role")),
+                        rs.getString("Phone"),
+                        rs.getString("Address"),
+                        rs.getString("Avatar"),
+                        ProviderClass.valueOf(rs.getString("Provider")),
+                        is));
+            }
+            return polices;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
 }

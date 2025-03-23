@@ -14,7 +14,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Danh Sách Chủ Phương Tiện</title>
+        <title>Danh Sách Cảnh Sát Giao Thông</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="./resources/css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -26,10 +26,10 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Danh sách chủ phương tiện</h1>
+                        <h1 class="mt-4">Danh sách cảnh sát giao thông</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="#">Bảng điều kiển</a></li>
-                            <li class="breadcrumb-item active">Danh sách chủ phương tiện</li>
+                            <li class="breadcrumb-item active">Danh sách cảnh sát giao thông</li>
                         </ol>
                         <div class="mb-3">
                             <button class="btn btn-secondary" onclick="history.back()">
@@ -39,7 +39,7 @@
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
-                                Danh sách chủ phương tiện
+                                Danh sách cảnh sát giao thông
                             </div>
                             <div class="card-body">
                                 <table id="datatablesSimple">
@@ -53,15 +53,14 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <c:forEach var="owner" items="${owners}">
+                                        <c:forEach var="police" items="${polices}">
                                             <tr>
-                                                <td>${owner.fullName}</td>
-                                                <td>${owner.address}</td>
-                                                <td>${owner.phone}</td>
-                                                <td>${owner.email}</td>
+                                                <td>${police.fullName}</td>
+                                                <td>${police.address}</td>
+                                                <td>${police.phone}</td>
+                                                <td>${police.email}</td>
                                                 <td>
-                                                    <a class="btn btn-warning btn-sm" href="phuong-tien-ca-nhan?ownerId=${owner.userId}">Danh sách phương tiện</a>
-                                                    <a class="btn btn-danger btn-sm" data-owner-id="${owner.userId}" onclick="MyFunction(this)">Xóa</a>
+                                                    <a class="btn btn-danger btn-sm" data-police-id="${police.userId}" onclick="MyFunction(this)">Xóa</a>
                                                 </td>
                                             </tr>
                                         </c:forEach>
@@ -80,10 +79,10 @@
         <script src="./resources/js/datatables-simple-demo.js"></script>
         <script>
                                                         function MyFunction(element) {
-                                                            if (confirm("Bạn có chắc chắn muốn xóa chủ phương tiện này?")) {
-                                                                let ownerId = element.dataset.ownerId;
-                                                                if (ownerId) {
-                                                                    window.location.href = 'xoa-chu-phuong-tien?ownerId=' + ownerId;
+                                                            if (confirm("Bạn có chắc chắn muốn xóa tài khoản này?")) {
+                                                                let policeId = element.dataset.policeId;
+                                                                if (policeId) {
+                                                                    window.location.href = 'xoa-canh-sat?policeId=' + policeId;
                                                                 } else {
                                                                     alert("Lỗi: Không lấy được ownerId.");
                                                                 }
