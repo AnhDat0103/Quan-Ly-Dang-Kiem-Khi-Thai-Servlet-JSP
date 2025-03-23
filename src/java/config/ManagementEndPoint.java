@@ -24,7 +24,7 @@ public class ManagementEndPoint {
         roleMap.put(RoleEnums.Admin, new HashSet<>(Arrays.asList("/quan-tri-vien", "/danh-sach-nhan-vien-kiem-dinh",
                 "/chi-tiet-trung-tam-dang-kiem", "/he-thong-logs",
                 "/chi-tiet-chu-phuong-tien", "/lay-lai-mat-khau","/StationServlet","/tao-moi-trung-tam-kiem-dinh", "/cap-nhat-inspector","/xoa-chu-phuong-tien",
-                "/phuong-tien-ca-nhan"
+                "/phuong-tien-ca-nhan","/quan-ly-canh-sat","/xoa-canh-sat"
 
         )));
 
@@ -44,6 +44,11 @@ public class ManagementEndPoint {
         // Inspector endpoint        
         roleMap.put(RoleEnums.Inspector, new HashSet<>(Arrays.asList("/DeleteAccountServlet", "/lich-su-trang-chu",
                 "/nguoi-kiem-dinh", "/thong-tin-nguoi-kiem-dinh"
+        )));
+        
+        //police endpoint 
+        roleMap.put(RoleEnums.Police, new HashSet<>(Arrays.asList(
+                "trung-tam-canh-sat","danh-sach-phuong-tien", "thong-bao-canh-sat"
         )));
 
         return roleMap;

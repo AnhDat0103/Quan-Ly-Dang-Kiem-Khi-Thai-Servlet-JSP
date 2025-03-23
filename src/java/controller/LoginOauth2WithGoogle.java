@@ -149,6 +149,9 @@ public class LoginOauth2WithGoogle extends HttpServlet {
         if (user.getRole().equals(RoleEnums.Inspector)) {
             response.sendRedirect(request.getContextPath() + "/nguoi-kiem-dinh");
         }
+        if (user.getRole().equals(RoleEnums.Police)) {
+            response.sendRedirect(request.getContextPath() + "/trung-tam-canh-sat");
+        }
     }
 
     private String getFullNameFromEmail(String email) {
