@@ -339,7 +339,7 @@ public class VehicleDao implements Dao<Vehicles> {
     }
 
     public boolean updateVehicle(Vehicles vehicles) {
-        String sql = "UPDATE Vehicles SET Brand = ?, Model = ?, ManufactureYear = ?, EngineNumber = ?, Status = 'Fail', ViolationType = NULL WHERE PlateNumber = ?";
+        String sql = "UPDATE Vehicles SET Brand = ?, Model = ?, ManufactureYear = ?, EngineNumber = ?, Status = 'Fail' WHERE PlateNumber = ?";
         try {
             PreparedStatement ps = connect.prepareStatement(sql);
             ps.setString(1, vehicles.getBrand());
