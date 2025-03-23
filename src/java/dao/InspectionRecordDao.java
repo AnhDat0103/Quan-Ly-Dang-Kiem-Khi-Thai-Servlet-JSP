@@ -5,7 +5,6 @@
 package dao;
 
 import config.Configuration;
-import java.math.BigDecimal;
 
 import java.sql.Connection;
 import java.util.List;
@@ -18,9 +17,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import model.Vehicles;
 import java.util.HashMap;
-import java.util.Map;
 import model.InspectionStation;
-import model.enums.vehicleEnums.vehicleEnums;
 
 /**
  *
@@ -64,12 +61,13 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    public boolean isInspectionDateExists(int vehicleId, Date inspectionDate) {
-        String sql = "SELECT COUNT(*) FROM InspectionRecords WHERE VehicleID = ? AND InspectionDate = ?";
+    public boolean isInspectionDateExists(int vehicleId, Date inspectionDate, int stationId) {
+        String sql = "SELECT COUNT(*) FROM InspectionRecords WHERE VehicleID = ? AND InspectionDate = ? and StationID = ?";
         try {
             PreparedStatement st = connect.prepareStatement(sql);
             st.setInt(1, vehicleId);
             st.setDate(2, inspectionDate);
+            st.setInt(3, stationId);
             ResultSet rs = st.executeQuery();
             if (rs.next()) {
                 return rs.getInt(1) > 0;
@@ -712,6 +710,33 @@ public class InspectionRecordDao implements Dao<InspectionRecords> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean checkResultVehicle(int vehicleId, int stationId) {
+        List<InspectionRecords> list = new ArrayList<>();
+        try {
+            String sql = "select * from InspectionRecords where StationID = ? and VehicleID = ? and Result in ('Pending','Pass','Accepted')";
+            PreparedStatement pt = connect.prepareStatement(sql);
+            pt.setInt(1, stationId);
+            pt.setInt(2, vehicleId);
+            ResultSet rs = pt.executeQuery();
+            while(rs.next()) {
+                 list.add(new InspectionRecords(rs.getInt("RecordID"),
+                        vd.getVehiclesById(rs.getInt("VehicleID")),
+                        rs.getInt("StationID"),
+                        rs.getInt("InspectorID"),
+                        rs.getDate("InspectionDate"),
+                        rs.getDate("NextInspectionDate"),
+                        rs.getString("Result"),
+                        rs.getDouble("CO2Emission"),
+                        rs.getDouble("HCEmission"),
+                        rs.getString("Comments")));
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return !list.isEmpty();
     }
     
 }

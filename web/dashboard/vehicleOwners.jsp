@@ -61,7 +61,7 @@
                                                 <td>${owner.email}</td>
                                                 <td>
                                                     <a class="btn btn-warning btn-sm" href="phuong-tien-ca-nhan?ownerId=${owner.userId}">Danh sách phương tiện</a>
-                                                    <a class="btn bi-trash btn-sm" href="xoa-ca-nhan?ownerId=${owner.userId}"></a>
+                                                    <a class="btn btn-danger btn-sm" data-owner-id="${owner.userId}" onclick="MyFunction(this)">Xóa</a>
                                                 </td>
                                             </tr>
                                         </c:forEach>
@@ -78,5 +78,18 @@
         <script src="./resources/js/scripts.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="./resources/js/datatables-simple-demo.js"></script>
+        <script>
+                                                        function MyFunction(element) {
+                                                            if (confirm("Bạn có chắc chắn muốn xóa chủ phương tiện này?")) {
+                                                                let ownerId = element.dataset.ownerId;
+                                                                if (ownerId) {
+                                                                    window.location.href = 'xoa-chu-phuong-tien?ownerId=' + ownerId;
+                                                                } else {
+                                                                    alert("Lỗi: Không lấy được ownerId.");
+                                                                }
+
+                                                            }
+                                                        }
+        </script>
     </body>
 </html>
