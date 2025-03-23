@@ -11,6 +11,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -93,14 +94,23 @@ public class updatePhuongTien extends HttpServlet {
         String model = request.getParameter("model");
         String manufactureYeard = request.getParameter("manufactureYear");
         String engineNumber = request.getParameter("engineNumber");
-
+        
         String bug = "";
 
         if (plateNumber == null || brand == null || model == null || manufactureYeard == null || engineNumber == null
             || plateNumber.isEmpty() || brand.isEmpty() || model.isEmpty() || manufactureYeard.isEmpty() || engineNumber.isEmpty()) {
             bug += "Vui lòng nhập đầy đủ thông tin.\n";
         }
-
+        
+        try {
+            if (vehicleDao.kiemtrakhungphuongtien(engineNumber)){
+                bug += "Khung xe đã tồn tại, vui lòng kiểm tra lại khung phương tiện!\n";
+            }  
+        } catch (SQLException ex) {
+            Logger.getLogger(dangKyPT.class.getName()).log(Level.SEVERE, null, ex);
+            bug += "Lỗi hệ thống khi kiểm tra phương tiện.\n";
+        }
+        
         // Kiểm tra năm sản xuất
         int manufactureYear = 0;
         try {
@@ -116,7 +126,7 @@ public class updatePhuongTien extends HttpServlet {
 
         if (!bug.isEmpty()) {
             request.setAttribute("bug", bug);
-            request.getRequestDispatcher("resources/submit/Failed.jsp").forward(request, response);
+            request.getRequestDispatcher("resources/submit/Update_Failed.jsp").forward(request, response);
             return;
         }
 
@@ -130,13 +140,8 @@ public class updatePhuongTien extends HttpServlet {
         boolean updated = vehicleDao.updateVehicle(vehicle);
 
         if (updated) {
-            request.setAttribute("message", "Cập nhật thành công!");
-            response.sendRedirect("quan-ly-phuong-tien");
-        } else {
-            request.setAttribute("error", "Cập nhật thất bại. Vui lòng thử lại.");
-            request.setAttribute("vehicle", vehicle);
-            request.getRequestDispatcher("resources/vehicle/updateVehicle.jsp").forward(request, response);
-        }
+            request.getRequestDispatcher("resources/submit/Update_Successfully.jsp").forward(request, response);
+        } 
     }
 
 }
