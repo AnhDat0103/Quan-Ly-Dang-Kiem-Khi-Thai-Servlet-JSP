@@ -42,10 +42,6 @@
                                         <option value="Police">Cảnh sát giao thông</option>
                                     </select>
                                 </div>
-                                <div class="mb-4 form-check">
-                                    <input type="checkbox" class="form-check-input" id="remember">
-                                    <label class="form-check-label" for="remember">Ghi nhớ đăng nhập</label>
-                                </div>
                                 <button type="submit" class="btn btn-primary w-100 mb-3">Đăng nhập</button>
                             </form>
                         </div>
