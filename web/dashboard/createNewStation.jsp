@@ -107,7 +107,7 @@
                                                 <button type="submit" class="btn btn-primary me-2">
                                                     <i class="fas fa-save me-2"></i>Tạo mới
                                                 </button>
-                                                <a href="quan-tri-vien" class="btn btn-secondary">
+                                                <a href="chi-tiet-trung-tam-dang-kiem" class="btn btn-secondary">
                                                     <i class="fas fa-times me-2"></i>Hủy
                                                 </a>
                                             </div>
